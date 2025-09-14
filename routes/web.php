@@ -16,14 +16,31 @@ use App\Http\Controllers\HomepageController;
 
 Route::get('/', [HomepageController::class, 'index']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/console', function () {
+        return view('console');
+    })->name('console');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+//Clear Cache in laravel app
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+    return redirect('/console')->with('success', 'Cache cleared successfully!');
 });
 
 require __DIR__.'/auth.php';
