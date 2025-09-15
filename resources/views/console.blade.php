@@ -58,6 +58,16 @@
                                 </a>
                             </div>
                             <div class="col-md-6">
+                                <a href="{{ url('/blog/create') }}" class="btn btn-outline-primary w-100">
+                                   Add Blog
+                                </a>
+                            </div>    
+                            <div class="col-md-6">
+                                <a href="{{ url('/blogs-categories') }}" class="btn btn-outline-primary w-100">
+                                  Blog Categories
+                                </a>
+                            </div>  
+                            <div class="col-md-6">
                                 <a href="{{ url('/contact-us/edit') }}" class="btn btn-outline-primary w-100">
                                     Contact Us
                                 </a>

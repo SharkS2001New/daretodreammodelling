@@ -18,7 +18,7 @@
                     <li><a href="#" class="text-white text-decoration-none">About us</a></li>
                     <li><a href="/testimonials" class="text-white text-decoration-none">Testimonials</a></li>
                     <li><a href="#" class="text-white text-decoration-none">Success Stories</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                    <li><a href="/blog" class="text-white text-decoration-none">Blog</a></li>
                 </ul>
             </div>
 
