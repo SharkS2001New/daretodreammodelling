@@ -7,19 +7,29 @@
 @endsection
 
 @section('content')
-<div class="py-12">
-    <div class="container" style="max-width: 1000px;">
+<div class="py-2">
+    <div class="container mb-3" style="max-width: 1000px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Left (Success Alert) -->
+            <div class="fw-bold flex-grow-1">
+                {{ __("You're logged in !!!") }} &nbsp;:-&nbsp; 
+                <a href="/" class="text-primary">View Website</a> &nbsp;:-&nbsp;
+                <a href="/clear-cache" class="text-danger">Clear Cache</a>
+            </div>
+
+            <!-- Right (Modelling Page Button) -->
+            <div>
+                <a href="/dashboard" class="btn btn-outline-primary btn-sm">
+                    View My Modelling Page
+                </a>
+            </div>
+        </div>
         @if (session('success'))
-            <div class="alert alert-success" id="success-alert">
+            <div class="alert alert-success py-2 px-3 mb-3 mt-3" id="success-alert">
                 {{ session('success') }}
             </div>
         @endif
     </div>
-
-    <div class="text-center fw-bold">{{ __("You're logged in !!!") }} &nbsp;:-&nbsp; <a href="/" class="text-primary">View Website</a> &nbsp;:-&nbsp;
-        <a href="/clear-cache" class="text-danger">Clear Cache</a>
-    </div>
-    <br/>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
@@ -40,6 +50,11 @@
                             <div class="col-md-6">
                                 <a href="{{ url('/about/1/edit') }}" class="btn btn-outline-primary w-100">
                                     About Us
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ url('/testimonials') }}" class="btn btn-outline-primary w-100">
+                                   Testimonials
                                 </a>
                             </div>
                             <div class="col-md-6">

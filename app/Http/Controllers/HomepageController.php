@@ -10,4 +10,20 @@ class HomepageController extends Controller
     {
         return view('homepage');
     } 
+
+    /**
+     * Show the contact page
+    */
+    public function contact()
+    {
+        return view('contact-us');
+    }
+
+    /**
+     * Show the FAQ page
+    */
+    public function faq()
+    {
+        return view('faq');
+    }
 }

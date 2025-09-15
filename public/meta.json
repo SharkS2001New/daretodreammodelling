@@ -1,0 +1,17 @@
+{
+    "home": {
+        "title": "Home - Champions Rise Football Academy",
+        "keywords": "home, football, academy",
+        "description": "Welcome to the official Champions Rise website."
+    },
+    "about-us": {
+        "title": "About Us - Champions Rise",
+        "keywords": "about, mission, team",
+        "description": "Learn about our mission and team."
+    },
+    "contact-us": {
+        "title": "Contact Us - Champions Rise2",
+        "keywords": "contact, contact us",
+        "description": "Get in touch with our team, test."
+    }
+}

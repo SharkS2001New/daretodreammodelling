@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-white shadow-sm py-2">
+<nav class="navbar navbar-expand-lg shadow-sm py-2"><!--  bg-white -->
   <div class="container d-flex align-items-center justify-content-between">
     
     <!-- Logo -->
