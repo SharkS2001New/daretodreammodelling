@@ -43,11 +43,19 @@ class HomepageController extends Controller
         return view('terms');
     }
 
-        /**
+    /**
      * Show the Advice page
     */
     public function Advice()
     {
         return view('modelling-advice');
+    }
+
+    /**
+     * Show the HowItWorks page
+    */
+    public function HowItWorks()
+    {
+        return view('how-it-works');
     }
 }

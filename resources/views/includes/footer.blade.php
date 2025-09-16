@@ -34,7 +34,7 @@
             <div class="col-md-2 mb-4">
                 <h6 class="fw-bold">Help</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">How it works</a></li>
+                    <li><a href="/how-it-works" class="text-white text-decoration-none">How it works</a></li>
                     <li><a href="/modelling-advice" class="text-white text-decoration-none">Modeling advice</a></li>
                     <li><a href="/contact-us" class="text-white text-decoration-none">Contact us</a></li>
                 </ul>
@@ -53,11 +53,10 @@
         <!-- Social Media -->
         <div class="row mt-4">
             <div class="col text-center">
-                <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-tiktok fs-4"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-4"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-linkedin fs-4"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="https://www.instagram.com/d_d_models/?hl=en" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="https://www.tiktok.com/@ddmodels96" class="text-white me-3"><i class="bi bi-tiktok fs-4"></i></a>
+                {{-- <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-4"></i></a> --}}
+                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
             </div>
         </div>
     </div>

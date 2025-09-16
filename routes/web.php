@@ -26,6 +26,7 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index'); // li
 Route::get('/privacy-policy', [HomepageController::class, 'privacy'])->name('privacy-policy');
 Route::get('/terms-of-use', [HomepageController::class, 'terms'])->name('terms-of-use');
 Route::get('/modelling-advice', [HomepageController::class, 'Advice'])->name('modelling-advice');
+Route::get('/how-it-works', [HomepageController::class, 'HowItWorks'])->name('how-it-works');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
