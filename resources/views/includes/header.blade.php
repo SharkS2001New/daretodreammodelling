@@ -91,8 +91,14 @@
           </li>
 
           <li><hr class="dropdown-divider"></li>
-
-          <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i> My Profile</a></li>
+          @if(auth()->check() && auth()->user()->is_admin == 1)
+            <li>
+              <a href="{{ url('/console') }}" class="dropdown-item text-primary">
+                 <i class="bx bx-broadcast me-2"></i>{{ __('Admin Console') }}</a>
+              </a>
+            </li>
+          @endif
+          <li><a class="dropdown-item" href="/profile"><i class="bx bx-user me-2"></i> My Profile</a></li>
           <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i> Settings</a></li>
 
           <li><hr class="dropdown-divider"></li>

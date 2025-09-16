@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/blog/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
     Route::put('/blog/{id}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // delete blog
+    Route::post('/blogs/upload-image', [BlogController::class, 'uploadImage'])->name('blogs.uploadImage');
 
     Route::resource('blogs-categories', BlogsCategoryController::class);
 

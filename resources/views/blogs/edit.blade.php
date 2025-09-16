@@ -40,6 +40,49 @@
             @error('content') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
+        {{-- Optional fields --}}
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Model (optional)</label>
+                <input 
+                    type="text" 
+                    name="model" 
+                    class="form-control @error('model') is-invalid @enderror" 
+                    value="{{ old('model', $blog->model) }}">
+                @error('model') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Photographer (optional)</label>
+                <input 
+                    type="text" 
+                    name="photographer" 
+                    class="form-control @error('photographer') is-invalid @enderror" 
+                    value="{{ old('photographer', $blog->photographer) }}">
+                @error('photographer') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Magazine (optional)</label>
+                <input 
+                    type="text" 
+                    name="magazine" 
+                    class="form-control @error('magazine') is-invalid @enderror" 
+                    value="{{ old('magazine', $blog->magazine) }}">
+                @error('magazine') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Brand (optional)</label>
+                <input 
+                    type="text" 
+                    name="brand" 
+                    class="form-control @error('brand') is-invalid @enderror" 
+                    value="{{ old('brand', $blog->brand) }}">
+                @error('brand') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+        </div>
+
         {{-- Category --}}
         <div class="mb-3">
             <label for="blogs_category_id" class="form-label">Blog Category *</label>
@@ -59,13 +102,21 @@
         <div class="mb-3">
             <label>Image</label><br>
             @if($blog->image)
-                <img src="{{ $blog->image }}" alt="{{ $blog->title }}" width="200" class="mb-2">
+                <img src="{{ $blog->image }}" alt="{{ $blog->title }}" width="200" class="mb-2 rounded">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="remove_image" id="remove_image" value="1">
+                    <label class="form-check-label" for="remove_image">
+                        Remove current image
+                    </label>
+                </div>
             @endif
             <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
+            <div class="form-text">Leave empty to keep current image. Max size: 2MB</div>
             @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
-        <button class="btn btn-success">Update Blog</button>
+        <button type="submit" class="btn btn-success">Update Blog</button>
+        <a href="{{ route('blog.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 <br/>

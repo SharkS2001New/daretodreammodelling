@@ -19,7 +19,12 @@ class Blog extends Model
         'user_id',
         'read_time',
         'published_at',
+        'model',
+        'photographer',
+        'magazine',
+        'brand',
     ];
+
 
     protected $casts = [
         'published_at' => 'datetime',

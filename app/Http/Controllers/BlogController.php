@@ -60,6 +60,10 @@ class BlogController extends Controller
             'content'           => 'required|string',
             'blogs_category_id' => 'required|exists:blogs_categories,id',
             'image'             => 'nullable|image|max:2048',
+            'model'             => 'nullable|string|max:255',
+            'photographer'      => 'nullable|string|max:255',
+            'magazine'          => 'nullable|string|max:255',
+            'brand'             => 'nullable|string|max:255',
         ]);
 
         // Handle file upload
@@ -84,12 +88,17 @@ class BlogController extends Controller
             'user_id'           => Auth::id(),
             'read_time'         => $readTime,
             'published_at'      => now(),
+            'model'             => $validated['model'] ?? null,
+            'photographer'      => $validated['photographer'] ?? null,
+            'magazine'          => $validated['magazine'] ?? null,
+            'brand'             => $validated['brand'] ?? null,
         ]);
 
         Cache::store('file')->flush();
 
         return redirect()->route('blog.index')->with('success', 'Blog created successfully.');
     }
+
 
     public function edit($id)
     {
@@ -120,6 +129,10 @@ class BlogController extends Controller
             'content'           => 'required|string',
             'blogs_category_id' => 'required|exists:blogs_categories,id',
             'image'             => 'nullable|image|max:2048',
+            'model'             => 'nullable|string|max:255', // Added
+            'photographer'      => 'nullable|string|max:255', // Added
+            'magazine'          => 'nullable|string|max:255', // Added
+            'brand'             => 'nullable|string|max:255', // Added
         ]);
 
         // Handle file upload (keep old if none uploaded)
@@ -127,10 +140,15 @@ class BlogController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('blogs', 'public');
             $path = "/storage/$path";
+            
+            // Delete old image if it exists and new one is uploaded
+            if ($blog->image && \Storage::disk('public')->exists(str_replace('/storage/', '', $blog->image))) {
+                \Storage::disk('public')->delete(str_replace('/storage/', '', $blog->image));
+            }
         }
 
         // Generate slug again if title changes
-        $slug = Str::slug($validated['title']);
+        $slug = $blog->title !== $validated['title'] ? Str::slug($validated['title']) : $blog->slug;
 
         // Estimate read time again
         $wordCount = str_word_count(strip_tags($validated['content']));
@@ -144,6 +162,10 @@ class BlogController extends Controller
             'image'             => $path,
             'blogs_category_id' => $validated['blogs_category_id'],
             'read_time'         => $readTime,
+            'model'             => $validated['model'] ?? null, // Added
+            'photographer'      => $validated['photographer'] ?? null, // Added
+            'magazine'          => $validated['magazine'] ?? null, // Added
+            'brand'             => $validated['brand'] ?? null, // Added
         ]);
 
         Cache::store('file')->flush();

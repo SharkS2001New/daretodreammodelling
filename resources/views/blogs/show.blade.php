@@ -1,7 +1,6 @@
 @extends('layouts.frontend')
 
 @section('content')
-<br/><br/><br/><br/>
 <section id="blog-single" class="blog-single section">
   <div class="container" data-aos="fade-up">
     <article class="blog-article">

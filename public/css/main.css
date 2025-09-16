@@ -345,3 +345,45 @@ body.sidebar-open {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
 }
+
+.featured-quote-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid rgba(233, 30, 99, 0.1);
+  position: relative;
+}
+
+.quote-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20L0 20z' fill='%23e91e63' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.quote-text {
+  color: #2c3e50;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.quote-author {
+  font-size: 1.1rem;
+}
+
+.quote-comment .badge {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .quote-text {
+    font-size: 1.5rem;
+  }
+  
+  .featured-quote-card {
+    padding: 2rem !important;
+  }
+}
