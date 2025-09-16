@@ -28,7 +28,6 @@
           <img src="{{ asset('join-now-banner.png') }}" alt="Join Modeling Community" class="img-fluid mb-3 rounded">
         </a>
       </div>
-
     </div>
   </div>
 </section>

@@ -9,7 +9,15 @@ class HomepageController extends Controller
     public function index()
     {
         return view('homepage');
-    } 
+    }
+    
+    /**
+     * Show the about us page
+    */
+    public function about()
+    {
+        return view('about-us');
+    }
 
     /**
      * Show the contact page

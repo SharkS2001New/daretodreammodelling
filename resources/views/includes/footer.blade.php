@@ -15,7 +15,7 @@
             <div class="col-md-2 mb-4">
                 <h6 class="fw-bold">Company</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">About us</a></li>
+                    <li><a href="/about-us" class="text-white text-decoration-none">About us</a></li>
                     <li><a href="/testimonials" class="text-white text-decoration-none">Testimonials</a></li>
                     <li><a href="/blog" class="text-white text-decoration-none">Blog</a></li>
                 </ul>
