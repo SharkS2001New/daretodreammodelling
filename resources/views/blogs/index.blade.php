@@ -83,6 +83,31 @@
               <p class="mb-2">
                 {{ Str::limit($blog->excerpt, 120) }}
               </p>
+              <div class="row">
+                <div class="col-md-3">
+                  @if(!empty($blog->model))
+                    <p class="mb-2 text-muted fw-bold">
+                      Model: <span class="text-danger">{{ $blog->model }}</span>
+                    </p>
+                  @endif
+                </div>
+
+                <div class="col-md-4">
+                  @if(!empty($blog->photographer))
+                    <p class="mb-2 text-muted fw-bold">
+                      Photographer: <span class="text-danger">{{ $blog->photographer }}</span>
+                    </p>
+                  @endif
+                </div>
+
+                <div class="col-md-5">
+                  @if(!empty($blog->magazine))
+                    <p class="mb-2 text-muted fw-bold">
+                      Magazine: <span class="text-danger">{{ $blog->magazine }}</span>
+                    </p>
+                  @endif
+                </div>
+              </div>
               <a href="{{ route('blogs.show', $blog->slug) }}" class="fw-bold text-danger">
                 Read More
               </a>

@@ -17,7 +17,6 @@
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-white text-decoration-none">About us</a></li>
                     <li><a href="/testimonials" class="text-white text-decoration-none">Testimonials</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Success Stories</a></li>
                     <li><a href="/blog" class="text-white text-decoration-none">Blog</a></li>
                 </ul>
             </div>
@@ -26,8 +25,8 @@
             <div class="col-md-2 mb-4">
                 <h6 class="fw-bold">Privacy</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Privacy policy</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Terms of use</a></li>
+                    <li><a href="/privacy-policy" class="text-white text-decoration-none">Privacy policy</a></li>
+                    <li><a href="/terms-of-use" class="text-white text-decoration-none">Terms of use</a></li>
                 </ul>
             </div>
 
@@ -35,9 +34,8 @@
             <div class="col-md-2 mb-4">
                 <h6 class="fw-bold">Help</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Safety and trust</a></li>
                     <li><a href="#" class="text-white text-decoration-none">How it works</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Modeling advice</a></li>
+                    <li><a href="/modelling-advice" class="text-white text-decoration-none">Modeling advice</a></li>
                     <li><a href="/contact-us" class="text-white text-decoration-none">Contact us</a></li>
                 </ul>
             </div>

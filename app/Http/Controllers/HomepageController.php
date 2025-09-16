@@ -26,4 +26,28 @@ class HomepageController extends Controller
     {
         return view('faq');
     }
+
+    /**
+     * Show the privacy page
+    */
+    public function privacy()
+    {
+        return view('privacy');
+    }
+
+    /**
+     * Show the FAQ page
+    */
+    public function terms()
+    {
+        return view('terms');
+    }
+
+        /**
+     * Show the Advice page
+    */
+    public function Advice()
+    {
+        return view('modelling-advice');
+    }
 }

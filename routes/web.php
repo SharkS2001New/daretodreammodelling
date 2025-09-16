@@ -23,6 +23,9 @@ Route::get('/contact-us', [HomepageController::class, 'contact'])->name('contact
 Route::get('/faq', [HomepageController::class, 'faq'])->name('faq');
 Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index'); // list
+Route::get('/privacy-policy', [HomepageController::class, 'privacy'])->name('privacy-policy');
+Route::get('/terms-of-use', [HomepageController::class, 'terms'])->name('terms-of-use');
+Route::get('/modelling-advice', [HomepageController::class, 'Advice'])->name('modelling-advice');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -40,7 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
     Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
     Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');
     Route::post('/testimonials', [TestimonialsController::class, 'store'])->name('testimonials.store'); 
