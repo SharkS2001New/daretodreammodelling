@@ -23,8 +23,8 @@
     <ul class="menu-list">
         <li><a href="/dashboard"><i class="bx bx-home"></i> Dashboard</a></li>
         <li><a href="/account"><i class="bx bx-user"></i> Account</a></li>
-        <li><a href="/model/{{Str::slug(Auth::user()->name)}}"><i class="bx bx-image"></i> My photos</a></li>
-        <li><a href="cards-basic.html"><i class="bx bx-video"></i> Videos</a></li>
+        <li><a href="/model/{{Str::slug(Auth::user()->name)}}/?tab=photos"><i class="bx bx-image"></i> My photos</a></li>
+        <li><a href="/model/{{Str::slug(Auth::user()->name)}}/?tab=videos"><i class="bx bx-video"></i> Videos</a></li>
         <li><a href="cards-basic.html"><i class="bx bx-message"></i> Messages</a></li> 
         <li><a href="cards-basic.html"><i class="bx bx-calendar"></i> Bookings</a></li>
         <li><a href="cards-basic.html"><i class="bx bx-user-check"></i> Followers</a></li>

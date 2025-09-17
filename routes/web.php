@@ -10,7 +10,6 @@ use App\Http\Controllers\BlogsCategoryController;
 use App\Http\Controllers\Account\PublicInfoController;
 use App\Http\Controllers\Account\LinkedAccountsController;
 use Illuminate\Support\Str;
-use App\Models\User;
 use App\Http\Controllers\ModelUploadsController;
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +43,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('console');
 });
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/account', [HomepageController::class, 'Account']);
 
@@ -63,10 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/tiktok/callback', [TikTokController::class, 'callback'])->name('tiktok.callback');
     Route::post('/account/tiktok/disconnect', [TikTokController::class, 'disconnect'])->name('tiktok.disconnect');
 
-    Route::get('/model/{slug}', function ($slug) {
-        $user = User::whereRaw("REPLACE(LOWER(name), ' ', '-') = ?", [$slug])->firstOrFail();
-        return view('models.show', compact('user'));
-    });
+    Route::get('/model/{slug}', [ModelUploadsController::class, 'index'])->name('models.show');
 
     Route::post('/model/photos/upload', [ModelUploadsController::class, 'uploadPhoto'])->name('model.photos.upload');
     Route::delete('/model/photos/{id}', [ModelUploadsController::class, 'deletePhoto'])->name('model.photos.delete');

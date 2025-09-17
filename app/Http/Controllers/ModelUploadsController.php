@@ -7,9 +7,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Photo;
 use App\Models\Video;
+use App\Models\User;
 
 class ModelUploadsController extends Controller
 {
+    public function index($slug)
+    {
+        $user = User::with(['linkedAccount', 'publicInfo'])
+            ->whereRaw("REPLACE(LOWER(name), ' ', '-') = ?", [$slug])
+            ->firstOrFail();
+
+        return view('models.show', compact('user'));
+    }
+
     public function uploadPhoto(Request $request)
     {
         $request->validate([

@@ -15,6 +15,7 @@ class PublicInfoController extends Controller
     {
         // Get public info or create empty instance
         $publicInfo = Auth::user()->publicInfo ?? new UserPublicInfo();
+        
         return view('account.public', compact('publicInfo'));
     }
 

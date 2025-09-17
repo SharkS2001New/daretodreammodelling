@@ -3,44 +3,66 @@
 @section('content')
 <div class="container">
     <div class="profile-header text-left mb-4">
-        <div class="d-flex align-items-left mb-4">
-            <!-- Profile Picture -->
-            <div class="me-3">
-                <img src="{{ asset('storage/' . ($user->publicInfo->profile_picture ?? 'default.jpg')) }}"
-                    alt="{{ $user->name }}"
-                    class="rounded-circle"
-                    width="120">
+        <div class="row align-items-center mb-4">
+            <!-- Left: Profile Info -->
+            <div class="col d-flex align-items-center">
+                <!-- Profile Picture -->
+                <div class="me-3">
+                    <img src="{{ asset('storage/' . ($user->publicInfo->profile_picture ?? 'default.jpg')) }}"
+                        alt="{{ $user->name }}"
+                        class="rounded-circle"
+                        width="120">
+                </div>
+
+                <!-- Profile Info -->
+                <div>
+                    <h2 class="mb-1">{{ $user->publicInfo->display_name ?? $user->name }}</h2>
+                    <span class="badge bg-secondary">{{ $user->user_type }}</span>
+                    <p class="mb-0 mt-2">
+                        <i class="bx bx-map"></i> {{ $user->publicInfo->location }}
+                    </p>
+                </div>
             </div>
 
-            <!-- Profile Info -->
-            <div>
-                <h2 class="mb-1">{{ $user->publicInfo->display_name ?? $user->name }}</h2>
-                <span class="badge bg-secondary">{{ $user->user_type }}</span>
-                <p class="mb-0 mt-2">
-                    <i class="bx bx-map"></i> {{ $user->publicInfo->location }}
-                </p>
+            <!-- Right: Modelling Page Button -->
+            <div class="col-auto text-end">
+                <a href="/dashboard" class="btn btn-outline-primary btn-sm">
+                    View My Modelling Page
+                </a>
             </div>
         </div>
 
-
+        <br/>
         <!-- Linked Accounts -->
-        <div class="d-flex justify-content-center gap-3 mt-2">
-            @if($user->linkedAccounts && $user->linkedAccounts->instagram_url)
-                <a href="{{ $user->linkedAccounts->instagram_url }}" target="_blank">
-                    <i class="bx bxl-instagram"></i>
-                </a>
+        <div class="d-flex justify-content-center gap-4 mt-3">
+            @if($user->linkedAccount && $user->linkedAccount->instagram_url)
+                <i class="bi bi-instagram fs-4">
+                    <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" class="social-link"></a>
+                </i>
             @endif
 
-            @if($user->linkedAccounts && $user->linkedAccounts->twitter_url)
-                <a href="{{ $user->linkedAccounts->twitter_url }}" target="_blank">
-                    <i class="bx bxl-twitter"></i>
-                </a>
+            @if($user->linkedAccount && $user->linkedAccount->twitter_url)
+                <i class="bi bi-twitter-x fs-4">
+                    <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" class="social-link"></a>
+                </i>
             @endif
 
-            @if($user->linkedAccounts && $user->linkedAccounts->tiktok_url)
-                <a href="{{ $user->linkedAccounts->tiktok_url }}" target="_blank">
-                    <i class="bx bxl-tiktok"></i>
-                </a>
+            @if($user->linkedAccount && $user->linkedAccount->tiktok_url)
+                <i class="bi bi-tiktok fs-4">
+                    <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" class="social-link"></a>
+                </i>
+            @endif
+
+            @if($user->linkedAccount && $user->linkedAccount->youtube_url)
+                <i class="bi bi-youtube fs-4">
+                    <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" class="social-link"></a>
+                </i>
+            @endif
+
+              @if($user->linkedAccount && $user->linkedAccount->other_url)
+                <i class="bi bi-website fs-4">
+                    <a href="{{ $user->linkedAccount->other_url }}" target="_blank" class="social-link"></a>
+                </i>
             @endif
         </div>
     </div>
@@ -195,7 +217,7 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" 
                                         onclick="return confirm('Delete this video?')">
-                                    <i class="bi bi-x"></i>
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </form>
                         </div>
@@ -290,6 +312,23 @@
     </div>
 </div>
 <script>
+/** Auto-select tab from URL param */
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get("tab");
+
+    if (tab) {
+        // Find the corresponding nav link
+        const tabTrigger = document.querySelector(`#${tab}-tab`);
+        if (tabTrigger) {
+            // Use Bootstrap's Tab API to show it
+            const bsTab = new bootstrap.Tab(tabTrigger);
+            bsTab.show();
+        }
+    }
+});
+
+/**Image Uploads*/
 document.addEventListener('DOMContentLoaded', function() {
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('photoUpload');
@@ -444,6 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+/**Video Uploads*/
 document.addEventListener("DOMContentLoaded", function() {
     const videoDropzone = document.getElementById("videoDropzone");
     const videoUploadInput = document.getElementById("videoUpload");
