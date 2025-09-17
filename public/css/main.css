@@ -387,3 +387,143 @@ body.sidebar-open {
     padding: 2rem !important;
   }
 }
+
+/* Profile Header */
+.profile-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    border: 3px solid #f0f0f0;
+}
+
+.profile-header h2 {
+    font-weight: 700;
+    margin-top: 10px;
+    font-size: 1.8rem;
+}
+
+.profile-header .badge {
+    font-size: 0.85rem;
+    background: #f3f3f3;
+    /* color: #555; */
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin-top: 5px;
+}
+
+.profile-header p {
+    color: #777;
+    font-size: 0.95rem;
+}
+
+/* Social Icons */
+.profile-header .d-flex a {
+    font-size: 1.3rem;
+    color: #000;
+    background: #f9f9f9;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+
+.profile-header .d-flex a:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: none;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #000;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 8px 20px;
+    margin: 0 5px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-tabs .nav-link.active {
+    background: #000;
+    color: #fff !important;
+}
+
+/* Tab Content */
+.tab-content {
+    margin-top: 30px;
+}
+
+.tab-content img,
+.tab-content video,
+.tab-content iframe {
+    border-radius: 12px;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+}
+
+/* About Section */
+#about h4 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+#about ul li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.dropzone-area {
+    background-color: #f8f9fa;
+    border-color: #dee2e6 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropzone-area:hover,
+.dropzone-area.dragover {
+    background-color: #e9ecef;
+    border-color: #e91e63 !important;
+}
+
+.dropzone-icon {
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+.dropzone-area:hover .dropzone-icon,
+.dropzone-area.dragover .dropzone-icon {
+    color: #e91e63;
+}
+
+.dropzone-text {
+    font-size: 1.1rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.rounded-rectangle {
+    border-radius: 10px;
+}
+
+.progress {
+    height: 8px;
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+}

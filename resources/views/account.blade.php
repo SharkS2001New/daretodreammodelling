@@ -52,7 +52,7 @@
         </div>
 
         <!-- Notifications -->
-        <div class="col-md-6">
+        {{-- <div class="col-md-6">
             <a href="{{ url('/account/notifications') }}" class="text-decoration-none text-dark">
                 <div class="card shadow-sm h-100 p-4">
                     <div class="d-flex align-items-center mb-2">
@@ -62,7 +62,7 @@
                     <p class="text-muted mb-0">Choose what notifications you receive and who can contact you</p>
                 </div>
             </a>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection

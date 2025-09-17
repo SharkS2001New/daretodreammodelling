@@ -57,4 +57,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(LinkedAccount::class);
     }
+
+    public function photos() {
+        return $this->hasMany(Photo::class);
+    }
+
+    public function videos() {
+        return $this->hasMany(Video::class);
+    }
 }
