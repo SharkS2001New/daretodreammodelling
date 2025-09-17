@@ -3,7 +3,13 @@
     <div class="profile">
         <div class="profile-container">
             <div class="profile-pic">
-                <img src="{{ asset('logo.jpg') }}" alt="Profile Picture">
+                <img src="{{ $publicInfo && $publicInfo->profile_picture 
+                                ? asset('storage/'.$publicInfo->profile_picture) 
+                                : asset('images/default-profile.png') }}" 
+                    alt="Profile Picture"
+                    class="rounded-circle object-fit-cover border"
+                    width="150"
+                    height="150">
             </div>
             <div class="profile-info">
                 <h4>{{ Auth::user()->name }}</h4>
@@ -16,7 +22,7 @@
     <!-- Menu -->
     <ul class="menu-list">
         <li><a href="/dashboard"><i class="bx bx-home"></i> Dashboard</a></li>
-        <li><a href="profile"><i class="bx bx-user"></i> Account</a></li>
+        <li><a href="/account"><i class="bx bx-user"></i> Account</a></li>
         <li><a href="cards-basic.html"><i class="bx bx-image"></i> My photos</a></li>
         <li><a href="cards-basic.html"><i class="bx bx-video"></i> Videos</a></li>
         <li><a href="cards-basic.html"><i class="bx bx-message"></i> Messages</a></li> 

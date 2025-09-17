@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Blog::class);
     }
+
+    public function publicInfo()
+    {
+        return $this->hasOne(UserPublicInfo::class);
+    }
 }

@@ -16,6 +16,7 @@
                 <h6 class="fw-bold">Company</h6>
                 <ul class="list-unstyled">
                     <li><a href="/about-us" class="text-white text-decoration-none">About us</a></li>
+                    <li><a href="/contact-us" class="text-white text-decoration-none">Contact us</a></li>
                     <li><a href="/testimonials" class="text-white text-decoration-none">Testimonials</a></li>
                     <li><a href="/blog" class="text-white text-decoration-none">Blog</a></li>
                 </ul>
@@ -36,7 +37,7 @@
                 <ul class="list-unstyled">
                     <li><a href="/how-it-works" class="text-white text-decoration-none">How it works</a></li>
                     <li><a href="/modelling-advice" class="text-white text-decoration-none">Modeling advice</a></li>
-                    <li><a href="/contact-us" class="text-white text-decoration-none">Contact us</a></li>
+                    <li><a href="/faq" class="text-white text-decoration-none">FAQ's</a></li>
                 </ul>
             </div>
 
@@ -53,10 +54,9 @@
         <!-- Social Media -->
         <div class="row mt-4">
             <div class="col text-center">
+                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
                 <a href="https://www.instagram.com/d_d_models/?hl=en" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
                 <a href="https://www.tiktok.com/@ddmodels96" class="text-white me-3"><i class="bi bi-tiktok fs-4"></i></a>
-                {{-- <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-4"></i></a> --}}
-                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
             </div>
         </div>
     </div>

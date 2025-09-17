@@ -74,15 +74,25 @@
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-decoration-none"
            id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="{{ asset('1.png') }}" alt="Profile"
-               class="rounded-circle" width="40" height="40">
+          <img src="{{ $publicInfo && $publicInfo->profile_picture 
+                        ? asset('storage/'.$publicInfo->profile_picture) 
+                        : asset('images/default-profile.png') }}" 
+            alt="Profile Picture"
+            class="rounded-circle object-fit-cover border"
+            width="40"
+            height="40">
         </a>
 
         <ul class="dropdown-menu dropdown-menu-end shadow" style="width: max-content" aria-labelledby="userDropdown">
           <li class="px-3 py-2">
             <div class="d-flex align-items-center">
-              <img src="{{ asset('1.png') }}" alt="Profile"
-                   class="rounded-circle me-2" width="40" height="40">
+                <img src="{{ $publicInfo && $publicInfo->profile_picture 
+                            ? asset('storage/'.$publicInfo->profile_picture) 
+                            : asset('images/default-profile.png') }}" 
+                alt="Profile Picture"
+                class="rounded-circle object-fit-cover border"
+                width="40"
+                height="40">
               <div>
                 <h6 class="mb-0">{{ Auth::user()->name }}</h6>
                 <small class="text-muted">{{ Auth::user()->user_type }}</small>

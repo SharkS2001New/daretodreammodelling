@@ -66,4 +66,12 @@ class HomepageController extends Controller
     {
         return view('how-it-works');
     }
+
+    /**
+     * Show the HowItWorks page
+    */
+    public function Account()
+    {
+        return view('account');
+    }
 }

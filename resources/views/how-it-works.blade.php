@@ -71,7 +71,7 @@
     <div class="text-center py-5 bg-light rounded shadow-sm">
         <h2 class="fw-bold">Ready to start your modelling journey?</h2>
         <p class="lead">Sign up now and become part of Dare to Dream Modelling Agency.</p>
-        <a href="{{ route('register') }}" class="btn btn-lg btn-success fw-bold">
+        <a href="{{ route('register') }}" class="btn btn-sm btn-outline-success fw-bold">
             Get Started
         </a>
     </div>

@@ -25,17 +25,14 @@
                         
                         <!-- Social Media Links -->
                         <div class="social-links mb-4">
-                            <a href="#" class="btn btn-outline-primary btn-sm mx-1 mb-2">
+                            <a href="https://www.facebook.com/profile.php?id=100028941746406" class="btn btn-outline-primary btn-sm mx-1 mb-2">
                                 <i class="bi bi-facebook me-1"></i> FACEBOOK
                             </a>
-                            <a href="#" class="btn btn-outline-primary btn-sm mx-1 mb-2">
-                                <i class="bi bi-twitter me-1"></i> TWITTER
-                            </a>
-                            <a href="#" class="btn btn-outline-primary btn-sm mx-1 mb-2">
-                                <i class="bi bi-youtube me-1"></i> YOUTUBE
-                            </a>
-                            <a href="#" class="btn btn-outline-primary btn-sm mx-1 mb-2">
+                            <a href="https://www.instagram.com/d_d_models/?hl=en" class="btn btn-outline-primary btn-sm mx-1 mb-2">
                                 <i class="bi bi-instagram me-1"></i> INSTAGRAM
+                            </a>
+                            <a href="https://www.tiktok.com/@ddmodels96" class="btn btn-outline-primary btn-sm mx-1 mb-2">
+                                <i class="bi bi-tiktok me-1"></i> TIKTOK
                             </a>
                         </div>
 

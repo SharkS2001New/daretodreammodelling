@@ -7,6 +7,7 @@ use App\Http\Controllers\MetaController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogsCategoryController;
+use App\Http\Controllers\Account\PublicInfoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,7 +42,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/account', [HomepageController::class, 'Account']);
+
+    Route::get('/account/public', [PublicInfoController::class, 'edit'])->name('account.public.edit');
+    Route::post('/account/public', [PublicInfoController::class, 'update'])->name('account.public.update');
+    Route::post('/account/public/profile-picture', [PublicInfoController::class, 'updateProfilePicture'])->name('account.public.updateProfilePicture');
+
+    Route::get('/account/personal', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 

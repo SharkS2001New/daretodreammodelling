@@ -19,6 +19,8 @@
         <link href="{{ asset('css/demo.css') }}" rel="stylesheet">
         <link href="{{ asset('css/main.css') }}" rel="stylesheet">
         <link href="{{ asset('fonts/iconify-icons.css') }}" rel="stylesheet">
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -116,5 +118,19 @@
                 });
             });
         </script>
+        <!-- jQuery + Select2 JS -->
+        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#languages').select2({
+                    placeholder: "Choose languages",
+                    allowClear: true,
+                    closeOnSelect: false
+                });
+            });
+        </script>
+
     </body>
 </html>
