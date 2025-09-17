@@ -8,6 +8,8 @@ use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogsCategoryController;
 use App\Http\Controllers\Account\PublicInfoController;
+use App\Http\Controllers\Account\LinkedAccountsController;
+use App\Http\Controllers\Account\TikTokController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,10 +49,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/public', [PublicInfoController::class, 'edit'])->name('account.public.edit');
     Route::post('/account/public', [PublicInfoController::class, 'update'])->name('account.public.update');
     Route::post('/account/public/profile-picture', [PublicInfoController::class, 'updateProfilePicture'])->name('account.public.updateProfilePicture');
-
+    
     Route::get('/account/personal', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/account/linked', [LinkedAccountsController::class, 'index'])->name('account.linked');
+    Route::post('/account/linked', [LinkedAccountsController::class, 'update'])->name('account.linked.update');
+
+    Route::get('/account/tiktok/connect', [TikTokController::class, 'redirect'])->name('tiktok.connect');
+    Route::get('/account/tiktok/callback', [TikTokController::class, 'callback'])->name('tiktok.callback');
+    Route::post('/account/tiktok/disconnect', [TikTokController::class, 'disconnect'])->name('tiktok.disconnect');
 
     Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
     Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');

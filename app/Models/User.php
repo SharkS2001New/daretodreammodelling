@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserPublicInfo::class);
     }
+
+    public function linkedAccount()
+    {
+        return $this->hasOne(LinkedAccount::class);
+    }
 }

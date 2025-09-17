@@ -54,9 +54,9 @@
         <!-- Social Media -->
         <div class="row mt-4">
             <div class="col text-center">
-                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
-                <a href="https://www.instagram.com/d_d_models/?hl=en" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
-                <a href="https://www.tiktok.com/@ddmodels96" class="text-white me-3"><i class="bi bi-tiktok fs-4"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white me-3" target="_blank"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="https://www.instagram.com/d_d_models/?hl=en" class="text-white me-3" target="_blank"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="https://www.tiktok.com/@ddmodels96" class="text-white me-3" target="_blank"><i class="bi bi-tiktok fs-4"></i></a>
             </div>
         </div>
     </div>
