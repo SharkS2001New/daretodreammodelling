@@ -29,13 +29,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
+        // 🔹 Update last_login timestamp
+        auth()->user()->update([
+            'last_login' => now(),
+        ]);
 
-        /**For Admin, redirect to Admin Dashboard Console */
+        // 🔹 Redirect based on role
         if (auth()->user()->is_admin) {
             return redirect()->intended(route('console'));
         }
-    
+
         return redirect()->intended(route('dashboard'));
     }
 

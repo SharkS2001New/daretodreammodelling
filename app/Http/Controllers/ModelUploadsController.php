@@ -13,11 +13,19 @@ class ModelUploadsController extends Controller
 {
     public function index($slug)
     {
-        $user = User::with(['linkedAccount', 'publicInfo'])
+        $user = User::with(['linkedAccount', 'publicInfo', 'photos.likes', 'photos.views', 'videos.likes', 'videos.views', 'followers'])
             ->whereRaw("REPLACE(LOWER(name), ' ', '-') = ?", [$slug])
             ->firstOrFail();
 
-        return view('models.show', compact('user'));
+        $stats = [
+            'followers' => $user->followers->count(),
+            'photo_likes' => $user->photos->sum(fn($p) => $p->likes->count()),
+            'photo_views' => $user->photos->sum(fn($p) => $p->views->count()),
+            'video_likes' => $user->videos->sum(fn($v) => $v->likes->count()),
+            'video_views' => $user->videos->sum(fn($v) => $v->views->count()),
+        ];
+
+        return view('models.show', compact('user', 'stats'));
     }
 
     public function uploadPhoto(Request $request)

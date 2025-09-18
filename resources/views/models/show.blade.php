@@ -33,36 +33,63 @@
         </div>
 
         <br/>
+        <div class="stats d-flex justify-content-center gap-4 my-3 text-muted small">
+            <div>
+                Photo loves: <strong>{{ $stats['photo_likes'] }}</strong>
+            </div>
+            <div>
+               Photo Views: <strong>{{ $stats['photo_views'] }}</strong>
+            </div>
+            <div>
+                Video loves: <strong>{{ $stats['video_likes'] }}</strong>
+            </div>
+            <div>
+                Video Views: <strong>{{ $stats['video_views'] }}</strong>
+            </div>
+            <div>
+                Followers: <strong>{{ $stats['followers'] }}</strong>
+            </div>
+            <div>
+                Last login: 
+                <strong>
+                    {{ $user->last_login ? ($user->last_login->copy()->addHours(3)->isToday() 
+                        ? 'Today ' . $user->last_login->copy()->addHours(3)->format('h:i A') 
+                        : $user->last_login->copy()->addHours(3)->format('M d, Y h:i A')) 
+                        : 'Never' }}
+                </strong>
+            </div>
+        </div>
+
         <!-- Linked Accounts -->
         <div class="d-flex justify-content-center gap-4 mt-3">
             @if($user->linkedAccount && $user->linkedAccount->instagram_url)
-                <i class="bi bi-instagram fs-4">
-                    <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" class="social-link"></a>
-                </i>
+                <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" class="social-link text-decoration-none text-dark">
+                    <i class="bi bi-instagram fs-4"></i>
+                </a>
             @endif
 
             @if($user->linkedAccount && $user->linkedAccount->twitter_url)
-                <i class="bi bi-twitter-x fs-4">
-                    <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" class="social-link"></a>
-                </i>
+                <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" class="social-link text-decoration-none text-dark">
+                    <i class="bi bi-twitter-x fs-4"></i>
+                </a>
             @endif
 
             @if($user->linkedAccount && $user->linkedAccount->tiktok_url)
-                <i class="bi bi-tiktok fs-4">
-                    <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" class="social-link"></a>
-                </i>
+                <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" class="social-link text-decoration-none text-dark">
+                    <i class="bi bi-tiktok fs-4"></i>
+                </a>
             @endif
 
             @if($user->linkedAccount && $user->linkedAccount->youtube_url)
-                <i class="bi bi-youtube fs-4">
-                    <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" class="social-link"></a>
-                </i>
+                <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" class="social-link text-decoration-none text-dark">
+                    <i class="bi bi-youtube fs-4"></i>
+                </a>
             @endif
 
-              @if($user->linkedAccount && $user->linkedAccount->other_url)
-                <i class="bi bi-website fs-4">
-                    <a href="{{ $user->linkedAccount->other_url }}" target="_blank" class="social-link"></a>
-                </i>
+            @if($user->linkedAccount && $user->linkedAccount->other_url)
+                <a href="{{ $user->linkedAccount->other_url }}" target="_blank" class="social-link text-decoration-none text-dark">
+                    <i class="bi bi-globe fs-4"></i>
+                </a>
             @endif
         </div>
     </div>
@@ -259,51 +286,55 @@
 
         <!-- About -->
         <div class="tab-pane fade container d-flex justify-content-center" id="about" role="tabpanel">
-            <div class="col-lg-8"> <!-- Centered block with max width -->
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Age</span><br><strong>{{ $user->publicInfo->age ?? '-' }}</strong></p>
+            <div class="col-md-8"> <!-- Centered block with max width -->
+
+                <!-- Profile info in 2-column grid -->
+                <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
+                    <div class="col">
+                        <p><span class="text-muted">Age:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->age ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Gender</span><br><strong>{{ $user->publicInfo->gender ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Gender:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->gender ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Ethnicity</span><br><strong>{{ $user->publicInfo->ethnicity ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Ethnicity:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->ethnicity ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Height</span><br><strong>{{ $user->publicInfo->height ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Height:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->height ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Hair</span><br><strong>{{ $user->publicInfo->hair ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Hair:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hair ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Eye</span><br><strong>{{ $user->publicInfo->eye ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Eye:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->eye ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Shoes</span><br><strong>{{ $user->publicInfo->shoes ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Shoes:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->shoes ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Waist</span><br><strong>{{ $user->publicInfo->waist ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Waist:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->waist ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Hips</span><br><strong>{{ $user->publicInfo->hips ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Hips:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hips ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Location</span><br><strong>{{ $user->publicInfo->location ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Location:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->location ?? '-' }}</strong></p>
                     </div>
-                    <div class="col-md-6">
-                        <p><span class="text-muted">Nationality</span><br><strong>{{ $user->publicInfo->nationality ?? '-' }}</strong></p>
+                    <div class="col">
+                        <p><span class="text-muted">Nationality:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->nationality ?? '-' }}</strong></p>
                     </div>
                 </div>
 
+                <br/>
+                <!-- Languages -->
                 <div class="mb-3">
-                    <p class="text-muted mb-1">Languages</p>
+                    <p class="text-muted mb-1">Languages:</p>
                     <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p>
                 </div>
 
+                <!-- About me -->
                 <div class="mb-3">
-                    <p class="text-muted mb-1">About me</p>
+                    <p class="text-muted mb-1">About me:</p>
                     <p>
                         @if(!empty($user->publicInfo->about_me))
                             {{ $user->publicInfo->about_me }}
