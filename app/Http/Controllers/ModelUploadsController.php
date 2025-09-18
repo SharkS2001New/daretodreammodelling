@@ -123,4 +123,17 @@ class ModelUploadsController extends Controller
 
         return redirect()->back()->with('success', 'Video deleted successfully.');
     }
+
+    public function storeLink(Request $request)
+    {
+        $request->validate([
+            'youtube_url' => 'required|url',
+        ]);
+
+        auth()->user()->videos()->create([
+            'youtube_url' => $request->youtube_url,
+        ]);
+
+        return back()->with('success', 'Video link added successfully!');
+    }
 }

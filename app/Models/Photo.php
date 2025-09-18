@@ -11,7 +11,20 @@ class Photo extends Model
 
     protected $fillable = ['user_id', 'file_path'];
     
-    public function user() { 
+    public function user() 
+    { 
         return $this->belongsTo(User::class); 
+    }
+
+    // Likes on photo
+    public function likes()
+    {
+        return $this->hasMany(PhotoLike::class);
+    }
+
+    // Views on photo
+    public function views()
+    {
+        return $this->hasMany(PhotoView::class);
     }
 }

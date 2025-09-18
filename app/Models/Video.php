@@ -11,7 +11,20 @@ class Video extends Model
 
     protected $fillable = ['user_id', 'file_path', 'youtube_url'];
 
-    public function user() {
+    public function user() 
+    {
         return $this->belongsTo(User::class); 
+    }
+
+    // Likes on video
+    public function likes()
+    {
+        return $this->hasMany(VideoLike::class);
+    }
+
+    // Views on video
+    public function views()
+    {
+        return $this->hasMany(VideoView::class);
     }
 }

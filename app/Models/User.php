@@ -65,4 +65,12 @@ class User extends Authenticatable
     public function videos() {
         return $this->hasMany(Video::class);
     }
+
+    public function followers() {
+        return $this->hasMany(Follower::class, 'model_id');
+    }
+
+    public function following() {
+        return $this->hasMany(Follower::class, 'user_id');
+    }
 }

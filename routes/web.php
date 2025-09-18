@@ -11,6 +11,11 @@ use App\Http\Controllers\Account\PublicInfoController;
 use App\Http\Controllers\Account\LinkedAccountsController;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ModelUploadsController;
+use App\Http\Controllers\PhotoLikeController;
+use App\Http\Controllers\PhotoViewController;
+use App\Http\Controllers\VideoLikeController;
+use App\Http\Controllers\VideoViewController;
+use App\Http\Controllers\FollowerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,6 +73,21 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/model/videos/upload', [ModelUploadsController::class, 'uploadVideo'])->name('model.videos.upload');
     Route::delete('/model/videos/{id}', [ModelUploadsController::class, 'deleteVideo'])->name('model.videos.delete');
+    Route::post('/model/videos/store-link', [ModelUploadsController::class, 'storeLink'])->name('model.videos.storeLink');
+
+     // Photo
+    Route::post('/photos/{photo}/like', [PhotoLikeController::class, 'store'])->name('photos.like');
+    Route::delete('/photos/{photo}/like', [PhotoLikeController::class, 'destroy'])->name('photos.unlike');
+    Route::post('/photos/{photo}/view', [PhotoViewController::class, 'store'])->name('photos.view');
+
+    // Video
+    Route::post('/videos/{video}/like', [VideoLikeController::class, 'store'])->name('videos.like');
+    Route::delete('/videos/{video}/like', [VideoLikeController::class, 'destroy'])->name('videos.unlike');
+    Route::post('/videos/{video}/view', [VideoViewController::class, 'store'])->name('videos.view');
+
+    // Followers
+    Route::post('/models/{model}/follow', [FollowerController::class, 'store'])->name('models.follow');
+    Route::delete('/models/{model}/follow', [FollowerController::class, 'destroy'])->name('models.unfollow');
 
     Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
     Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LinkedAccount extends Model
 {
     protected $fillable = [
+        'tiktok_url',
         'instagram_url',
         'twitter_url',
         'youtube_url',
