@@ -11,11 +11,12 @@ use App\Http\Controllers\Account\PublicInfoController;
 use App\Http\Controllers\Account\LinkedAccountsController;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ModelUploadsController;
-use App\Http\Controllers\PhotoLikeController;
 use App\Http\Controllers\PhotoViewController;
+use App\Http\Controllers\PhotoLikeController;
 use App\Http\Controllers\VideoLikeController;
 use App\Http\Controllers\VideoViewController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ModelsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +38,16 @@ Route::get('/privacy-policy', [HomepageController::class, 'privacy'])->name('pri
 Route::get('/terms-of-use', [HomepageController::class, 'terms'])->name('terms-of-use');
 Route::get('/modelling-advice', [HomepageController::class, 'Advice'])->name('modelling-advice');
 Route::get('/how-it-works', [HomepageController::class, 'HowItWorks'])->name('how-it-works');
+
+Route::get('/models', [ModelsController::class, 'index'])->name('models.index');
+// Route::post('/model/{id}/view', [ModelsController::class, 'viewPhoto'])->name('models.view');
+
+// Likes
+Route::post('/model/{id}/like', [PhotoLikeController::class, 'store'])->name('photos.like');
+Route::delete('/model/{id}/like', [PhotoLikeController::class, 'destroy'])->name('photos.unlike');
+
+// Views
+Route::post('/model/{id}/view', [PhotoViewController::class, 'store'])->name('photos.view');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -74,16 +85,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/model/videos/upload', [ModelUploadsController::class, 'uploadVideo'])->name('model.videos.upload');
     Route::delete('/model/videos/{id}', [ModelUploadsController::class, 'deleteVideo'])->name('model.videos.delete');
     Route::post('/model/videos/store-link', [ModelUploadsController::class, 'storeLink'])->name('model.videos.storeLink');
-
-     // Photo
-    Route::post('/photos/{photo}/like', [PhotoLikeController::class, 'store'])->name('photos.like');
-    Route::delete('/photos/{photo}/like', [PhotoLikeController::class, 'destroy'])->name('photos.unlike');
-    Route::post('/photos/{photo}/view', [PhotoViewController::class, 'store'])->name('photos.view');
-
-    // Video
-    Route::post('/videos/{video}/like', [VideoLikeController::class, 'store'])->name('videos.like');
-    Route::delete('/videos/{video}/like', [VideoLikeController::class, 'destroy'])->name('videos.unlike');
-    Route::post('/videos/{video}/view', [VideoViewController::class, 'store'])->name('videos.view');
 
     // Followers
     Route::post('/models/{model}/follow', [FollowerController::class, 'store'])->name('models.follow');

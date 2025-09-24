@@ -40,8 +40,18 @@
         <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+        
+        <!-- Vendor CSS Files -->
+        <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+        <!-- Main CSS File -->
+        <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+
+        <!-- Select2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <!-- noUiSlider CSS & JS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
     </head>
     <body class="font-sans text-gray-900 antialiased">
@@ -62,5 +72,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+
+        <!-- Vendor JS Files -->
+        {{-- <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
+        <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+        <script src="{{ asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+
+        <!-- Main JS File -->
+        <script src="{{ asset('assets/js/main.js')}}"></script>
     </body>
 </html>

@@ -14,7 +14,7 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Castings</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Models</a></li>
+        <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Pro Directory</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Marketplace</a></li>
       </ul>
@@ -48,7 +48,7 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Castings</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Models</a></li>
+        <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Pro Directory</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Marketplace</a></li>
       </ul>

@@ -21,7 +21,8 @@
         <link href="{{ asset('fonts/iconify-icons.css') }}" rel="stylesheet">
         <!-- Select2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+        <!-- noUiSlider CSS & JS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -54,6 +55,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+
         <script src="{{ asset('js/menu.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
 
@@ -114,19 +118,5 @@
                 });
             });
         </script>
-        <!-- jQuery + Select2 JS -->
-        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('#languages').select2({
-                    placeholder: "Choose languages",
-                    allowClear: true,
-                    closeOnSelect: false
-                });
-            });
-        </script>
-
     </body>
 </html>
