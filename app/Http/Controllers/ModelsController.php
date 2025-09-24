@@ -61,6 +61,33 @@ class ModelsController extends Controller
         return view('models.index', compact('photos'));
     }
 
+    public function details($id)
+    {
+        $photo = Photo::with(['user.publicInfo'])->findOrFail($id);
+
+        return response()->json([
+            'name'    => $photo->user->publicInfo->display_name ?? $photo->user->name,
+            'city'    => $photo->user->publicInfo->location ?? null,
+            'country' => $photo->user->publicInfo->nationality ?? null,
+            'age'     => $photo->user->publicInfo->age ?? null,
+            'gender'  => $photo->user->publicInfo->gender ?? null,
+            'photo'   => $photo->file_path,
+            'rating'  => 0, // you can compute from likes/views later
+            'suggested' => Photo::inRandomOrder()
+                ->take(4)
+                ->with('user.publicInfo')
+                ->get()
+                ->map(function ($p) {
+                    return [
+                        'id'    => $p->id,
+                        'name'  => $p->user->publicInfo->display_name ?? $p->user->name,
+                        'photo' => $p->file_path,
+                    ];
+                }),
+        ]);
+    }
+
+
     private function getVisitorCountry(Request $request)
     {
         try {

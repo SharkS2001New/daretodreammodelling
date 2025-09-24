@@ -170,7 +170,86 @@
   </section>
 </main>
 
+<!-- Model Details Modal -->
+<div class="modal fade" id="modelModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start gap-3">
+            <!-- Image -->
+            <img id="model-photo" src="" alt="Model Photo" class="img-fluid rounded" style="max-width: 350px;">
+
+            <!-- Info -->
+            <div>
+              <h4 id="model-name"></h4>
+              <p class="text-muted small" id="model-location"></p>
+              <p class="fw-bold text-danger small mb-2">⭐ <span id="model-rating">0</span> (0)</p>
+
+              <div class="mb-3">
+                <button class="btn btn-outline-secondary btn-sm" id="save-btn">
+                  <i class="bi bi-heart"></i> Save
+                </button>
+                <button class="btn btn-dark btn-sm">
+                  <i class="bi bi-envelope"></i> Message
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Suggested Models -->
+        <div class="mt-4">
+          <h5>More models you may like</h5>
+          <div id="suggested-models" class="d-flex gap-3 overflow-auto">
+            <!-- dynamically filled -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // When photo is clicked
+    document.querySelectorAll('.portfolio-wrap img').forEach(img => {
+      img.addEventListener('click', function () {
+        const photoId = this.dataset.id;
+
+        // Fetch model details via API
+        fetch(`/model/${photoId}/details`)
+          .then(res => res.json())
+          .then(data => {
+            // Fill modal with data
+            document.getElementById('model-photo').src = `/storage/${data.photo}`;
+            document.getElementById('model-name').textContent = data.name;
+            document.getElementById('model-location').textContent = `${data.city}, ${data.country}`;
+            document.getElementById('model-rating').textContent = data.rating;
+
+            // Suggested models
+            let suggestionsHtml = '';
+            data.suggested.forEach(m => {
+              suggestionsHtml += `
+                <div class="card border-0" style="width: 140px;">
+                  <img src="/storage/${m.photo}" class="card-img-top rounded" alt="">
+                  <div class="card-body p-2">
+                    <p class="small mb-0 fw-bold">${m.name}</p>
+                  </div>
+                </div>`;
+            });
+            document.getElementById('suggested-models').innerHTML = suggestionsHtml;
+
+            // Show modal
+            new bootstrap.Modal(document.getElementById('modelModal')).show();
+          })
+          .catch(err => console.error(err));
+      });
+    });
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById('filters-form');
 
@@ -234,7 +313,7 @@ document.querySelectorAll('.like-btn').forEach(btn => {
       display.textContent = `${min} y.o – ${max} y.o`;
     });
   });
-
+  
   btn.addEventListener('click', function () {
     const icon = this.querySelector('i');
     const photoId = this.dataset.id;
@@ -254,7 +333,14 @@ document.querySelectorAll('.like-btn').forEach(btn => {
       },
       body: JSON.stringify({})
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 401) {
+          // 🔴 Not logged in
+          alert("You must login to continue.");
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
       .then(data => {
         if (data.liked) {
           icon.classList.replace('bi-heart', 'bi-heart-fill');
@@ -262,7 +348,11 @@ document.querySelectorAll('.like-btn').forEach(btn => {
           icon.classList.replace('bi-heart-fill', 'bi-heart');
         }
       })
-      .catch(err => console.error('Error:', err))
+      .catch(err => {
+        if (err.message !== "Unauthorized") {
+          console.error('Error:', err);
+        }
+      })
       .finally(() => loader.style.display = 'none');
   });
 });

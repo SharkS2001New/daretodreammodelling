@@ -41,6 +41,7 @@ Route::get('/how-it-works', [HomepageController::class, 'HowItWorks'])->name('ho
 
 Route::get('/models', [ModelsController::class, 'index'])->name('models.index');
 // Route::post('/model/{id}/view', [ModelsController::class, 'viewPhoto'])->name('models.view');
+Route::get('/model/{id}/details', [ModelsController::class, 'details']);
 
 // Likes
 Route::post('/model/{id}/like', [PhotoLikeController::class, 'store'])->name('photos.like');
