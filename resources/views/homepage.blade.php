@@ -1,21 +1,255 @@
 @extends('layouts.frontend')
 
 @section('content')
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        @if (Route::has('login'))
-            <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                    @endif
-                @endauth
+  
+    <div class="container py-5">
+        <div class="row g-4">
+            <!-- Left Card -->
+            <div class="col-md-6">
+                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative h-100">
+                    <img src="https://www.modelmanagement.com/_ipx/f_webp/image/homepage/homepage-1.jpg" class="card-img h-100 object-fit-cover" alt="Find work as a model">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
+                        <p class="small mb-2">Model: Mostapha Saidi</p>
+                        <h3 class="fw-bold">Find work as a model</h3>
+                        <p>Modeling jobs for newcomers and professional models.</p>
+                        {{-- <a href="{{ route('models.jobs') }}" class="btn btn-danger rounded-pill mt-2">
+                            For models and talents
+                        </a> --}}
+                    </div>
+                </div>
             </div>
-        @endif
+
+            <!-- Right Card -->
+            <div class="col-md-6">
+                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative h-100">
+                    <img src="https://www.modelmanagement.com/_ipx/f_webp/image/homepage/homepage-2.jpg" class="card-img h-100 object-fit-cover" alt="Find models and talents">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
+                        <h3 class="fw-bold">Find models and talents</h3>
+                        <p>Source models, talents and influencers for all types of projects.</p>
+                        {{-- <a href="{{ route('professionals.index') }}" class="btn btn-danger rounded-pill mt-2">
+                            For professionals
+                        </a> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <h2 class="text-center mb-4 fw-bold">Popular Models</h2>
+
+        <!-- Category Tabs -->
+        {{-- <div class="d-flex justify-content-center mb-4">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#">Unique</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Fashion</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Real people</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Plus sized</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Talents</a></li>
+            </ul>
+        </div> --}}
+
+        <!-- Models Grid -->
+        <div class="row g-4">
+            @foreach($photos as $model)
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="ratio ratio-1x1"> <!-- makes all squares -->
+                            <img src="{{ asset('storage/'.$model->file_path) }}" 
+                                class="card-img-top rounded object-fit-cover" 
+                                alt="{{ $model->user->name }}">
+                        </div>
+                        <div class="card-img-overlay d-flex flex-column justify-content-end p-3 bg-gradient">
+                            <h6 class="text-white fw-bold m-0">{{ $model->user->name }}</h6>
+                            <small class="text-white-50">
+                                {{ $model->user->city ?? '' }}, {{ $model->user->country ?? '' }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+
+        <!-- Button -->
+        <div class="text-center mt-4">
+            <a href="{{ route('models.index') }}" class="btn btn-dark rounded-pill">Find Models</a>
+        </div>
+    </div>
+
+    <section class="py-5 bg-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-5">Community</h2>
+            
+            <div class="row g-4 justify-content-center">
+                
+                <div class="col-12 col-md-4">
+                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
+                        <h3 class="fw-bold">2,756,313</h3>
+                        <p class="mb-0">Models in community</p>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-4">
+                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
+                        <h3 class="fw-bold">390,661</h3>
+                        <p class="mb-0">Industry Professionals</p>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-4">
+                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
+                        <h3 class="fw-bold">2,332</h3>
+                        <p class="mb-0">Agencies</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-5">Your safety comes first</h2>
+            
+            <div class="row g-4 justify-content-center">
+                
+                <div class="col-12 col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
+                            <i class="bi bi-shield-check fs-3"></i>
+                        </div>
+                        <p class="mb-0">All professional members are <br> verified by our team</p>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
+                            <i class="bi bi-lock fs-3"></i>
+                        </div>
+                        <p class="mb-0">Advanced tools to stop scammers <br> in their tracks</p>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
+                            <i class="bi bi-star fs-3"></i>
+                        </div>
+                        <p class="mb-0">Community reviews for added <br> peace of mind</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="testimonial-section py-5">
+        <h2 class="text-center fw-bold mb-5">Success Stories</h2>
+        
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="container carousel-inner">
+
+                @foreach ($testimonials as $index => $testimonial)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <div class="row align-items-center justify-content-center">
+                            
+                            {{-- ✅ Left side: Image or Video --}}
+                            <div class="col-md-5 text-center">
+                                @if($testimonial->youtube_link)
+                                    <div class="ratio ratio-16x9 rounded-3 shadow-sm">
+                                        <iframe 
+                                            src="{{ $testimonial->getYoutubeEmbedUrl() }}"
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen
+                                            class="w-100 h-100 rounded-3">
+                                        </iframe>
+                                    </div>
+                                @elseif($testimonial->cover_image)
+                                    <img src="{{ asset('storage/' . $testimonial->cover_image) }}"
+                                        alt="Cover image for {{ $testimonial->name }}"
+                                        class="img-fluid rounded-3 shadow-sm">
+                                @endif
+                            </div>
+
+                            {{-- ✅ Right side: Testimonial Text --}}
+                            <div class="col-md-6">
+                                <blockquote class="fs-5 fw-medium">
+                                    <i class="bi bi-quote text-danger fs-2 me-2"></i>
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($testimonial->testimony), 150, '...') }}
+                                </blockquote>
+
+
+                                {{-- ✅ Profile Avatar --}}
+                                <div class="d-flex align-items-center mt-4">
+                                    <div class="flex-shrink-0">
+                                        @if($testimonial->profile_picture)
+                                            <img src="{{ asset('storage/' . $testimonial->profile_picture) }}"
+                                                alt="{{ $testimonial->name }}"
+                                                class="rounded-circle"
+                                                width="50" height="50">
+                                        @else
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}"
+                                                alt="{{ $testimonial->name }}"
+                                                class="rounded-circle"
+                                                width="50" height="50">
+                                        @endif
+                                    </div>
+                                    <div class="ms-3">
+                                        <strong>{{ $testimonial->name }}</strong><br>
+                                        @if($testimonial->job_title)
+                                            <small class="text-muted">{{ $testimonial->job_title }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- ✅ Carousel controls --}}
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <i class="bi bi-chevron-double-left text-dark"></i>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <i class="bi bi-chevron-double-right text-dark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Clients Section -->
+    <section id="clients" class="clients section py-4">
+    <div class="container text-center">
+
+        <!-- Section Title -->
+        <h3 class="mb-4 fw-bold">Brands that trust us</h3>
+
+        <!-- Logos Marquee -->
+        <div class="d-flex overflow-hidden">
+        <div class="clients-marquee d-flex align-items-center">
+            
+            <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
+            <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
+            <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
+            <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
+            <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
+            <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+
+            <!-- duplicate logos for smooth infinite loop -->
+            <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
+            <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
+            <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
+            <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
+            <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
+            <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+        </div>
+        </div>
 
     </div>
+    </section>
 @endsection
 

@@ -699,3 +699,26 @@ body.sidebar-open {
   display: block;
 }
 
+.clients-marquee {
+  animation: marquee 30s linear infinite;
+  white-space: nowrap;
+}
+
+.clients-marquee img {
+  height: 60px;
+  max-height: 60px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.bg-gradient {
+    background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+}
+.object-fit-cover {
+    object-fit: cover;
+}
+
+

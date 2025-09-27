@@ -58,9 +58,11 @@ class ModelsController extends Controller
 
         // Get latest photo id per user (optionally restricted to filtered users)
         $latestPhotoIdsQuery = Photo::selectRaw('MAX(id) as id')->groupBy('user_id');
+
         if ($userIds !== null) {
             $latestPhotoIdsQuery->whereIn('user_id', $userIds);
         }
+
         $latestPhotoIds = $latestPhotoIdsQuery->pluck('id');
 
         // Eager load user photos (limited per user) + publicInfo and likes/views
@@ -69,7 +71,7 @@ class ModelsController extends Controller
                 'likes',
                 'views',
                 'user.photos' => function ($q) {
-                    $q->latest()->take(50); // change limit as needed for the carousel
+                    $q->latest()->take(20); // change limit as needed for the carousel
                 }
             ])
             ->whereIn('id', $latestPhotoIds)
