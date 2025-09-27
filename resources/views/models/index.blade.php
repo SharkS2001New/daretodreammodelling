@@ -123,15 +123,29 @@
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
           <div class="row gy-4 portfolio-container isotope-container">
             @foreach($photos as $photo)
-            <div class="col-md-3 col-6 portfolio-item isotope-item filter-photography">
-              <div class="portfolio-wrap position-relative">
-                <img src="{{ asset('storage/' . $photo->file_path) }}" 
-                    class="img-fluid"  
-                    alt="Model Photo" 
-                    data-id="{{ $photo->id }}" 
-                    loading="lazy">
+              <div class="col-md-3 col-6 portfolio-item isotope-item filter-photography">
+                <div class="portfolio-wrap position-relative">
+                  {{-- Primary thumbnail, opens the grouped gallery for this user --}}
+                  <a href="{{ asset('storage/' . $photo->file_path) }}"
+                    data-fancybox="gallery-{{ $photo->user_id }}"
+                    data-caption="">
+                    <img src="{{ asset('storage/' . $photo->file_path) }}"
+                        class="img-fluid"
+                        alt="Model Photo"
+                        loading="lazy">
+                  </a>
 
-                  <!-- Like Icon -->
+                  {{-- Hidden anchors: other photos of the same model are grouped by same data-fancybox --}}
+                  @if(!empty($photo->user->photos))
+                    @foreach($photo->user->photos->where('id','!=',$photo->id)->take(50) as $extra)
+                      <a href="{{ asset('storage/' . $extra->file_path) }}"
+                        data-fancybox="gallery-{{ $photo->user_id }}"
+                        data-caption=""
+                        style="display:none;"></a>
+                    @endforeach
+                  @endif
+
+                  <!-- Like Icon (keep your logic as before) -->
                   <button class="like-btn" data-id="{{ $photo->id }}">
                     @auth
                       @if($photo->likes->where('user_id', auth()->id())->count() > 0)
@@ -144,14 +158,14 @@
                     @endauth
                   </button>
 
-                <!-- Loader Overlay -->
-                <div class="loader-overlay">
-                  <div class="spinner-border text-light" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                  <!-- Loader Overlay -->
+                  <div class="loader-overlay">
+                    <div class="spinner-border text-light" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
             @endforeach
           </div>
         </div>
@@ -170,115 +184,38 @@
   </section>
 </main>
 
-<!-- Model Details Modal -->
-<div class="modal fade" id="modelModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content rounded-4 shadow">
-      <div class="modal-body p-4">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-start gap-3">
-            <!-- Image -->
-            <img id="model-photo" src="" alt="Model Photo" class="img-fluid rounded" style="max-width: 350px;">
-
-            <!-- Info -->
-            <div>
-              <h4 id="model-name"></h4>
-              <p class="text-muted small" id="model-location"></p>
-              <p class="fw-bold text-danger small mb-2">⭐ <span id="model-rating">0</span> (0)</p>
-
-              <div class="mb-3">
-                <button class="btn btn-outline-secondary btn-sm" id="save-btn">
-                  <i class="bi bi-heart"></i> Save
-                </button>
-                <button class="btn btn-dark btn-sm">
-                  <i class="bi bi-envelope"></i> Message
-                </button>
-              </div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Suggested Models -->
-        <div class="mt-4">
-          <h5>More models you may like</h5>
-          <div id="suggested-models" class="d-flex gap-3 overflow-auto">
-            <!-- dynamically filled -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <script>
+  const lightbox = GLightbox({ selector: '[data-glightbox]' });
+
   document.addEventListener("DOMContentLoaded", function () {
-    // When photo is clicked
-    document.querySelectorAll('.portfolio-wrap img').forEach(img => {
-      img.addEventListener('click', function () {
-        const photoId = this.dataset.id;
+    const form = document.getElementById('filters-form');
 
-        // Fetch model details via API
-        fetch(`/model/${photoId}/details`)
-          .then(res => res.json())
-          .then(data => {
-            // Fill modal with data
-            document.getElementById('model-photo').src = `/storage/${data.photo}`;
-            document.getElementById('model-name').textContent = data.name;
-            document.getElementById('model-location').textContent = `${data.city}, ${data.country}`;
-            document.getElementById('model-rating').textContent = data.rating;
-
-            // Suggested models
-            let suggestionsHtml = '';
-            data.suggested.forEach(m => {
-              suggestionsHtml += `
-                <div class="card border-0" style="width: 140px;">
-                  <img src="/storage/${m.photo}" class="card-img-top rounded" alt="">
-                  <div class="card-body p-2">
-                    <p class="small mb-0 fw-bold">${m.name}</p>
-                  </div>
-                </div>`;
-            });
-            document.getElementById('suggested-models').innerHTML = suggestionsHtml;
-
-            // Show modal
-            new bootstrap.Modal(document.getElementById('modelModal')).show();
-          })
-          .catch(err => console.error(err));
+    // Remove empty filters before submitting
+    form.addEventListener('submit', function (e) {
+      const inputs = form.querySelectorAll('select, input');
+      inputs.forEach(input => {
+        if (!input.value || input.value.length === 0) {
+          input.name = ''; 
+        }
       });
     });
+
   });
-
-  document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById('filters-form');
-
-  // Remove empty filters before submitting
-  form.addEventListener('submit', function (e) {
-    const inputs = form.querySelectorAll('select, input');
-    inputs.forEach(input => {
-      if (!input.value || input.value.length === 0) {
-        input.name = ''; // prevent from sending empty field
-      }
-    });
-  });
-
-});
 
   document.addEventListener("DOMContentLoaded", function() {
-  const ageToggle = document.getElementById("age-toggle");
-  const ageDropdown = ageToggle.closest(".filter-dropdown");
+    const ageToggle = document.getElementById("age-toggle");
+    const ageDropdown = ageToggle.closest(".filter-dropdown");
 
-  ageToggle.addEventListener("click", function(e) {
-    e.preventDefault();
-    ageDropdown.classList.toggle("open");
+    ageToggle.addEventListener("click", function(e) {
+      e.preventDefault();
+      ageDropdown.classList.toggle("open");
+    });
+
+    // Example: Age slider (you can replace with noUiSlider if you use it)
+    let min = document.getElementById("age-min").value;
+    let max = document.getElementById("age-max").value;
+    document.getElementById("age-display").textContent = `${min} - ${max} y.o`;
   });
-
-  // Example: Age slider (you can replace with noUiSlider if you use it)
-  let min = document.getElementById("age-min").value;
-  let max = document.getElementById("age-max").value;
-  document.getElementById("age-display").textContent = `${min} - ${max} y.o`;
-});
 
 document.querySelectorAll('.like-btn').forEach(btn => {
   document.addEventListener("DOMContentLoaded", function () {

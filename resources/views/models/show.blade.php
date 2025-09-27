@@ -16,10 +16,13 @@
 
                 <!-- Profile Info -->
                 <div>
-                    <h2 class="mb-1">{{ $user->publicInfo->display_name ?? $user->name }}</h2>
+                    <h2 class="mb-1">
+                        {{ $user->publicInfo?->display_name ?? $user->name }}
+                    </h2>
                     <span class="badge bg-secondary">{{ $user->user_type }}</span>
                     <p class="mb-0 mt-2">
-                        <i class="bx bx-map"></i> {{ $user->publicInfo->location }}
+                        <i class="bx bx-map"></i>
+                        {{ $user->publicInfo?->location ?? 'Location not set' }}
                     </p>
                 </div>
             </div>

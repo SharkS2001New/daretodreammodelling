@@ -13,9 +13,15 @@ class PublicInfoController extends Controller
 {
     public function edit()
     {
-        // Get public info or create empty instance
-        $publicInfo = Auth::user()->publicInfo ?? new UserPublicInfo();
-        
+        // Try fresh copy from DB and log publicInfo
+        $fresh = User::with('publicInfo')->find(Auth::id());
+
+        // Also try direct query by user_id
+        $byUserId = UserPublicInfo::where('user_id', Auth::id())->first();
+
+        // ... then return something
+        $publicInfo = $fresh->publicInfo ?? null;
+
         return view('account.public', compact('publicInfo'));
     }
 
