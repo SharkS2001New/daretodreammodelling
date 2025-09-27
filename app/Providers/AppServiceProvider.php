@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\UserPublicInfo;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $view->with('publicInfo', UserPublicInfo::first()); // Or fetch what you need
+            $publicInfo = null;
+            if (Auth::check()) {
+                $publicInfo = UserPublicInfo::where('user_id', Auth::id())->first();
+            }
+            $view->with('publicInfo', $publicInfo);
         });
     }
 }

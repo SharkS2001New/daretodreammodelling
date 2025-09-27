@@ -28,11 +28,13 @@
             <h5 class="card-title">Profile Picture</h5>
             <div class="d-flex align-items-center gap-4">
                 <div>
-                    <img src="{{ $publicInfo->profile_picture ? asset('storage/'.$publicInfo->profile_picture) : 'https://via.placeholder.com/150?text=Upload+Photo' }}" 
-                         alt="Profile" 
-                         width="150" 
-                         height="150"
-                         class="rounded-circle object-fit-cover border">
+                    <img src="{{ $publicInfo?->profile_picture 
+                                    ? asset('storage/'.$publicInfo->profile_picture) 
+                                    : 'https://via.placeholder.com/150?text=Upload+Photo' }}" 
+                        alt="Profile" 
+                        width="150" 
+                        height="150"
+                        class="rounded-circle object-fit-cover border">
                 </div>
                 <div class="flex-grow-1">
                     <form action="{{ route('account.public.updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
@@ -60,21 +62,21 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Display name</label>
-                        <input type="text" name="display_name" value="{{ old('display_name', $publicInfo->display_name) }}" class="form-control @error('display_name') is-invalid @enderror">
+                        <input type="text" name="display_name" value="{{ old('display_name', $publicInfo?->display_name ?? '') }}" class="form-control @error('display_name') is-invalid @enderror">
                         @error('display_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Age</label>
-                        <input type="number" name="age" value="{{ old('age', $publicInfo->age) }}" class="form-control @error('age') is-invalid @enderror">
+                        <input type="number" name="age" value="{{ old('age', $publicInfo?->age ?? '') }}" class="form-control @error('age') is-invalid @enderror">
                         @error('age') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Gender</label>
                         <select name="gender" class="form-control @error('gender') is-invalid @enderror">
                             <option value="">Select</option>
-                            <option value="Male" {{ old('gender', $publicInfo->gender)=='Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ old('gender', $publicInfo->gender)=='Female' ? 'selected' : '' }}>Female</option>
-                            <option value="Other" {{ old('gender', $publicInfo->gender)=='Other' ? 'selected' : '' }}>Other</option>
+                            <option value="Male" {{ old('gender', $publicInfo?->gender ?? '')=='Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ old('gender', $publicInfo?->gender ?? '')=='Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Other" {{ old('gender', $publicInfo?->gender ?? '')=='Other' ? 'selected' : '' }}>Other</option>
                         </select>
                         @error('gender') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
@@ -83,7 +85,7 @@
                         <select name="ethnicity" class="form-control @error('ethnicity') is-invalid @enderror">
                             <option value="">Select Ethnicity</option>
                             @foreach(['Black/African','White/Caucasian','Hispanic/Latino','Asian','Middle Eastern','Mixed','Other'] as $ethnicity)
-                                <option value="{{ $ethnicity }}" {{ old('ethnicity', $publicInfo->ethnicity) == $ethnicity ? 'selected' : '' }}>
+                                <option value="{{ $ethnicity }}" {{ old('ethnicity', $publicInfo?->ethnicity ?? '') == $ethnicity ? 'selected' : '' }}>
                                     {{ $ethnicity }}
                                 </option>
                             @endforeach
@@ -99,7 +101,7 @@
                                     'Bald', 'Black', 'Brown', 'Blonde', 'Red', 'Auburn', 'Grey', 'White',
                                     'Dyed / Colored', 'Highlighted', 'Curly', 'Straight', 'Wavy', 'Other'
                                 ];
-                                $selectedHair = old('hair', $publicInfo->hair);
+                                $selectedHair = old('hair', $publicInfo?->hair ?? '');
                             @endphp
 
                             @foreach($hairOptions as $option)
@@ -119,8 +121,7 @@
                                 "Amber", "Black", "Blue", "Brown", "Gray", "Green",
                                 "Hazel", "Red", "Violet", "Heterochromia", "Other"
                             ];
-                            // Match field name with DB column (use 'eye' if that's what your table stores)
-                            $selectedEyeColor = old('eyeColor', $publicInfo->eye ?? '');
+                            $selectedEyeColor = old('eye', $publicInfo?->eye ?? '');
                         @endphp
 
                         <select name="eye" id="eye"
@@ -139,7 +140,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Height</label>
-                        <input type="text" name="height" value="{{ old('height', $publicInfo->height) }}" class="form-control @error('height') is-invalid @enderror">
+                        <input type="text" name="height" value="{{ old('height', $publicInfo?->height ?? '') }}" class="form-control @error('height') is-invalid @enderror">
                         @error('height') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
@@ -165,7 +166,7 @@
                                 ];
                             @endphp
                             @foreach($sizes as $size)
-                                <option value="{{ $size }}" {{ old('shoes', $publicInfo->shoes) == $size ? 'selected' : '' }}>
+                                <option value="{{ $size }}" {{ old('shoes', $publicInfo?->shoes ?? '') == $size ? 'selected' : '' }}>
                                     {{ $size }}
                                 </option>
                             @endforeach
@@ -174,17 +175,17 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Waist</label>
-                        <input type="text" name="waist" value="{{ old('waist', $publicInfo->waist) }}" class="form-control @error('waist') is-invalid @enderror">
+                        <input type="text" name="waist" value="{{ old('waist', $publicInfo?->waist ?? '') }}" class="form-control @error('waist') is-invalid @enderror">
                         @error('waist') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Hips</label>
-                        <input type="text" name="hips" value="{{ old('hips', $publicInfo->hips) }}" class="form-control @error('hips') is-invalid @enderror">
+                        <input type="text" name="hips" value="{{ old('hips', $publicInfo?->hips ?? '') }}" class="form-control @error('hips') is-invalid @enderror">
                         @error('hips') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" name="location" value="{{ old('location', $publicInfo->location) }}" class="form-control @error('location') is-invalid @enderror">
+                        <input type="text" name="location" value="{{ old('location', $publicInfo?->location ?? '') }}" class="form-control @error('location') is-invalid @enderror">
                         @error('location') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                    <div class="col-md-6 mb-3">
@@ -192,7 +193,7 @@
                         <select name="nationality" class="form-control @error('nationality') is-invalid @enderror">
                             <option value="">Select Country</option>
                             @foreach(\App\Helpers\CountryHelper::getCountries() as $country)
-                                <option value="{{ $country }}" {{ old('nationality', $publicInfo->nationality) == $country ? 'selected' : '' }}>
+                                <option value="{{ $country }}" {{ old('nationality', $publicInfo?->nationality ?? '') == $country ? 'selected' : '' }}>
                                     {{ $country }}
                                 </option>
                             @endforeach
@@ -216,11 +217,11 @@
                                 ];
                                 $selectedLanguages = is_array(old('languages'))
                                     ? old('languages')
-                                    : explode(',', $publicInfo->languages ?? '');
+                                    : explode(',', $publicInfo?->languages ?? '');
                             @endphp
 
                             @foreach($availableLanguages as $lang)
-                                <option value="{{ $lang }}" {{ in_array($lang, $selectedLanguages) ? 'selected' : '' }}>
+                                <option value="{{ $lang }}" {{ in_array($lang, $selectedLanguages ?? []) ? 'selected' : '' }}>
                                     {{ $lang }}
                                 </option>
                             @endforeach
@@ -231,7 +232,7 @@
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label">About me</label>
-                        <textarea name="about_me" rows="4" class="form-control @error('about_me') is-invalid @enderror">{{ old('about_me', $publicInfo->about_me) }}</textarea>
+                        <textarea name="about_me" rows="4" class="form-control @error('about_me') is-invalid @enderror">{{ old('about_me', $publicInfo?->about_me ?? '') }}</textarea>
                         @error('about_me') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
