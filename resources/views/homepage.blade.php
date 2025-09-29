@@ -50,7 +50,7 @@
         <!-- Models Grid -->
         <div class="row g-4">
             @foreach($photos as $model)
-                <div class="col-md-3">
+                <div class="col-md-3 col-6">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="ratio ratio-1x1"> <!-- makes all squares -->
                             <img src="{{ asset('storage/'.$model->file_path) }}" 
@@ -74,27 +74,27 @@
         </div>
     </div>
 
-    <section class="py-5 bg-white">
+    <section class="py-2 bg-white">
         <div class="container text-center">
             <h2 class="fw-bold mb-5">Community</h2>
             
             <div class="row g-4 justify-content-center">
                 
-                <div class="col-12 col-md-4">
+                <div class="col-4 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
                         <h3 class="fw-bold">2,356</h3>
                         <p class="mb-0">Models in Agency</p>
                     </div>
                 </div>
                 
-                <div class="col-12 col-md-4">
+                <div class="col-4 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
                         <h3 class="fw-bold">187</h3>
                         <p class="mb-0">Industry Professionals</p>
                     </div>
                 </div>
                 
-                <div class="col-12 col-md-4">
+                <div class="col-4 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
                         <h3 class="fw-bold">12</h3>
                         <p class="mb-0">Agencies</p>
@@ -107,11 +107,11 @@
 
     <section id="programs" class="py-3 bg-light bg-gradient text-white">
         <div class="container text-center">
-            <h2 class="text-dark fw-bold mb-5">OUR PROGRAMS</h2>
+            <h2 class="text-dark fw-bold mb-3">OUR PROGRAMS</h2>
             <div class="row g-4">
                 
                 <!-- Self Branding -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Self Branding</h5>
                         <p class="mb-0">
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- Pageantry -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Pageantry</h5>
                         <p class="mb-0">
@@ -131,7 +131,7 @@
                 </div>
 
                 <!-- Runway Modeling -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Runway</h5>
                         <p class="mb-0">
@@ -141,7 +141,7 @@
                 </div>
 
                 <!-- Commercial Modeling -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Commercial</h5>
                         <p class="mb-0">
@@ -151,7 +151,7 @@
                 </div>
 
                 <!-- Etiquette -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Etiquette</h5>
                         <p class="mb-0">
@@ -161,7 +161,7 @@
                 </div>
 
                 <!-- Photography & Portfolio -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-6">
                     <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
                         <h5 class="fw-bold">Photography & Portfolio</h5>
                         <p class="mb-0">
@@ -180,7 +180,7 @@
             
             <div class="row g-4 justify-content-center">
                 
-                <div class="col-12 col-md-4">
+                <div class="col-6 col-md-4">
                     <div class="d-flex flex-column align-items-center">
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-shield-check fs-3"></i>
@@ -189,7 +189,7 @@
                     </div>
                 </div>
                 
-                <div class="col-12 col-md-4">
+                <div class="col-6 col-md-4">
                     <div class="d-flex flex-column align-items-center">
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-lock fs-3"></i>
@@ -198,7 +198,7 @@
                     </div>
                 </div>
                 
-                <div class="col-12 col-md-4">
+                <div class="col-6 col-md-4">
                     <div class="d-flex flex-column align-items-center">
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-star fs-3"></i>

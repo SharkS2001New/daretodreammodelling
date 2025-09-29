@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <!-- Logo -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-5 mb-4">
                 <h4 class="fw-bold">Dare to Dream</h4>
                 <small class="text-light">Modelling Agency</small>
                 <br/><br/>
@@ -12,7 +12,7 @@
             </div>
 
             <!-- Company -->
-            <div class="col-md-2 mb-4">
+            <div class="col-md-2 col-6 mb-4">
                 <h6 class="fw-bold">Company</h6>
                 <ul class="list-unstyled">
                     <li><a href="/about-us" class="text-white text-decoration-none">About us</a></li>
@@ -23,7 +23,7 @@
             </div>
 
             <!-- Privacy -->
-            <div class="col-md-2 mb-4">
+            <div class="col-md-2 col-6  mb-4">
                 <h6 class="fw-bold">Privacy</h6>
                 <ul class="list-unstyled">
                     <li><a href="/privacy-policy" class="text-white text-decoration-none">Privacy policy</a></li>
@@ -32,21 +32,12 @@
             </div>
 
             <!-- Help -->
-            <div class="col-md-2 mb-4">
+            <div class="col-md-3 mb-4">
                 <h6 class="fw-bold">Help</h6>
                 <ul class="list-unstyled">
                     <li><a href="/how-it-works" class="text-white text-decoration-none">How it works</a></li>
                     <li><a href="/modelling-advice" class="text-white text-decoration-none">Modeling advice</a></li>
                     <li><a href="/faq" class="text-white text-decoration-none">FAQ's</a></li>
-                </ul>
-            </div>
-
-            <!-- App -->
-            <div class="col-md-2 mb-4">
-                <h6 class="fw-bold">Download our App</h6>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">iOS</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Android</a></li>
                 </ul>
             </div>
         </div>
