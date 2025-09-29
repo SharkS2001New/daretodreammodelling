@@ -185,49 +185,19 @@
 </main>
 
 <script>
-  const lightbox = GLightbox({ selector: '[data-glightbox]' });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById('filters-form');
-
-    // Remove empty filters before submitting
-    form.addEventListener('submit', function (e) {
-      const inputs = form.querySelectorAll('select, input');
-      inputs.forEach(input => {
-        if (!input.value || input.value.length === 0) {
-          input.name = ''; 
-        }
-      });
-    });
-
-  });
-
-  document.addEventListener("DOMContentLoaded", function() {
-    const ageToggle = document.getElementById("age-toggle");
-    const ageDropdown = ageToggle.closest(".filter-dropdown");
-
-    ageToggle.addEventListener("click", function(e) {
-      e.preventDefault();
-      ageDropdown.classList.toggle("open");
-    });
-
-    // Example: Age slider (you can replace with noUiSlider if you use it)
-    let min = document.getElementById("age-min").value;
-    let max = document.getElementById("age-max").value;
-    document.getElementById("age-display").textContent = `${min} - ${max} y.o`;
-  });
-
-document.querySelectorAll('.like-btn').forEach(btn => {
-  document.addEventListener("DOMContentLoaded", function () {
-    // === Languages (Select2) ===
+document.addEventListener("DOMContentLoaded", function () {
+  // === Languages (Select2) ===
+  if (document.getElementById('languages')) {
     $('#languages').select2({
       placeholder: "Select languages",
       allowClear: true,
       width: '100%'
     });
+  }
 
-    // === Age Slider ===
-    const ageSlider = document.getElementById('age-slider');
+  // === Age Slider ===
+  const ageSlider = document.getElementById('age-slider');
+  if (ageSlider) {
     const minInput = document.getElementById('age-min');
     const maxInput = document.getElementById('age-max');
     const display = document.getElementById('age-display');
@@ -236,10 +206,7 @@ document.querySelectorAll('.like-btn').forEach(btn => {
       start: [minInput.value || 18, maxInput.value || 45],
       connect: true,
       step: 1,
-      range: {
-        'min': 16,
-        'max': 65
-      }
+      range: { 'min': 16, 'max': 65 }
     });
 
     ageSlider.noUiSlider.on('update', function (values) {
@@ -249,30 +216,31 @@ document.querySelectorAll('.like-btn').forEach(btn => {
       maxInput.value = max;
       display.textContent = `${min} y.o – ${max} y.o`;
     });
-  });
-  
-  btn.addEventListener('click', function () {
-    const icon = this.querySelector('i');
-    const photoId = this.dataset.id;
-    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const isLiked = icon.classList.contains('bi-heart-fill');
-    const url = `/model/${photoId}/like`;
+  }
 
-    const wrap = this.closest('.portfolio-wrap');
-    const loader = wrap.querySelector('.loader-overlay');
-    loader.style.display = 'flex'; // show loader
+  // === Like Buttons ===
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const icon = this.querySelector('i');
+      const photoId = this.dataset.id;
+      const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const isLiked = icon.classList.contains('bi-heart-fill');
+      const url = `/model/${photoId}/like`;
 
-    fetch(url, {
-      method: isLiked ? 'DELETE' : 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': token
-      },
-      body: JSON.stringify({})
-    })
+      const wrap = this.closest('.portfolio-wrap');
+      const loader = wrap.querySelector('.loader-overlay');
+      loader.style.display = 'flex'; // show loader
+
+      fetch(url, {
+        method: isLiked ? 'DELETE' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': token
+        },
+        body: JSON.stringify({})
+      })
       .then(res => {
         if (res.status === 401) {
-          // 🔴 Not logged in
           alert("You must login to continue.");
           throw new Error("Unauthorized");
         }
@@ -286,11 +254,10 @@ document.querySelectorAll('.like-btn').forEach(btn => {
         }
       })
       .catch(err => {
-        if (err.message !== "Unauthorized") {
-          console.error('Error:', err);
-        }
+        if (err.message !== "Unauthorized") console.error('Error:', err);
       })
       .finally(() => loader.style.display = 'none');
+    });
   });
 });
 </script>

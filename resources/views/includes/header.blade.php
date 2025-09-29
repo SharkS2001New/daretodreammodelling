@@ -12,11 +12,14 @@
     <!-- Desktop Navigation Links (Visible only on desktop) -->
     <div class="collapse navbar-collapse d-none d-lg-block">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Castings</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about-us">About us</a></li>
         <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Pro Directory</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Marketplace</a></li>
+        <li class="nav-item"><a class="nav-link" href="/testimonials">Testimonials</a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li>
+        <li class="nav-item"><a class="nav-link" href="/modelling-advice">Advice</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
       </ul>
     </div>
     @endauth
@@ -46,11 +49,14 @@
     @guest
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Castings</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about-us">About us</a></li>
         <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Pro Directory</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Marketplace</a></li>
+        <li class="nav-item"><a class="nav-link" href="/testimonials">Testimonials</a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li>
+        <li class="nav-item"><a class="nav-link" href="/modelling-advice">Advice</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
       </ul>
 
       <!-- Right Section -->
