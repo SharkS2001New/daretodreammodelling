@@ -1,15 +1,13 @@
 @extends('layouts.frontend')
 
-@section('content')
-  
-    <div class="container py-5">
+@section('content')  
+    <div class="container py-2">
         <div class="row g-4">
             <!-- Left Card -->
             <div class="col-md-6">
-                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative h-100">
-                    <img src="https://www.modelmanagement.com/_ipx/f_webp/image/homepage/homepage-1.jpg" class="card-img h-100 object-fit-cover" alt="Find work as a model">
+                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative">
+                    <img src="{{ asset('find_a_model.jpg') }}" class="card-img object-fit-cover" alt="Find work as a model">
                     <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
-                        <p class="small mb-2">Model: Mostapha Saidi</p>
                         <h3 class="fw-bold">Find work as a model</h3>
                         <p>Modeling jobs for newcomers and professional models.</p>
                         {{-- <a href="{{ route('models.jobs') }}" class="btn btn-danger rounded-pill mt-2">
@@ -22,7 +20,7 @@
             <!-- Right Card -->
             <div class="col-md-6">
                 <div class="card border-0 text-white rounded-4 overflow-hidden position-relative h-100">
-                    <img src="https://www.modelmanagement.com/_ipx/f_webp/image/homepage/homepage-2.jpg" class="card-img h-100 object-fit-cover" alt="Find models and talents">
+                    <img src="{{ asset('model_careers1.jpg') }}" class="card-img h-100 object-fit-cover" alt="Find models and talents">
                     <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
                         <h3 class="fw-bold">Find models and talents</h3>
                         <p>Source models, talents and influencers for all types of projects.</p>
@@ -70,7 +68,6 @@
             @endforeach
         </div>
 
-
         <!-- Button -->
         <div class="text-center mt-4">
             <a href="{{ route('models.index') }}" class="btn btn-dark rounded-pill">Find Models</a>
@@ -85,22 +82,91 @@
                 
                 <div class="col-12 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">2,756,313</h3>
-                        <p class="mb-0">Models in community</p>
+                        <h3 class="fw-bold">2,356</h3>
+                        <p class="mb-0">Models in Agency</p>
                     </div>
                 </div>
                 
                 <div class="col-12 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">390,661</h3>
+                        <h3 class="fw-bold">187</h3>
                         <p class="mb-0">Industry Professionals</p>
                     </div>
                 </div>
                 
                 <div class="col-12 col-md-4">
                     <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">2,332</h3>
+                        <h3 class="fw-bold">12</h3>
                         <p class="mb-0">Agencies</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="programs" class="py-3 bg-light bg-gradient text-white">
+        <div class="container text-center">
+            <h2 class="text-dark fw-bold mb-5">OUR PROGRAMS</h2>
+            <div class="row g-4">
+                
+                <!-- Self Branding -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Self Branding</h5>
+                        <p class="mb-0">
+                            Build and promote your unique image in the industry.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pageantry -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Pageantry</h5>
+                        <p class="mb-0">
+                            Train for beauty contests with grooming and confidence.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Runway Modeling -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Runway</h5>
+                        <p class="mb-0">
+                            Master the walk and stage presence for fashion shows.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Commercial Modeling -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Commercial</h5>
+                        <p class="mb-0">
+                            Explore TV, print, and brand modeling opportunities.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Etiquette -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Etiquette</h5>
+                        <p class="mb-0">
+                            Learn social and professional etiquette for success.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Photography & Portfolio -->
+                <div class="col-md-4">
+                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold">Photography & Portfolio</h5>
+                        <p class="mb-0">
+                            Create a stunning portfolio with expert guidance.
+                        </p>
                     </div>
                 </div>
 
@@ -119,7 +185,7 @@
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-shield-check fs-3"></i>
                         </div>
-                        <p class="mb-0">All professional members are <br> verified by our team</p>
+                        <p class="mb-0">Every profile is carefully <br> checked and approved</p>
                     </div>
                 </div>
                 
@@ -128,7 +194,7 @@
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-lock fs-3"></i>
                         </div>
-                        <p class="mb-0">Advanced tools to stop scammers <br> in their tracks</p>
+                        <p class="mb-0">Secure messaging to protect <br> your private information</p>
                     </div>
                 </div>
                 
@@ -137,7 +203,7 @@
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
                             <i class="bi bi-star fs-3"></i>
                         </div>
-                        <p class="mb-0">Community reviews for added <br> peace of mind</p>
+                        <p class="mb-0">Trusted connections built <br> on real feedback</p>
                     </div>
                 </div>
 
@@ -223,33 +289,32 @@
 
     <!-- Clients Section -->
     <section id="clients" class="clients section py-4">
-    <div class="container text-center">
+        <div class="container text-center">
 
-        <!-- Section Title -->
-        <h3 class="mb-4 fw-bold">Brands that trust us</h3>
+            <!-- Section Title -->
+            <h3 class="mb-4 fw-bold">Brands that trust us</h3>
 
-        <!-- Logos Marquee -->
-        <div class="d-flex overflow-hidden">
-        <div class="clients-marquee d-flex align-items-center">
-            
-            <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
-            <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
-            <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
-            <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
-            <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
-            <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+            <!-- Logos Marquee -->
+            <div class="d-flex overflow-hidden">
+            <div class="clients-marquee d-flex align-items-center">
+                
+                <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
+                <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
+                <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
+                <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
+                <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
+                <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
 
-            <!-- duplicate logos for smooth infinite loop -->
-            <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
-            <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
-            <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
-            <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
-            <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
-            <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+                <!-- duplicate logos for smooth infinite loop -->
+                <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
+                <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
+                <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
+                <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
+                <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
+                <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+            </div>
+            </div>
         </div>
-        </div>
-
-    </div>
     </section>
 @endsection
 
