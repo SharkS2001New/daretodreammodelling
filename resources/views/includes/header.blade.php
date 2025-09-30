@@ -6,21 +6,18 @@
       Dare to Dream <br>
       <small class="text-muted">Modelling Agency</small>
     </a> --}}
-    <div class="position-absolute" style="z-index: 2;">
-      <a class="navbar-brand d-flex align-items-center" href="/">
-        <!-- Logo -->
-        <img src="{{ asset('ddmodelslogo.png') }}" 
-            alt="Dare to Dream" 
-            style="height: 50px; width: auto; margin-right: 5px;">
+    <a class="navbar-brand fw-bold me-auto d-flex align-items-center" href="/">
+      <!-- Logo -->
+      <img src="{{ asset('ddmodelslogo.png') }}" 
+          alt="Dare to Dream" 
+          style="height: 50px; width: auto; margin-right: 5px;">
 
-        <!-- Name + Subtitle -->
-        <div class="d-flex flex-column">
-          <span style="font-size: 18px">Dare to Dream </span>
-          <small class="text-muted">Modelling Agency</small>
-        </div>
-      </a>
-    </div>
-
+      <!-- Name + Subtitle -->
+      <div class="d-flex flex-column">
+        <span style="font-size: 18px">Dare to Dream </span>
+        <small class="text-muted">Modelling Agency</small>
+      </div>
+    </a>
 
     <!-- Authenticated User Menu -->
     @auth
