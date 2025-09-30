@@ -9,6 +9,10 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # ✅ Strip port numbers from host (e.g. :8040)
+    RewriteCond %{HTTP_HOST} ^([^:]+):[0-9]+$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
