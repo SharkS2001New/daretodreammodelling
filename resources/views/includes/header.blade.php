@@ -2,10 +2,25 @@
   <div class="container d-flex align-items-center justify-content-between">
     
     <!-- Logo -->
-    <a class="navbar-brand fw-bold me-auto" href="/">
+    {{-- <a class="navbar-brand fw-bold me-auto" href="/">
       Dare to Dream <br>
       <small class="text-muted">Modelling Agency</small>
-    </a>
+    </a> --}}
+    <div class="position-absolute" style="z-index: 2;">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <!-- Logo -->
+        <img src="{{ asset('ddmodelslogo.png') }}" 
+            alt="Dare to Dream" 
+            style="height: 50px; width: auto; margin-right: 5px;">
+
+        <!-- Name + Subtitle -->
+        <div class="d-flex flex-column">
+          <span style="font-size: 18px">Dare to Dream </span>
+          <small class="text-muted">Modelling Agency</small>
+        </div>
+      </a>
+    </div>
+
 
     <!-- Authenticated User Menu -->
     @auth
@@ -17,7 +32,7 @@
         <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
         <li class="nav-item"><a class="nav-link" href="/testimonials">Testimonials</a></li>
         <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li> --}}
         <li class="nav-item"><a class="nav-link" href="/modelling-advice">Advice</a></li>
         <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
       </ul>
@@ -47,14 +62,14 @@
 
     <!-- Guest Menu -->
     @guest
-    <div class="collapse navbar-collapse" id="mainNavbar">
+    <div class="collapse navbar-collapse align-items-center justify-content-center" id="mainNavbar">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/about-us">About us</a></li>
         <li class="nav-item"><a class="nav-link" href="/models">Models</a></li>
         <li class="nav-item"><a class="nav-link" href="/testimonials">Testimonials</a></li>
         <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="/how-it-works">How it Works</a></li> --}}
         <li class="nav-item"><a class="nav-link" href="/modelling-advice">Advice</a></li>
         <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
       </ul>
@@ -65,7 +80,6 @@
         <a href="{{ route('register') }}" class="btn btn-signup">Sign up</a>
       </div>
     </div>
-
     @endguest
 
     <!-- Authenticated User Menu -->

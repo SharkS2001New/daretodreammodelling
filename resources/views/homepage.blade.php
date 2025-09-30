@@ -303,7 +303,7 @@
                 <img src="{{ asset('brands/nemu.jpeg') }}" class="mx-4 img-fluid" alt="Client 3">
                 <img src="{{ asset('brands/poh.jpeg') }}" class="mx-4 img-fluid" alt="Client 4">
                 <img src="{{ asset('brands/touch-of-kenya.jpeg') }}" class="mx-4 img-fluid" alt="Client 5">
-                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
+                <img src="{{ asset('brands/martell.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
 
                 <!-- duplicate logos for smooth infinite loop -->
                 <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 1">
@@ -311,7 +311,7 @@
                 <img src="{{ asset('brands/nemu.jpeg') }}" class="mx-4 img-fluid" alt="Client 3">
                 <img src="{{ asset('brands/poh.jpeg') }}" class="mx-4 img-fluid" alt="Client 4">
                 <img src="{{ asset('brands/touch-of-kenya.jpeg') }}" class="mx-4 img-fluid" alt="Client 5">
-                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
+                <img src="{{ asset('brands/martell.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
             </div>
             </div>
         </div>
