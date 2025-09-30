@@ -54,6 +54,11 @@
             </main>
 
             @include('includes.footer')
+
+            <!-- Scroll to Top Button -->
+            <button type="button" id="scrollToTop" class="scroll-to-top">
+                <i class="bi bi-arrow-up"></i>
+            </button>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -133,5 +138,26 @@
             });
         </script>
 
+        <!-- Script -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const scrollBtn = document.getElementById("scrollToTop");
+
+                window.addEventListener("scroll", () => {
+                    if (window.scrollY > 200) {
+                    scrollBtn.style.display = "flex";
+                    } else {
+                    scrollBtn.style.display = "none";
+                    }
+                });
+
+                scrollBtn.addEventListener("click", () => {
+                    window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

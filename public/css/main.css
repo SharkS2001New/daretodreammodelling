@@ -721,4 +721,27 @@ body.sidebar-open {
     object-fit: cover;
 }
 
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  display: none; /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  z-index: 999;
+  transition: all 0.3s ease-in-out;
+}
+.scroll-to-top:hover {
+  background-color: #333;
+  transform: scale(1.1);
+}
 

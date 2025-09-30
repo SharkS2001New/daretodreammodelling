@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center p-2">
     <div class="card shadow-lg border-0 rounded-4" style="max-width: 480px; width: 100%;">
         <div class="card-body p-4">
 
