@@ -287,6 +287,23 @@
             @endif
         </div>
 
+        <div class="tab-pane fade container d-flex justify-content-center" id="tiktok" role="tabpanel">
+            <div class="col-md-8"> <!-- Centered block with max width -->
+                {{-- @if($user->linkedAccount && $user->linkedAccount->tiktok_url)
+                    <div class="ratio ratio-16x9 mb-3">
+                        <iframe src="{{ $user->linkedAccount->tiktok_url }}" 
+                            style="border:none;overflow:hidden" 
+                            scrolling="no" allowfullscreen></iframe>
+                    </div>
+                @else --}}
+                    <div class="col-12 alert alert-danger">
+                        <p class="text-dark text-center" style="font-size: 15px">Coming Soon.</p>
+                    </div>
+                {{-- @endif --}}
+            </div>
+        </div>
+
+
         <!-- About -->
         <div class="tab-pane fade container d-flex justify-content-center" id="about" role="tabpanel">
             <div class="col-md-8"> <!-- Centered block with max width -->

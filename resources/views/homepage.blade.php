@@ -298,20 +298,20 @@
             <div class="d-flex overflow-hidden">
             <div class="clients-marquee d-flex align-items-center">
                 
-                <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
-                <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
-                <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
-                <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
-                <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
-                <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 1">
+                <img src="{{ asset('brands/lush-hair.jpeg') }}" class="mx-4 img-fluid" alt="Client 2">
+                <img src="{{ asset('brands/nemu.jpeg') }}" class="mx-4 img-fluid" alt="Client 3">
+                <img src="{{ asset('brands/poh.jpeg') }}" class="mx-4 img-fluid" alt="Client 4">
+                <img src="{{ asset('brands/touch-of-kenya.jpeg') }}" class="mx-4 img-fluid" alt="Client 5">
+                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
 
                 <!-- duplicate logos for smooth infinite loop -->
-                <img src="{{ asset('assets/img/clients/clients-1.webp') }}" class="mx-4 img-fluid" alt="Client 1">
-                <img src="{{ asset('assets/img/clients/clients-2.webp') }}" class="mx-4 img-fluid" alt="Client 2">
-                <img src="{{ asset('assets/img/clients/clients-3.webp') }}" class="mx-4 img-fluid" alt="Client 3">
-                <img src="{{ asset('assets/img/clients/clients-4.webp') }}" class="mx-4 img-fluid" alt="Client 4">
-                <img src="{{ asset('assets/img/clients/clients-5.webp') }}" class="mx-4 img-fluid" alt="Client 5">
-                <img src="{{ asset('assets/img/clients/clients-6.webp') }}" class="mx-4 img-fluid" alt="Client 6">
+                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 1">
+                <img src="{{ asset('brands/lush-hair.jpeg') }}" class="mx-4 img-fluid" alt="Client 2">
+                <img src="{{ asset('brands/nemu.jpeg') }}" class="mx-4 img-fluid" alt="Client 3">
+                <img src="{{ asset('brands/poh.jpeg') }}" class="mx-4 img-fluid" alt="Client 4">
+                <img src="{{ asset('brands/touch-of-kenya.jpeg') }}" class="mx-4 img-fluid" alt="Client 5">
+                <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
             </div>
             </div>
         </div>
