@@ -37,7 +37,7 @@ class ModelUploadsController extends Controller
     public function uploadPhoto(Request $request)
     {
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:3072', // 3MB
         ]);
 
         try {
@@ -92,7 +92,7 @@ class ModelUploadsController extends Controller
     public function uploadVideo(Request $request)
     {
         $request->validate([
-            'video' => 'required|file|mimes:mp4,m4v|max:51200', // max 50MB
+            'video' => 'required|file|mimes:mp4,m4v|max:10240', // max 10MB
         ]);
 
         $user = Auth::user();
