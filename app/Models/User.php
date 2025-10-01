@@ -46,6 +46,17 @@ class User extends Authenticatable
 
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->slug = Str::slug($user->name);
+        });
+
+        static::updating(function ($user) {
+            $user->slug = Str::slug($user->name);
+        });
+    }
+
     public function blogs()
     {
         return $this->hasMany(Blog::class);

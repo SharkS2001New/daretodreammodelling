@@ -13,9 +13,15 @@ class ModelUploadsController extends Controller
 {
     public function index($slug)
     {
-        $user = User::with(['linkedAccount', 'publicInfo', 'photos.likes', 'photos.views', 'videos.likes', 'videos.views', 'followers'])
-            ->whereRaw("REPLACE(LOWER(name), ' ', '-') = ?", [$slug])
-            ->firstOrFail();
+        $user = User::with([
+            'linkedAccount',
+            'publicInfo',
+            'photos.likes',
+            'photos.views',
+            'videos.likes',
+            'videos.views',
+            'followers'
+        ])->where('slug', $slug)->firstOrFail();
 
         $stats = [
             'followers' => $user->followers->count(),
@@ -24,7 +30,7 @@ class ModelUploadsController extends Controller
             'video_likes' => $user->videos->sum(fn($v) => $v->likes->count()),
             'video_views' => $user->videos->sum(fn($v) => $v->views->count()),
         ];
-
+        
         return view('models.show', compact('user', 'stats'));
     }
 
