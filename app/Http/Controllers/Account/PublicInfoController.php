@@ -8,6 +8,7 @@ use App\Models\UserPublicInfo;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class PublicInfoController extends Controller
 {
