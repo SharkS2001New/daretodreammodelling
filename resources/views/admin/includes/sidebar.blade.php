@@ -28,7 +28,11 @@
                 <i class="bx bx-image"></i> My photos
             </a>
         </li>
-        <li><a href="/model/{{Auth::user()->slug}}/?tab=videos"><i class="bx bx-video"></i> Videos</a></li>
+        <li>
+            <a href="{{ route('models.show', ['slug' => Auth::user()->slug, 'tab' => 'videos']) }}">
+                <i class="bx bx-image"></i> My Videos
+            </a>
+        </li>
         <li><a href="#"><i class="bx bx-message"></i> Messages</a></li> 
         <li><a href="#"><i class="bx bx-calendar"></i> Bookings</a></li>
         <li><a href="#"><i class="bx bx-user-check"></i> Followers</a></li>
