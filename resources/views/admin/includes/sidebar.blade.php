@@ -16,7 +16,7 @@
                 <p>{{ Auth::user()->user_type }}</p>
             </div>
         </div>
-        <button class="upgrade-btn">⭐ Upgrade now</button>
+        {{-- <button class="upgrade-btn">⭐ Upgrade now</button> --}}
     </div>
 
     <!-- Menu -->
