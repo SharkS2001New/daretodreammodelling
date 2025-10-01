@@ -66,9 +66,10 @@
                     </a>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <a href="/model/{{Str::slug(Auth::user()->name)}}/?tab=photos" class="btn w-100 fw-bold text-white py-3"
+                    <a href="{{ route('models.show', ['slug' => Auth::user()->slug, 'tab' => 'photos']) }}" 
+                    class="btn w-100 fw-bold text-white py-3"
                     style="background-color:#26A69A; border-radius:10px;">
-                        🖼️ Upload 3 photos
+                    🖼️ Upload 3 photos
                     </a>
                 </div>
             </div>
