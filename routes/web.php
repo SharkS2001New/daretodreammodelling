@@ -5,10 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\MetaController;
 use App\Http\Controllers\TestimonialsController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogController; 
 use App\Http\Controllers\BlogsCategoryController;
 use App\Http\Controllers\Account\PublicInfoController;
 use App\Http\Controllers\Account\LinkedAccountsController;
+use App\Http\Controllers\Account\TikTokController;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ModelUploadsController;
 use App\Http\Controllers\PhotoViewController;
@@ -74,7 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/linked', [LinkedAccountsController::class, 'index'])->name('account.linked');
     Route::post('/account/linked', [LinkedAccountsController::class, 'update'])->name('account.linked.update');
 
-    Route::get('/account/tiktok/connect', [TikTokController::class, 'redirect'])->name('tiktok.connect');
+    Route::get('/account/tiktok/redirect', [TikTokController::class, 'redirect'])->name('tiktok.connect');
     Route::get('/account/tiktok/callback', [TikTokController::class, 'callback'])->name('tiktok.callback');
     Route::post('/account/tiktok/disconnect', [TikTokController::class, 'disconnect'])->name('tiktok.disconnect');
 

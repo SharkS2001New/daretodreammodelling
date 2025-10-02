@@ -36,5 +36,4 @@ return [
         'client_secret' => env('TIKTOK_CLIENT_SECRET'),
         'redirect' => env('TIKTOK_REDIRECT_URI'),
     ],
-
 ];
