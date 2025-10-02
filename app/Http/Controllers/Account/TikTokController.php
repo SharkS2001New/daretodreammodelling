@@ -43,7 +43,7 @@ class TikTokController extends Controller
         }
 
         // Exchange code for access token
-        $response = Http::asForm()->post('https://sandbox.tiktok.com/v2/oauth/token/', [
+        $response = Http::asForm()->post('https://open.tiktokapis.com/v2/oauth/token/', [
             'client_key'    => config('services.tiktok.client_id'),
             'client_secret' => config('services.tiktok.client_secret'),
             'code'          => $code,
@@ -63,7 +63,7 @@ class TikTokController extends Controller
 
         // Fetch TikTok profile info
         $profileResponse = Http::withToken($accessToken)
-            ->get('https://sandbox.tiktok.com/v2/user/info/', [
+            ->get('https://open.tiktokapis.com/v2/user/info/', [
                 'fields' => 'open_id,union_id,display_name,avatar_url',
             ]);
 
