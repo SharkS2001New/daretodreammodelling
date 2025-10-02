@@ -19,7 +19,7 @@ class TikTokController extends Controller
         $scopes       = 'user.info.basic';
         $state        = csrf_token();
 
-        $url = "https://sandbox.tiktok.com/v2/auth/authorize/?" . http_build_query([
+        $url = "https://www.tiktok.com/v2/auth/authorize/?" . http_build_query([
             'client_key'    => $clientId,
             'scope'         => $scopes,
             'response_type' => 'code',
