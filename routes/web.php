@@ -78,8 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/tiktok/redirect', [TikTokController::class, 'redirect'])->name('tiktok.connect');
     Route::get('/account/tiktok/callback', [TikTokController::class, 'callback'])->name('tiktok.callback');
     Route::post('/account/tiktok/disconnect', [TikTokController::class, 'disconnect'])->name('tiktok.disconnect');
+    Route::get('/account/tiktok/reconnect', [TikTokController::class, 'reconnect'])->name('tiktok.reconnect');
     Route::get('/account/tiktok/videos', [TikTokController::class, 'videos'])->name('tiktok.videos');
-    Route::get('/tiktok/status', [TikTokController::class, 'status'])->name('tiktok.status');
+    Route::get('/account/tiktok/status', [TikTokController::class, 'status'])->name('tiktok.status');
 
     Route::get('/model/{slug}', [ModelUploadsController::class, 'index'])->name('models.show');
 
