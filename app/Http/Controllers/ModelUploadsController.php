@@ -34,6 +34,103 @@ class ModelUploadsController extends Controller
         return view('models.show', compact('user', 'stats'));
     }
 
+    private function fetchTikTokVideos($user)
+    {
+        try {
+            \Log::info('Fetching TikTok videos for user: ' . $user->id);
+            
+            // Check if user has linked account with TikTok tokens
+            if (!$user->linkedAccount || !$user->linkedAccount->tiktok_access_token) {
+                \Log::warning('No TikTok access token for user: ' . $user->id);
+                return ['data' => ['videos' => []]];
+            }
+
+            $linkedAccount = $user->linkedAccount;
+
+            // Check if token needs refresh
+            if ($linkedAccount->tiktok_token_expires_at && $linkedAccount->tiktok_token_expires_at->isPast()) {
+                \Log::info('TikTok token expired, refreshing...');
+                $this->refreshTikTokToken($linkedAccount);
+            }
+
+            $response = Http::withToken($linkedAccount->tiktok_access_token)
+                ->timeout(30)
+                ->get('https://open.tiktokapis.com/v2/video/list/', [
+                    'fields' => 'id,title,cover_image_url,share_url',
+                    'max_count' => 10,
+                ]);
+
+            \Log::info('TikTok API Response Status: ' . $response->status());
+            \Log::info('TikTok API Response Body: ' . $response->body());
+
+            if ($response->status() === 401) {
+                \Log::info('TikTok token invalid, refreshing...');
+                if ($this->refreshTikTokToken($linkedAccount)) {
+                    // Retry with new token
+                    $response = Http::withToken($linkedAccount->tiktok_access_token)
+                        ->get('https://open.tiktokapis.com/v2/video/list/', [
+                            'fields' => 'id,title,cover_image_url,share_url',
+                            'max_count' => 10,
+                        ]);
+                } else {
+                    \Log::error('Failed to refresh TikTok token');
+                    return ['data' => ['videos' => []]];
+                }
+            }
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $videoCount = count($data['data']['videos'] ?? []);
+                \Log::info('TikTok videos count: ' . $videoCount);
+                return $data;
+            } else {
+                \Log::error('TikTok API Error: ' . $response->body());
+                return ['data' => ['videos' => []]];
+            }
+            
+        } catch (\Exception $e) {
+            \Log::error('TikTok API Exception: ' . $e->getMessage());
+            return ['data' => ['videos' => []]];
+        }
+    }
+
+    private function refreshTikTokToken($linkedAccount)
+    {
+        try {
+            if (!$linkedAccount->tiktok_refresh_token) {
+                \Log::error('No refresh token available for TikTok account');
+                return false;
+            }
+
+            $response = Http::asForm()->post('https://open.tiktokapis.com/v2/oauth/token/', [
+                'client_key' => config('services.tiktok.client_id'),
+                'client_secret' => config('services.tiktok.client_secret'),
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $linkedAccount->tiktok_refresh_token,
+            ]);
+
+            if ($response->successful()) {
+                $tokenData = $response->json();
+                
+                $linkedAccount->update([
+                    'tiktok_access_token' => $tokenData['access_token'],
+                    'tiktok_refresh_token' => $tokenData['refresh_token'] ?? $linkedAccount->tiktok_refresh_token,
+                    'tiktok_token_expires_at' => now()->addSeconds($tokenData['expires_in'] ?? 7200),
+                ]);
+                
+                \Log::info('TikTok token refreshed successfully');
+                return true;
+            }
+            
+            \Log::error('Token refresh failed: ' . $response->body());
+            return false;
+            
+        } catch (\Exception $e) {
+            \Log::error('Token refresh exception: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     public function uploadPhoto(Request $request)
     {
         $request->validate([

@@ -287,20 +287,12 @@
             @endif
         </div>
 
-        <div class="tab-pane fade container d-flex justify-content-center" id="tiktok" role="tabpanel">
-            <div class="col-md-8"> <!-- Centered block with max width -->
-                {{-- @if($user->linkedAccount && $user->linkedAccount->tiktok_url)
-                    <div class="ratio ratio-16x9 mb-3">
-                        <iframe src="{{ $user->linkedAccount->tiktok_url }}" 
-                            style="border:none;overflow:hidden" 
-                            scrolling="no" allowfullscreen></iframe>
-                    </div>
-                @else --}}
-                    <div class="col-12 alert alert-danger">
-                        <p class="text-dark text-center" style="font-size: 15px">Coming Soon.</p>
-                    </div>
-                {{-- @endif --}}
-            </div>
+        <!-- TikTok Tab -->
+        <div class="tab-pane fade" id="tiktok-videos" role="tabpanel">
+            <h5>TikTok Videos</h5>
+
+            <div id="tiktok-status"></div>
+            <div id="tiktok-videos-list" class="row"></div>
         </div>
 
 
@@ -636,6 +628,42 @@ document.addEventListener("DOMContentLoaded", function() {
 
         xhr.send(formData);
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // First check status
+    fetch("{{ route('tiktok.status') }}")
+        .then(res => res.json())
+        .then(data => {
+            if (!data.tiktok_connected) {
+                document.getElementById("tiktok-status").innerHTML =
+                    "<p class='text-danger'>TikTok account not connected.</p>";
+                return;
+            }
+
+            // Fetch videos if connected
+            fetch("{{ route('tiktok.videos') }}")
+                .then(res => res.json())
+                .then(videos => {
+                    if (videos.data) {
+                        let html = "";
+                        videos.data.forEach(v => {
+                            html += `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <img src="${v.cover_image_url}" class="card-img-top" alt="${v.title}">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${v.title}</h6>
+                                            <a href="${v.share_url}" target="_blank" class="btn btn-sm btn-primary">View</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        document.getElementById("tiktok-videos-list").innerHTML = html;
+                    }
+                });
+        });
 });
 </script>
 @endsection
