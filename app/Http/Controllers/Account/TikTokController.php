@@ -16,20 +16,38 @@ class TikTokController extends Controller
         $clientId = config('services.tiktok.client_id');
         $redirectUri = config('services.tiktok.redirect_uri');
         
-        // Request ALL necessary scopes for video access
+        // Validate configuration
+        if (!$clientId || !$redirectUri) {
+            Log::error('TikTok configuration missing', [
+                'client_id' => $clientId ? 'set' : 'missing',
+                'redirect_uri' => $redirectUri ? 'set' : 'missing'
+            ]);
+            return redirect()->route('account.linked')
+                ->with('error', 'TikTok configuration error. Please contact administrator.');
+        }
+
+        // Use only the BASIC scopes that are commonly approved
         $scopes = [
-            'user.info.basic',      // Basic user info
-            'video.list',           // List user's videos
-            'video.upload',         // Upload videos (might be needed)
-            'video.publish',        // Publish videos
+            'user.info.basic',  // Basic user profile
+            'video.list',       // List user videos
         ];
         
         $scope = implode(',', $scopes);
         $state = csrf_token();
 
-        $authUrl = "https://www.tiktok.com/v2/auth/authorize/?client_key={$clientId}&scope={$scope}&response_type=code&redirect_uri={$redirectUri}&state={$state}";
+        // Build the authorization URL properly
+        $authUrl = "https://www.tiktok.com/v2/auth/authorize/" .
+                   "?client_key=" . urlencode($clientId) .
+                   "&scope=" . urlencode($scope) .
+                   "&response_type=code" .
+                   "&redirect_uri=" . urlencode($redirectUri) .
+                   "&state=" . urlencode($state);
 
-        Log::info('TikTok redirect URL', ['url' => $authUrl]);
+        Log::info('TikTok authorization URL generated', [
+            'client_id_set' => !empty($clientId),
+            'redirect_uri' => $redirectUri,
+            'scopes' => $scope
+        ]);
         
         return redirect($authUrl);
     }
@@ -38,89 +56,114 @@ class TikTokController extends Controller
     {
         $code = $request->input('code');
         $error = $request->input('error');
+        $errorDescription = $request->input('error_description');
 
-        // Check if user denied authorization
-        if ($error === 'access_denied') {
-            Log::warning('User denied TikTok authorization');
+        // Handle authorization errors
+        if ($error) {
+            Log::error('TikTok authorization denied', [
+                'error' => $error,
+                'error_description' => $errorDescription
+            ]);
+            
+            $errorMessage = match($error) {
+                'access_denied' => 'You denied access to your TikTok account. Please grant all requested permissions.',
+                'invalid_scope' => 'Invalid scope requested. Please try again.',
+                'invalid_client' => 'Invalid app configuration. Please contact administrator.',
+                default => 'TikTok authorization failed: ' . ($errorDescription ?? $error)
+            };
+            
             return redirect()->route('account.linked')
-                ->with('error', 'TikTok authorization was denied. Please grant all requested permissions.');
+                ->with('error', $errorMessage);
         }
 
         if (!$code) {
-            Log::error('No authorization code received');
+            Log::error('No authorization code received in TikTok callback');
             return redirect()->route('account.linked')
                 ->with('error', 'Failed to connect TikTok account. No authorization code received.');
         }
 
-        // Exchange code for access token
-        $response = Http::asForm()->post('https://open.tiktokapis.com/v2/oauth/token/', [
-            'client_key'    => config('services.tiktok.client_id'),
-            'client_secret' => config('services.tiktok.client_secret'),
-            'code'          => $code,
-            'grant_type'    => 'authorization_code',
-            'redirect_uri'  => route('tiktok.callback'),
-        ]);
-
-        $data = $response->json();
-
-        if (!isset($data['access_token'])) {
-            Log::error('TikTok token exchange failed', [
-                'response' => $data,
-                'code' => $code
-            ]);
+        // Validate state parameter for CSRF protection
+        $state = $request->input('state');
+        if (!$state || !hash_equals(csrf_token(), $state)) {
+            Log::error('TikTok state parameter validation failed');
             return redirect()->route('account.linked')
-                ->with('error', 'TikTok authorization failed: ' . ($data['error_description'] ?? 'Unknown error'));
+                ->with('error', 'Security validation failed. Please try again.');
         }
 
-        $accessToken = $data['access_token'];
-        $refreshToken = $data['refresh_token'] ?? null;
-        $openId = $data['open_id'] ?? null;
-        $expiresIn = $data['expires_in'] ?? 7200;
-        $scope = $data['scope'] ?? '';
-
-        $user = Auth::user();
-
-        // Log the granted scopes for debugging
-        Log::info('TikTok token granted', [
-            'user_id' => $user->id,
-            'open_id' => $openId,
-            'scopes' => $scope,
-            'expires_in' => $expiresIn
-        ]);
-
-        // Fetch TikTok profile info
-        $profileResponse = Http::withToken($accessToken)
-            ->get('https://open.tiktokapis.com/v2/user/info/', [
-                'fields' => 'open_id,union_id,display_name,avatar_url,profile_deep_link',
+        try {
+            // Exchange code for access token
+            $response = Http::asForm()->post('https://open.tiktokapis.com/v2/oauth/token/', [
+                'client_key'    => config('services.tiktok.client_id'),
+                'client_secret' => config('services.tiktok.client_secret'),
+                'code'          => $code,
+                'grant_type'    => 'authorization_code',
+                'redirect_uri'  => config('services.tiktok.redirect_uri'), // Use from config, not route
             ]);
 
-        $profile = $profileResponse->json();
+            $data = $response->json();
 
-        $tiktokUrl = null;
-        $displayName = null;
-        
-        if (isset($profile['data']['user']['display_name'])) {
-            $displayName = $profile['data']['user']['display_name'];
-            $tiktokUrl = "https://www.tiktok.com/@" . $displayName;
-        } elseif (isset($profile['data']['user']['profile_deep_link'])) {
-            $tiktokUrl = $profile['data']['user']['profile_deep_link'];
-        }
+            if (!isset($data['access_token'])) {
+                Log::error('TikTok token exchange failed', [
+                    'response' => $data,
+                    'status' => $response->status()
+                ]);
+                
+                $errorMsg = $data['error_description'] ?? 
+                           $data['error_message'] ?? 
+                           $data['error'] ?? 
+                           'Unknown error during token exchange';
+                
+                return redirect()->route('account.linked')
+                    ->with('error', 'TikTok authorization failed: ' . $errorMsg);
+            }
 
-        // Check if video.list scope was granted
-        $hasVideoScope = str_contains($scope, 'video.list');
-        
-        if (!$hasVideoScope) {
-            Log::warning('TikTok connection missing video.list scope', [
+            $accessToken = $data['access_token'];
+            $refreshToken = $data['refresh_token'] ?? null;
+            $openId = $data['open_id'] ?? null;
+            $expiresIn = $data['expires_in'] ?? 7200;
+            $scope = $data['scope'] ?? '';
+
+            $user = Auth::user();
+
+            Log::info('TikTok token exchange successful', [
                 'user_id' => $user->id,
-                'granted_scopes' => $scope
+                'open_id' => $openId,
+                'scopes_granted' => $scope
             ]);
+
+            // Fetch TikTok profile info
+            $profileResponse = Http::withToken($accessToken)
+                ->timeout(10)
+                ->get('https://open.tiktokapis.com/v2/user/info/', [
+                    'fields' => 'open_id,union_id,display_name,avatar_url',
+                ]);
+
+            $profile = $profileResponse->json();
+
+            $tiktokUrl = null;
+            $displayName = null;
             
-            // You might want to inform the user they need to reconnect with proper scopes
+            if (isset($profile['data']['user']['display_name'])) {
+                $displayName = $profile['data']['user']['display_name'];
+                $tiktokUrl = "https://www.tiktok.com/@" . $displayName;
+            }
+
+            // Check if video.list scope was granted
+            $hasVideoScope = str_contains($scope, 'video.list');
+            
+            if (!$hasVideoScope) {
+                Log::warning('TikTok connection missing video.list scope', [
+                    'user_id' => $user->id,
+                    'granted_scopes' => $scope
+                ]);
+            }
+
+            // Save TikTok info into linked_accounts table
             $user->linkedAccount()->updateOrCreate(
                 ['user_id' => $user->id],
                 [
                     'tiktok_url'              => $tiktokUrl,
-                    'tiktok_connected'        => true, // Still mark as connected
+                    'tiktok_connected'        => true,
                     'tiktok_access_token'     => $accessToken,
                     'tiktok_refresh_token'    => $refreshToken,
                     'tiktok_open_id'          => $openId,
@@ -128,32 +171,29 @@ class TikTokController extends Controller
                 ]
             );
 
+            Log::info('TikTok account connected successfully', [
+                'user_id' => $user->id,
+                'display_name' => $displayName,
+                'has_video_scope' => $hasVideoScope
+            ]);
+
+            if (!$hasVideoScope) {
+                return redirect()->route('account.linked')
+                    ->with('warning', 'TikTok account connected! However, video access was not granted. You may not be able to display TikTok videos.');
+            }
+
             return redirect()->route('account.linked')
-                ->with('warning', 'TikTok account connected, but video access was not granted. To display your TikTok videos, please reconnect and grant video permissions.');
+                ->with('success', 'TikTok account connected successfully! You can now display your TikTok videos.');
+
+        } catch (\Exception $e) {
+            Log::error('TikTok callback exception', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return redirect()->route('account.linked')
+                ->with('error', 'An unexpected error occurred: ' . $e->getMessage());
         }
-
-        // Save TikTok info into linked_accounts table
-        $user->linkedAccount()->updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'tiktok_url'              => $tiktokUrl,
-                'tiktok_connected'        => true,
-                'tiktok_access_token'     => $accessToken,
-                'tiktok_refresh_token'    => $refreshToken,
-                'tiktok_open_id'          => $openId,
-                'tiktok_token_expires_at' => now()->addSeconds($expiresIn),
-            ]
-        );
-
-        Log::info('TikTok account fully connected', [
-            'user_id' => $user->id,
-            'open_id' => $openId,
-            'display_name' => $displayName,
-            'has_video_scope' => $hasVideoScope
-        ]);
-
-        return redirect()->route('account.linked')
-            ->with('success', 'TikTok account connected successfully! You can now display your TikTok videos.');
     }
 
     public function disconnect(Request $request)
