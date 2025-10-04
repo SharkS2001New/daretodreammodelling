@@ -193,11 +193,13 @@
                         </div>
                     </div>                    
                 @empty
-                    <div class="col-12">
+                    <div class="col-md-8 col-12">
                         <p class="text-muted text-center">
                             @if($isOwner)
+                                <br/>
                                <b>No photos uploaded yet. Upload your first photo to get started!</b>
                             @else
+                                <br/>
                                 <b>No photos available yet.</b>
                             @endif
                         </p>
@@ -284,7 +286,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-md-12">
+                    <div class="col-md-8 col-12">
                         <p class="text-muted text-center">
                             @if($isOwner)
                                 <br/>
