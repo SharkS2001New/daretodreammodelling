@@ -1,7 +1,5 @@
 @extends('layouts.frontend')
 
-@section('title', 'About Us — Dare to Dream Modelling Agency')
-
 @section('content')
 <div class="container">
   {{-- HERO SECTION --}}

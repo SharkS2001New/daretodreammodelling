@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Account Settings')
-
 @section('content')
 <div class="container py-5">
     <!-- Page Header -->

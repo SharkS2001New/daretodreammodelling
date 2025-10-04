@@ -1,8 +1,5 @@
 @extends('layouts.frontend')
 
-@section('title', 'Modeling Advice - Tips & Guidance for Models')
-@section('meta_description', 'Modeling advice and tips for new and experienced models. Learn how to start, build your portfolio, work with agencies, and grow your career in modeling.')
-
 @section('content')
 <section class="bg-white mb-2">
   <div class="container">

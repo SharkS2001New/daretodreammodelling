@@ -1,7 +1,5 @@
 @extends('layouts.gallery')
 
-@section('title', 'Models')
-
 @section('content')
 <main class="main">   
   <section id="portfolio" class="portfolio section">

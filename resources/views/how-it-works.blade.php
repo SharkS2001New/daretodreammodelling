@@ -1,8 +1,6 @@
 {{-- resources/views/how-it-works.blade.php --}}
 @extends('layouts.frontend')
 
-@section('title', 'How it Works - Dare to Dream Modelling Agency')
-
 @section('content')
 <div class="container">
     {{-- Hero Section --}}

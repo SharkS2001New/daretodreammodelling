@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Linked Accounts')
-
 @section('content')
 <div class="container py-4">
     <!-- Breadcrumb -->
