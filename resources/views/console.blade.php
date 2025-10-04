@@ -42,7 +42,7 @@
                                     Manage Website Seo Metas
                                 </a>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <a href="{{ url('/landing/1/edit') }}" class="btn btn-outline-primary w-100">
                                     Landing Page
                                 </a>
@@ -51,7 +51,7 @@
                                 <a href="{{ url('/about/1/edit') }}" class="btn btn-outline-primary w-100">
                                     About Us
                                 </a>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                                 <a href="{{ url('/testimonials') }}" class="btn btn-outline-primary w-100">
                                    Testimonials
@@ -67,11 +67,11 @@
                                   Blog Categories
                                 </a>
                             </div>  
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <a href="{{ url('/contact-us/edit') }}" class="btn btn-outline-primary w-100">
                                     Contact Us
                                 </a>
-                            </div>                                                     
+                            </div>                                                      --}}
                         </div>
                     </div>
                 </div>
