@@ -189,7 +189,7 @@ class ModelUploadsController extends Controller
     public function uploadVideo(Request $request)
     {
         $request->validate([
-            'video' => 'required|file|mimes:mp4,m4v|max:10240', // max 10MB
+            'video' => 'required|file|mimes:mp4,m4v|max:20480', // max 20MB
         ]);
 
         $user = Auth::user();

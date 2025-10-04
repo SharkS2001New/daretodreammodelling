@@ -18,10 +18,6 @@ class TikTokController extends Controller
         
         // Validate configuration
         if (!$clientId || !$redirectUri) {
-            Log::error('TikTok configuration missing', [
-                'client_id' => $clientId ? 'set' : 'missing',
-                'redirect_uri' => $redirectUri ? 'set' : 'missing'
-            ]);
             return redirect()->route('account.linked')
                 ->with('error', 'TikTok configuration error. Please contact administrator.');
         }
@@ -42,12 +38,6 @@ class TikTokController extends Controller
                    "&response_type=code" .
                    "&redirect_uri=" . urlencode($redirectUri) .
                    "&state=" . urlencode($state);
-
-        Log::info('TikTok authorization URL generated', [
-            'client_id_set' => !empty($clientId),
-            'redirect_uri' => $redirectUri,
-            'scopes' => $scope
-        ]);
         
         return redirect($authUrl);
     }
@@ -60,11 +50,6 @@ class TikTokController extends Controller
 
         // Handle authorization errors
         if ($error) {
-            Log::error('TikTok authorization denied', [
-                'error' => $error,
-                'error_description' => $errorDescription
-            ]);
-            
             $errorMessage = match($error) {
                 'access_denied' => 'You denied access to your TikTok account. Please grant all requested permissions.',
                 'invalid_scope' => 'Invalid scope requested. Please try again.',
@@ -77,7 +62,6 @@ class TikTokController extends Controller
         }
 
         if (!$code) {
-            Log::error('No authorization code received in TikTok callback');
             return redirect()->route('account.linked')
                 ->with('error', 'Failed to connect TikTok account. No authorization code received.');
         }
@@ -85,7 +69,6 @@ class TikTokController extends Controller
         // Validate state parameter for CSRF protection
         $state = $request->input('state');
         if (!$state || !hash_equals(csrf_token(), $state)) {
-            Log::error('TikTok state parameter validation failed');
             return redirect()->route('account.linked')
                 ->with('error', 'Security validation failed. Please try again.');
         }
@@ -103,11 +86,6 @@ class TikTokController extends Controller
             $data = $response->json();
 
             if (!isset($data['access_token'])) {
-                Log::error('TikTok token exchange failed', [
-                    'response' => $data,
-                    'status' => $response->status()
-                ]);
-                
                 $errorMsg = $data['error_description'] ?? 
                            $data['error_message'] ?? 
                            $data['error'] ?? 
@@ -124,12 +102,6 @@ class TikTokController extends Controller
             $scope = $data['scope'] ?? '';
 
             $user = Auth::user();
-
-            Log::info('TikTok token exchange successful', [
-                'user_id' => $user->id,
-                'open_id' => $openId,
-                'scopes_granted' => $scope
-            ]);
 
             // Fetch TikTok profile info
             $profileResponse = Http::withToken($accessToken)
@@ -171,12 +143,6 @@ class TikTokController extends Controller
                 ]
             );
 
-            Log::info('TikTok account connected successfully', [
-                'user_id' => $user->id,
-                'display_name' => $displayName,
-                'has_video_scope' => $hasVideoScope
-            ]);
-
             if (!$hasVideoScope) {
                 return redirect()->route('account.linked')
                     ->with('warning', 'TikTok account connected! However, video access was not granted. You may not be able to display TikTok videos.');
@@ -186,11 +152,6 @@ class TikTokController extends Controller
                 ->with('success', 'TikTok account connected successfully! You can now display your TikTok videos.');
 
         } catch (\Exception $e) {
-            Log::error('TikTok callback exception', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
             return redirect()->route('account.linked')
                 ->with('error', 'An unexpected error occurred: ' . $e->getMessage());
         }
@@ -208,8 +169,6 @@ class TikTokController extends Controller
             'tiktok_open_id' => null,
             'tiktok_token_expires_at' => null,
         ]);
-
-        Log::info('TikTok account disconnected', ['user_id' => $user->id]);
 
         return redirect()->route('account.linked')
             ->with('success', 'TikTok account disconnected successfully.');
@@ -314,7 +273,6 @@ class TikTokController extends Controller
     {
         try {
             if (!$linkedAccount->tiktok_refresh_token) {
-                Log::error('No refresh token available for TikTok account');
                 return false;
             }
 
@@ -355,8 +313,6 @@ class TikTokController extends Controller
             'tiktok_access_token' => null,
             'tiktok_refresh_token' => null,
         ]);
-
-        Log::info('TikTok account prepared for reconnection', ['user_id' => $user->id]);
 
         return redirect()->route('tiktok.connect')
             ->with('info', 'Please reconnect your TikTok account and grant all requested permissions.');

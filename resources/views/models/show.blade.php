@@ -5,7 +5,7 @@
     <div class="profile-header text-left mb-4">
         <div class="row align-items-center mb-4">
             <!-- Left: Profile Info -->
-            <div class="col d-flex align-items-center">
+            <div class="col d-flex align-items-center mb-3">
                 <!-- Profile Picture -->
                 <div class="me-3">
                     <img src="{{ asset('storage/' . ($user->publicInfo->profile_picture ?? 'default.jpg')) }}"
@@ -35,25 +35,18 @@
             </div>
         </div>
 
-        <br/>
-        <div class="stats d-flex justify-content-center gap-4 my-3 text-muted small">
+        <div class="stats d-flex justify-content-center flex-wrap gap-4 my-3 text-muted small">
+            <div>Photo loves: <strong>{{ $stats['photo_likes'] }}</strong></div>
+            <div>Photo Views: <strong>{{ $stats['photo_views'] }}</strong></div>
+            <div>Video loves: <strong>{{ $stats['video_likes'] }}</strong></div>
+            <div>Video Views: <strong>{{ $stats['video_views'] }}</strong></div>
+            <div>Followers: <strong>{{ $stats['followers'] }}</strong></div>
+
+            <!-- Force break only on mobile -->
+            <div class="w-100 d-block d-md-none"></div>
+
             <div>
-                Photo loves: <strong>{{ $stats['photo_likes'] }}</strong>
-            </div>
-            <div>
-               Photo Views: <strong>{{ $stats['photo_views'] }}</strong>
-            </div>
-            <div>
-                Video loves: <strong>{{ $stats['video_likes'] }}</strong>
-            </div>
-            <div>
-                Video Views: <strong>{{ $stats['video_views'] }}</strong>
-            </div>
-            <div>
-                Followers: <strong>{{ $stats['followers'] }}</strong>
-            </div>
-            <div>
-                Last login: 
+                Last login:
                 <strong>
                     {{ $user->last_login ? ($user->last_login->copy()->addHours(3)->isToday() 
                         ? 'Today ' . $user->last_login->copy()->addHours(3)->format('h:i A') 
@@ -216,7 +209,7 @@
                             <!-- Upload Info -->
                             <div class="upload-info mb-2">
                                 <p class="text-muted small mb-2">
-                                    Max file size: 50MB. Supported: MP4, M4V
+                                    Max file size: 20MB. Supported: MP4, M4V
                                 </p>
                                 <div id="videoUploadProgress" class="progress mb-2 d-none">
                                     <div class="progress-bar" role="progressbar" style="width: 0%"></div>
@@ -272,35 +265,33 @@
                     <div class="text-center py-2">
                         <div class="alert alert-success">
                             <h5><i class="bi bi-tiktok"></i> TikTok Connected</h5>
-                            <p class="mb-2">Your TikTok account is connected.</p>                           
+                            <p class="mb-0">Click any video to play it in a popup</p>
+
+                            <!-- Disconnect Button -->
+                            <form action="{{ route('tiktok.disconnect') }}" method="POST" class="mt-3">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-x-circle"></i> Disconnect TikTok Account
+                                </button>
+                            </form>
                         </div>
                     </div>
                     
                     <!-- TikTok Videos Container -->
-                    <div class="row" id="tiktok-videos-container"></div>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", loadTikTokVideos);
-                    </script>
-
-                    <!-- Modal -->
-<div class="modal fade" id="tiktokVideoModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-dark">
-      <div class="modal-header border-0">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-0">
-        <div id="tiktok-video-player" class="w-100"></div>
-      </div>
-    </div>
-  </div>
-</div>
+                    <div class="row" id="tiktok-videos-container">
+                        <div class="col-12 text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading TikTok videos...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading your TikTok videos...</p>
+                        </div>
+                    </div>
                 @else
-                    <div class="text-center py-5">
+                    <div class="text-center py-2">
                         <div class="alert alert-info">
                             <h5><i class="bi bi-tiktok"></i> TikTok Not Connected</h5>
                             <p class="mb-3">Connect your TikTok account to display your videos here.</p>
-                            <a href="{{ route('tiktok.connect') }}" class="btn btn-primary">
+                            <a href="{{ route('tiktok.connect') }}" class="btn btn-primary btn-sm">
                                 <i class="bi bi-plus-circle"></i> Connect TikTok Account
                             </a>
                         </div>
@@ -310,8 +301,9 @@
         </div>
 
         <!-- About -->
-        <div class="tab-pane fade container d-flex justify-content-center" id="about" role="tabpanel">
-            <div class="col-md-8"> <!-- Centered block with max width -->
+       <div class="tab-pane fade" id="about" role="tabpanel">
+            <div class="container py-4 d-flex justify-content-center">
+                <div class="col-md-8">
 
                 <!-- Profile info in 2-column grid -->
                 <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
@@ -369,6 +361,7 @@
                     </p>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 </div>
@@ -402,6 +395,20 @@
 
     </div>
   </div>
+</div>
+
+<!-- TikTok Video Popup Modal -->
+<div class="modal fade" id="tiktokVideoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
+        <div class="modal-content bg-dark border-0">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 text-center">
+                <div id="tiktok-video-player" class="w-100"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
 /** Auto-select tab from URL param */
@@ -643,7 +650,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-
 // TikTok Tab Loading
 document.addEventListener('DOMContentLoaded', function() {
     const tiktokTab = document.getElementById('tiktok-tab');
@@ -656,29 +662,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const activeTab = urlParams.get('tab');
     if (activeTab === 'tiktok') {
-        // Small delay to ensure tab is visible
         setTimeout(loadTikTokVideos, 500);
     }
 });
 
+function loadTikTokVideos() {
+    const container = document.getElementById('tiktok-videos-container');
+
+    fetch('{{ route("tiktok.videos") }}')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load TikTok videos');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.data && data.data.videos && data.data.videos.length > 0) {
+                renderTikTokVideos(data.data.videos);
+            } else {
+                showNoVideosMessage(container);
+            }
+        })
+        .catch(err => {
+            console.error('TikTok error:', err);
+            showNoVideosMessage(container);
+        });
+}
+
 function renderTikTokVideos(videos) {
     const container = document.getElementById('tiktok-videos-container');
-    container.innerHTML = "";
-
-    if (!videos.length) {
-        container.innerHTML = `<p>No TikTok videos found.</p>`;
-        return;
-    }
+    container.innerHTML = '';
 
     videos.forEach(video => {
         const col = document.createElement("div");
-        col.className = "col-md-3 mb-3";
+        col.className = "col-md-4 col-lg-3 mb-4";
+        
+        const coverImage = video.cover_image_url || 'https://via.placeholder.com/300x400/000000/FFFFFF?text=No+Preview';
+        const title = video.title || 'TikTok Video';
+        const shareUrl = video.share_url || '#';
 
         col.innerHTML = `
-            <div class="card shadow-sm cursor-pointer" onclick="openTikTokVideo('${video.share_url}')">
-                <img src="${video.cover_image_url}" class="card-img-top" alt="TikTok video thumbnail">
-                <div class="card-body p-2">
-                    <small class="text-muted">${video.title || 'TikTok Video'}</small>
+            <div class="card video-card shadow-sm border-0 h-100">
+                <div class="position-relative">
+                    <img src="${coverImage}" 
+                         class="card-img-top" 
+                         alt="${title}"
+                         style="height: 250px; object-fit: cover; cursor: pointer;"
+                         onclick="playTikTokVideo('${shareUrl}', '${title.replace(/'/g, "\\'")}')">
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="badge bg-dark bg-opacity-75">
+                            <i class="bi bi-play-fill"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title text-truncate" title="${title}">${title}</h6>
+                    <button class="btn btn-primary btn-sm w-100" 
+                            onclick="playTikTokVideo('${shareUrl}', '${title.replace(/'/g, "\\'")}')">
+                        <i class="bi bi-play-circle"></i> Play Video
+                    </button>
                 </div>
             </div>
         `;
@@ -687,56 +729,78 @@ function renderTikTokVideos(videos) {
     });
 }
 
-function openTikTokVideo(url) {
-    const modalBody = document.getElementById("tiktok-video-player");
-    modalBody.innerHTML = `
-        <blockquote class="tiktok-embed" cite="${url}" data-video-id="" style="max-width: 605px;min-width: 325px;">
+function showNoVideosMessage(container) {
+    container.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="alert alert-info">
+                <h5>No TikTok Videos Found</h5>
+                <p>No videos were found in your TikTok account.</p>
+            </div>
+        </div>
+    `;
+}
+
+function playTikTokVideo(videoUrl, title = 'TikTok Video') {
+    if (!videoUrl || videoUrl === '#') {
+        alert('Video URL not available');
+        return;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('tiktokVideoModal'));
+    const player = document.getElementById('tiktok-video-player');
+
+    // Clear previous content
+    player.innerHTML = '';
+
+    // Create TikTok embed with proper styling for mobile
+    const embedHtml = `
+        <blockquote class="tiktok-embed" 
+                    cite="${videoUrl}" 
+                    data-video-id="${getVideoIdFromUrl(videoUrl)}" 
+                    style="max-width: 325px; min-width: 325px; margin: 0 auto;">
             <section></section>
         </blockquote>
     `;
 
+    player.innerHTML = embedHtml;
+
     // Load TikTok embed script
-    if (!document.getElementById("tiktok-embed-script")) {
-        const script = document.createElement("script");
-        script.id = "tiktok-embed-script";
-        script.src = "https://www.tiktok.com/embed.js";
-        document.body.appendChild(script);
-    } else {
-        window.tiktokEmbedLoad && window.tiktokEmbedLoad();
-    }
+    loadTikTokEmbedScript();
 
     // Show modal
-    const modal = new bootstrap.Modal(document.getElementById("tiktokVideoModal"));
     modal.show();
 }
 
-
-function loadTikTokVideos() {
-    const container = document.getElementById('tiktok-videos-container');
-
-    container.innerHTML = `
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading TikTok videos...</span>
-            </div>
-            <p class="mt-2 text-muted">Loading your TikTok videos...</p>
-        </div>
-    `;
-
-    fetch('{{ route("tiktok.videos") }}')
-        .then(response => response.json())
-        .then(data => {
-            renderTikTokVideos(data.data.videos || []);
-        })
-        .catch(err => {
-            console.error(err);
-            container.innerHTML = `
-                <div class="alert alert-danger text-center">
-                    <h5>Failed to load TikTok videos</h5>
-                    <p>${err.message}</p>
-                </div>
-            `;
-        });
+function getVideoIdFromUrl(url) {
+    // Extract video ID from TikTok URL
+    const match = url.match(/\/video\/(\d+)/);
+    return match ? match[1] : '';
 }
+
+function loadTikTokEmbedScript() {
+    // Remove existing script to force reload
+    const existingScript = document.querySelector('script[src="https://www.tiktok.com/embed.js"]');
+    if (existingScript) {
+        existingScript.remove();
+    }
+
+    // Create new script
+    const script = document.createElement('script');
+    script.src = 'https://www.tiktok.com/embed.js';
+    document.body.appendChild(script);
+}
+
+// Close modal when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('tiktokVideoModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                bsModal.hide();
+            }
+        });
+    }
+});
 </script>
 @endsection

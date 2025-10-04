@@ -40,15 +40,25 @@
                                     <p class="text-muted mb-0">Connect your TikTok account to display videos</p>
                                 </div>
                             </div>
-                            <div>
-                                @if($linkedAccount->tiktok_connected)
-                                    <span class="badge bg-success">Connected</span>
-                                @else
-                                    <a href="{{ route('tiktok.connect') }}" class="btn btn-outline-dark btn-sm">
-                                        Connect TikTok
-                                    </a>
-                                @endif
-                            </div>
+                           <div>
+                            @if($linkedAccount->tiktok_connected)
+                                <span class="badge bg-success me-2">Connected</span>
+
+                                <!-- Disconnect Button -->
+                                <form action="{{ route('tiktok.disconnect') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to disconnect your TikTok account?');">
+                                        Disconnect
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('tiktok.connect') }}" class="btn btn-outline-dark btn-sm">
+                                    Connect TikTok
+                                </a>
+                            @endif
+                        </div>
+
                         </div>
                         @if($linkedAccount->tiktok_connected)
                             <p class="text-success mb-0">
