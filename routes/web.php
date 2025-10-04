@@ -82,8 +82,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/tiktok/videos', [TikTokController::class, 'videos'])->name('tiktok.videos');
     Route::get('/account/tiktok/status', [TikTokController::class, 'status'])->name('tiktok.status');
 
-    Route::get('/model/{slug}', [ModelUploadsController::class, 'index'])->name('models.show');
-
     Route::post('/model/photos/upload', [ModelUploadsController::class, 'uploadPhoto'])->name('model.photos.upload');
     Route::delete('/model/photos/{id}', [ModelUploadsController::class, 'deletePhoto'])->name('model.photos.delete');
 
@@ -119,6 +117,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/seo-metas/{page}', [MetaController::class, 'destroy'])->name('seo-metas.destroy');
 });
 
+Route::get('/model/{slug}', [ModelUploadsController::class, 'index'])->name('models.show');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blogs.show'); // show single blog 
 
 //Clear Cache in laravel app

@@ -11,24 +11,24 @@ class HomepageController extends Controller
 {
     public function index()
     {
+        // Cache testimonials forever
         $testimonials = Cache::rememberForever("homepage_testimonials", function () {
             return Testimonial::latest()->paginate(10);
         });
 
         // Get max 8 latest photos, one per user
         $photoIds = Photo::selectRaw('MAX(id) as id')
-                    ->groupBy('user_id')
-                    ->pluck('id');
+            ->groupBy('user_id')
+            ->pluck('id');
 
         $photos = Photo::whereIn('id', $photoIds)
-                    ->with('user')
-                    ->latest()  
-                    ->take(8)   
-                    ->get();
+            ->with(['user.publicInfo']) // ✅ Include user and their public info
+            ->latest()
+            ->take(8)
+            ->get();
 
         return view('homepage', compact('testimonials', 'photos'));
     }
-
     
     /**
      * Show the about us page

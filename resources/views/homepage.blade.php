@@ -51,19 +51,27 @@
         <div class="row g-4">
             @foreach($photos as $model)
                 <div class="col-md-3 col-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="ratio ratio-1x1"> <!-- makes all squares -->
-                            <img src="{{ asset('storage/'.$model->file_path) }}" 
-                                class="card-img-top rounded object-fit-cover" 
-                                alt="{{ $model->user->name }}">
+                    <a href="{{ route('models.show', ['slug' => $model->user->slug, 'tab' => 'photos']) }}">
+                        <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden">
+                            <!-- Image -->
+                            <div class="ratio ratio-1x1">
+                                <img src="{{ asset('storage/' . $model->file_path) }}" 
+                                    class="card-img-top object-fit-cover rounded" 
+                                    alt="{{ $model->user->publicInfo->display_name ?? $model->user->name }}">
+                            </div>
+
+                            <!-- Overlay Info -->
+                            <div class="card-img-overlay d-flex flex-column justify-content-end p-3"
+                                style="background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));">
+                                <span class="text-white fw-bold m-0" style="font-size:1.25rem">
+                                    {{ $model->user->publicInfo->display_name ?? $model->user->name }}
+                                </span>
+                                <small class="text-white fw-bold">
+                                    {{ $model->user->publicInfo->location ?? 'Location not set' }}
+                                </small>
+                            </div>
                         </div>
-                        <div class="card-img-overlay d-flex flex-column justify-content-end p-3 bg-gradient">
-                            <h6 class="text-white fw-bold m-0">{{ $model->user->name }}</h6>
-                            <small class="text-white-50">
-                                {{ $model->user->city ?? '' }}, {{ $model->user->country ?? '' }}
-                            </small>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
         </div>

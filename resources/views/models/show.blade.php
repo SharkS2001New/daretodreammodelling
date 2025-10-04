@@ -1,6 +1,10 @@
 @extends('layouts.gallery')
 
 @section('content')
+@php
+    $isOwner = Auth::check() && Auth::id() === $user->id;
+@endphp
+
 <div class="container">
     <div class="profile-header text-left mb-4">
         <div class="row align-items-center mb-4">
@@ -27,24 +31,39 @@
                 </div>
             </div>
 
-            <!-- Right: Modelling Page Button -->
+            <!-- Right: Modelling Page Button (Only for owner) -->
+            @if($isOwner)
             <div class="col-auto text-end">
                 <a href="/dashboard" class="btn btn-outline-primary btn-sm">
                     View My Modelling Dashboard
                 </a>
             </div>
+            @endif
         </div>
 
         <div class="stats d-flex justify-content-center flex-wrap gap-4 my-3 text-muted small">
-            <div>Photo loves: <strong>{{ $stats['photo_likes'] }}</strong></div>
-            <div>Photo Views: <strong>{{ $stats['photo_views'] }}</strong></div>
-            <div>Video loves: <strong>{{ $stats['video_likes'] }}</strong></div>
-            <div>Video Views: <strong>{{ $stats['video_views'] }}</strong></div>
-            <div>Followers: <strong>{{ $stats['followers'] }}</strong></div>
+            <div>
+                @if($isOwner)Photo loves @else Likes @endif: 
+                <strong>{{ $stats['photo_likes'] }}</strong>
+            </div>
+            <div>
+                Photo Views: <strong>{{ $stats['photo_views'] }}</strong>
+            </div>
+            <div>
+                @if($isOwner)Video loves @else Likes @endif: 
+                <strong>{{ $stats['video_likes'] }}</strong>
+            </div>
+            <div>
+                Video Views: <strong>{{ $stats['video_views'] }}</strong>
+            </div>
+            <div>
+                Followers: <strong>{{ $stats['followers'] }}</strong>
+            </div>
 
             <!-- Force break only on mobile -->
             <div class="w-100 d-block d-md-none"></div>
 
+            @if($isOwner)
             <div>
                 Last login:
                 <strong>
@@ -54,6 +73,7 @@
                         : 'Never' }}
                 </strong>
             </div>
+            @endif
         </div>
 
         <!-- Linked Accounts -->
@@ -91,7 +111,7 @@
     </div>
 
     <!-- Tabs -->
-    <ul class="nav nav-tabs justify-content-center" id="profileTabs" role="tablist">
+    <ul class="nav nav-tabs justify-content-center flex-nowrap overflow-auto text-nowrap border-0" id="profileTabs" role="tablist" style="white-space: nowrap;">
         <li class="nav-item">
             <a class="nav-link active" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Photos</a>
         </li>
@@ -111,7 +131,8 @@
         <!-- Photos -->
         <div class="tab-pane fade show active" id="photos" role="tabpanel">
             <div class="row">
-                <!-- Upload Card (always first) -->
+                <!-- Upload Card (only for owner) -->
+                @if($isOwner)
                 <div class="col-md-4 col-lg-3 mb-3">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
@@ -149,14 +170,16 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Photos -->
                 @forelse($user->photos as $photo)
-                    <div class="col-md-4 col-lg-3 mb-3">
+                    <div class="col-md-4 col-lg-3 col-6 mb-3">
                         <div class="position-relative">
                             <img src="{{ asset('storage/' . $photo->file_path) }}" 
                                 class="img-fluid rounded shadow-sm">
-                            <!-- Delete button -->
+                            <!-- Delete button (only for owner) -->
+                            @if($isOwner)
                             <form action="{{ route('model.photos.delete', $photo->id) }}" method="POST" 
                                 class="position-absolute top-0 end-0 m-1">
                                 @csrf
@@ -166,11 +189,18 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </div>                    
                 @empty
                     <div class="col-12">
-                        <p class="text-muted text-center">No photos uploaded yet.</p>
+                        <p class="text-muted text-center">
+                            @if($isOwner)
+                               <b>No photos uploaded yet. Upload your first photo to get started!</b>
+                            @else
+                                <b>No photos available yet.</b>
+                            @endif
+                        </p>
                     </div>
                 @endforelse
             </div>
@@ -179,7 +209,8 @@
         <!-- Videos -->
         <div class="tab-pane fade" id="videos" role="tabpanel">
             <div class="row">
-                <!-- Upload Card -->
+                <!-- Upload Card (only for owner) -->
+                @if($isOwner)
                 <div class="col-md-6 col-lg-4 mb-3">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
@@ -205,7 +236,6 @@
                                     accept="video/mp4,video/x-m4v,video/*" class="d-none">
                             </div>
 
-
                             <!-- Upload Info -->
                             <div class="upload-info mb-2">
                                 <p class="text-muted small mb-2">
@@ -223,6 +253,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Display Uploaded Videos -->
                 @forelse($user->videos as $video)
@@ -238,7 +269,8 @@
                                     frameborder="0" allowfullscreen></iframe>
                             @endif
 
-                            <!-- Delete Button -->
+                            <!-- Delete Button (only for owner) -->
+                            @if($isOwner)
                             <form action="{{ route('model.videos.delete', $video->id) }}" method="POST" 
                                 class="position-absolute top-0 end-0 m-1">
                                 @csrf
@@ -248,11 +280,20 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </div>
                 @empty
-                    <div class="col-12">
-                        <p class="text-muted text-center">No videos uploaded yet.</p>
+                    <div class="col-md-6">
+                        <p class="text-muted text-center">
+                            @if($isOwner)
+                                <br/><br/>
+                                No videos uploaded yet. Upload your first video or add a YouTube link!
+                            @else
+                                <br/><br/>
+                                No videos available yet.
+                            @endif
+                        </p>
                     </div>
                 @endforelse
             </div>
@@ -264,16 +305,25 @@
                 @if($user->linkedAccount && $user->linkedAccount->tiktok_connected)
                     <div class="text-center py-2">
                         <div class="alert alert-success">
-                            <h5><i class="bi bi-tiktok"></i> TikTok Connected</h5>
+                            <h5><i class="bi bi-tiktok"></i> 
+                                @if($isOwner)
+                                    Your TikTok Account
+                                @else
+                                    TikTok
+                                @endif
+                                Connected
+                            </h5>
                             <p class="mb-0">Click any video to play it in a popup</p>
 
-                            <!-- Disconnect Button -->
+                            <!-- Disconnect Button (only for owner) -->
+                            @if($isOwner)
                             <form action="{{ route('tiktok.disconnect') }}" method="POST" class="mt-3">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm">
                                     <i class="bi bi-x-circle"></i> Disconnect TikTok Account
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </div>
                     
@@ -283,17 +333,31 @@
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading TikTok videos...</span>
                             </div>
-                            <p class="mt-2 text-muted">Loading your TikTok videos...</p>
+                            <p class="mt-2 text-muted">Loading TikTok videos...</p>
                         </div>
                     </div>
                 @else
                     <div class="text-center py-2">
                         <div class="alert alert-info">
-                            <h5><i class="bi bi-tiktok"></i> TikTok Not Connected</h5>
-                            <p class="mb-3">Connect your TikTok account to display your videos here.</p>
+                            <h5><i class="bi bi-tiktok"></i> 
+                                @if($isOwner)
+                                    Connect Your TikTok
+                                @else
+                                    TikTok
+                                @endif
+                            </h5>
+                            <p class="mb-3">
+                                @if($isOwner)
+                                    Connect your TikTok account to display your videos here.
+                                @else
+                                    TikTok account not connected.
+                                @endif
+                            </p>
+                            @if($isOwner)
                             <a href="{{ route('tiktok.connect') }}" class="btn btn-primary btn-sm">
                                 <i class="bi bi-plus-circle"></i> Connect TikTok Account
                             </a>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -301,103 +365,110 @@
         </div>
 
         <!-- About -->
-       <div class="tab-pane fade" id="about" role="tabpanel">
+        <div class="tab-pane fade" id="about" role="tabpanel">
             <div class="container py-4 d-flex justify-content-center">
                 <div class="col-md-8">
+                    <!-- Profile info in 2-column grid -->
+                    <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
+                        <div class="col">
+                            <p><span class="text-muted">Age:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->age ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Gender:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->gender ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Ethnicity:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->ethnicity ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Height:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->height ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Hair:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hair ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Eye:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->eye ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Shoes:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->shoes ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Waist:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->waist ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Hips:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hips ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Location:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->location ?? '-' }}</strong></p>
+                        </div>
+                        <div class="col">
+                            <p><span class="text-muted">Nationality:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->nationality ?? '-' }}</strong></p>
+                        </div>
+                    </div>
 
-                <!-- Profile info in 2-column grid -->
-                <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
-                    <div class="col">
-                        <p><span class="text-muted">Age:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->age ?? '-' }}</strong></p>
+                    <br/>
+                    <!-- Languages -->
+                    <div class="mb-3">
+                        <p class="text-muted mb-1">Languages:</p>
+                        <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p>
                     </div>
-                    <div class="col">
-                        <p><span class="text-muted">Gender:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->gender ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Ethnicity:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->ethnicity ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Height:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->height ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Hair:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hair ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Eye:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->eye ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Shoes:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->shoes ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Waist:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->waist ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Hips:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hips ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Location:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->location ?? '-' }}</strong></p>
-                    </div>
-                    <div class="col">
-                        <p><span class="text-muted">Nationality:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->nationality ?? '-' }}</strong></p>
+
+                    <!-- About me -->
+                    <div class="mb-3">
+                        <p class="text-muted mb-1">
+                            @if($isOwner)
+                                About me:
+                            @else
+                                About {{ $user->publicInfo?->display_name ?? $user->name }}:
+                            @endif
+                        </p>
+                        <p>
+                            @if(!empty($user->publicInfo->about_me))
+                                {{ $user->publicInfo->about_me }}
+                            @else
+                                @if($isOwner)
+                                    You have not added an About text yet
+                                @else
+                                    No about information available.
+                                @endif
+                            @endif
+                        </p>
                     </div>
                 </div>
-
-                <br/>
-                <!-- Languages -->
-                <div class="mb-3">
-                    <p class="text-muted mb-1">Languages:</p>
-                    <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p>
-                </div>
-
-                <!-- About me -->
-                <div class="mb-3">
-                    <p class="text-muted mb-1">About me:</p>
-                    <p>
-                        @if(!empty($user->publicInfo->about_me))
-                            {{ $user->publicInfo->about_me }}
-                        @else
-                            You have not added an About text yet
-                        @endif
-                    </p>
-                </div>
-            </div>
             </div>
         </div>
     </div>
 </div>
 
-<!--Modal popup-->
+<!-- Modal popups (only show YouTube modal for owners) -->
+@if($isOwner)
 <!-- YouTube/Vimeo URL Modal -->
 <div class="modal fade" id="youtubeModal" tabindex="-1" aria-labelledby="youtubeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      
-      <div class="modal-header">
-        <h5 class="modal-title" id="youtubeModalLabel">Add YouTube Link</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form action="{{ route('model.videos.storeLink') }}" method="POST">
-        @csrf
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="youtube_url" class="form-label">Video URL</label>
-            <input type="url" name="youtube_url" id="youtube_url" class="form-control" 
-                   placeholder="https://youtube.com/watch?v=..." required>
-          </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="youtubeModalLabel">Add YouTube Link</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('model.videos.storeLink') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="youtube_url" class="form-label">Video URL</label>
+                        <input type="url" name="youtube_url" id="youtube_url" class="form-control" 
+                               placeholder="https://youtube.com/watch?v=..." required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Link</button>
+                </div>
+            </form>
         </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Link</button>
-        </div>
-      </form>
-
     </div>
-  </div>
 </div>
+@endif
 
-<!-- TikTok Video Popup Modal -->
+<!-- TikTok Video Popup Modal (available for all viewers) -->
 <div class="modal fade" id="tiktokVideoModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
         <div class="modal-content bg-dark border-0">
