@@ -1,5 +1,14 @@
 @extends('layouts.gallery')
+<style>
+    #profileTabs .nav-item {
+        margin: 0 4px; /* reduce space between tabs */
+    }
 
+    #profileTabs .nav-link {
+        padding: 6px 10px; /* tighter padding inside each tab */
+        font-size: 14px;   /* optional: make text smaller */
+    }
+</style>
 @section('content')
 @php
     $isOwner = Auth::check() && Auth::id() === $user->id;
