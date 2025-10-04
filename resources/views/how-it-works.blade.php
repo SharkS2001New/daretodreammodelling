@@ -4,15 +4,16 @@
 @section('title', 'How it Works - Dare to Dream Modelling Agency')
 
 @section('content')
-<div class="container py-5">
+<div class="container">
     {{-- Hero Section --}}
     <div class="row align-items-center mb-5">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
             <h1 class="fw-bold text-success">Join the world's best modelling community</h1>
             <p class="lead">
                 Create your free profile — add photos, videos and measurements. 
                 Get moderated, learn with our Model Academy and apply to castings.
             </p>
+            
             <a href="{{ route('register') }}" class="btn btn-sm btn-outline-success fw-bold">
                 Create your free profile
             </a>

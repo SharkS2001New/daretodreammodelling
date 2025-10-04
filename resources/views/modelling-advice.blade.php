@@ -4,7 +4,7 @@
 @section('meta_description', 'Modeling advice and tips for new and experienced models. Learn how to start, build your portfolio, work with agencies, and grow your career in modeling.')
 
 @section('content')
-<section class="py-2 mb-2 bg-white">
+<section class="bg-white mb-2">
   <div class="container">
     <div class="row align-items-center">
       
@@ -19,7 +19,7 @@
           check out our modeling advice articles designed to help save time and grow your career.
         </p>
 
-        <img src="{{ asset('become-model-haunter.jpg') }}" width="60%"  alt="Modeling Class" class="img-fluid rounded shadow-sm">
+        <img src="{{ asset('become-model-haunter.jpg') }}" width="60%"  alt="Modeling Class" class="img-fluid rounded shadow-sm d-none d-md-block">
       </div>
 
       <!-- Right Column: Call-to-Action Banner -->

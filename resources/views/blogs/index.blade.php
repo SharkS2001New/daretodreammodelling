@@ -37,7 +37,7 @@
     <div class="row">
       
       <!-- Left Column: Blog Posts -->
-      <div class="col-lg-8">
+      <div class="col-lg-8 order-2 order-lg-2">
         <div class="row mb-2">
           <div class="col-md-3 col-12">
             <h3 class="fw-bold mb-4">LATEST POSTS</h3>
@@ -56,83 +56,91 @@
         </div>
 
         @foreach($blogs as $blog)
-          <div class="d-flex mb-4 pb-4">
-            
-            <!-- Blog Image -->
-            <div class="flex-shrink-0 me-3" style="width: 200px;">
-              <a href="{{ route('blogs.show', $blog->slug) }}">
-                <img src="{{ asset($blog->image) }}" 
-                     class="img-fluid rounded" 
-                     alt="{{ $blog->title }}">
-              </a>
-            </div>
-
-            <!-- Blog Content -->
-            <div class="flex-grow-1">
-              <div class="text-uppercase text-danger small fw-bold mb-1">
-                {{ strtoupper($blog->category->blogs_category_title ?? '') }}
+          <div class="row mb-4 pb-4 border-bottom">
+              
+              <!-- Blog Image -->
+              <div class="col-md-4 mb-3 mb-md-0">
+                  <a href="{{ route('blogs.show', $blog->slug) }}">
+                      <img src="{{ asset($blog->image) }}" 
+                          class="img-fluid rounded w-100" 
+                          alt="{{ $blog->title }}">
+                  </a>
               </div>
-              <h5 class="fw-bold">
-                <a href="{{ route('blogs.show', $blog->slug) }}" class="text-dark text-decoration-none">
-                  {{ $blog->title }}
-                </a>
-              </h5>
-              <small class="text-muted d-block mb-2">
-                {{ $blog->published_at ? $blog->published_at->format('F d, Y') : '' }}
-              </small>
-              <p class="mb-2">
-                {{ Str::limit($blog->excerpt, 120) }}
-              </p>
-              <div class="row">
-                <div class="col-md-3">
-                  @if(!empty($blog->model))
-                    <p class="mb-2 text-muted fw-bold">
-                      Model: <span class="text-danger">{{ $blog->model }}</span>
-                    </p>
-                  @endif
-                </div>
 
-                <div class="col-md-4">
-                  @if(!empty($blog->photographer))
-                    <p class="mb-2 text-muted fw-bold">
-                      Photographer: <span class="text-danger">{{ $blog->photographer }}</span>
-                    </p>
-                  @endif
-                </div>
-
-                <div class="col-md-5">
-                  @if(!empty($blog->magazine))
-                    <p class="mb-2 text-muted fw-bold">
-                      Magazine: <span class="text-danger">{{ $blog->magazine }}</span>
-                    </p>
-                  @endif
-                </div>
-              </div>
-              <a href="{{ route('blogs.show', $blog->slug) }}" class="fw-bold text-danger">
-                Read More
-              </a>
-              @auth
-                @if(auth()->user())
-                  <div class="mt-1 d-flex justify-content-end gap-2">
-                      <a href="{{ route('blogs.edit', $blog->id) }}"
-                          class="btn btn-sm btn-outline-primary">
-                          Edit
-                      </a>
-                      <form action="{{ route('blogs.destroy', $blog->id) }}"
-                            method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this blog item?');">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-sm btn-outline-danger">
-                              Delete
-                          </button>
-                      </form>
+              <!-- Blog Content -->
+              <div class="col-md-8">
+                  <div class="text-uppercase text-danger small fw-bold mb-1">
+                      {{ strtoupper($blog->category->blogs_category_title ?? '') }}
                   </div>
-                @endif
-              @endauth
-            </div>
+
+                  <h5 class="fw-bold mb-1">
+                      <a href="{{ route('blogs.show', $blog->slug) }}" class="text-dark text-decoration-none">
+                          {{ $blog->title }}
+                      </a>
+                  </h5>
+
+                  <small class="text-muted d-block mb-2">
+                      {{ $blog->published_at ? $blog->published_at->format('F d, Y') : '' }}
+                  </small>
+
+                  <p class="mb-3">
+                      {{ Str::limit($blog->excerpt, 120) }}
+                  </p>
+
+                  <div class="row mb-2">
+                      <div class="col-md-4 col-6">
+                          @if(!empty($blog->model))
+                              <p class="mb-1 text-muted fw-bold">
+                                  Model: <span class="text-danger">{{ $blog->model }}</span>
+                              </p>
+                          @endif
+                      </div>
+
+                      <div class="col-md-4 col-6">
+                          @if(!empty($blog->photographer))
+                              <p class="mb-1 text-muted fw-bold">
+                                  Photographer: <span class="text-danger">{{ $blog->photographer }}</span>
+                              </p>
+                          @endif
+                      </div>
+
+                      <div class="col-md-4 col-12">
+                          @if(!empty($blog->magazine))
+                              <p class="mb-1 text-muted fw-bold">
+                                  Magazine: <span class="text-danger">{{ $blog->magazine }}</span>
+                              </p>
+                          @endif
+                      </div>
+                  </div>
+
+                  <div class="d-flex justify-content-between align-items-center">
+                      <a href="{{ route('blogs.show', $blog->slug) }}" class="fw-bold text-danger">
+                          Read More
+                      </a>
+
+                      @auth
+                          @if(auth()->user())
+                              <div class="d-flex gap-2">
+                                  <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-sm btn-outline-primary">
+                                      Edit
+                                  </a>
+                                  <form action="{{ route('blogs.destroy', $blog->id) }}" 
+                                        method="POST" 
+                                        onsubmit="return confirm('Are you sure you want to delete this blog item?');">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn btn-sm btn-outline-danger">
+                                          Delete
+                                      </button>
+                                  </form>
+                              </div>
+                          @endif
+                      @endauth
+                  </div>
+              </div>
           </div>
         @endforeach
+
 
         <!-- Pagination -->
         <div class="mt-4">
@@ -141,7 +149,7 @@
       </div>
 
       <!-- Right Column: Sidebar -->
-      <div class="col-lg-4">
+      <div class="col-lg-4 order-1 order-lg-2">
 
         <!-- Categories Filter -->
         <div class="mb-4 p-3 border">

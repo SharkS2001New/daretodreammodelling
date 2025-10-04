@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<section id="privacy-policy" class="section py-5">
+<section id="privacy-policy" class="section">
   <div class="container" data-aos="fade-up">
     <h2 class="fw-bold mb-4">Privacy Policy</h2>
     <p class="text-muted mb-5">

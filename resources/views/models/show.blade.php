@@ -63,7 +63,7 @@
             <!-- Force break only on mobile -->
             <div class="w-100 d-block d-md-none"></div>
 
-            @if($isOwner)
+            {{-- @if($isOwner) --}}
             <div>
                 Last login:
                 <strong>
@@ -73,7 +73,7 @@
                         : 'Never' }}
                 </strong>
             </div>
-            @endif
+            {{-- @endif --}}
         </div>
 
         <!-- Linked Accounts -->
@@ -284,14 +284,14 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <p class="text-muted text-center">
                             @if($isOwner)
-                                <br/><br/>
-                                No videos uploaded yet. Upload your first video or add a YouTube link!
+                                <br/>
+                                <b>No videos uploaded yet. Upload your first video or add a YouTube link!</b>
                             @else
-                                <br/><br/>
-                                No videos available yet.
+                                <br/>
+                                <b>No videos available yet.</b>
                             @endif
                         </p>
                     </div>
@@ -368,71 +368,63 @@
         <div class="tab-pane fade" id="about" role="tabpanel">
             <div class="container py-4 d-flex justify-content-center">
                 <div class="col-md-8">
-                    <!-- Profile info in 2-column grid -->
-                    <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
-                        <div class="col">
-                            <p><span class="text-muted">Age:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->age ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Gender:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->gender ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Ethnicity:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->ethnicity ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Height:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->height ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Hair:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hair ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Eye:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->eye ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Shoes:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->shoes ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Waist:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->waist ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Hips:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->hips ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Location:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->location ?? '-' }}</strong></p>
-                        </div>
-                        <div class="col">
-                            <p><span class="text-muted">Nationality:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $user->publicInfo->nationality ?? '-' }}</strong></p>
-                        </div>
-                    </div>
+                <!-- Profile info in 2-column grid -->
+                <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
+                    @php
+                    $fields = [
+                        'Age' => $user->publicInfo->age ?? '-',
+                        'Gender' => $user->publicInfo->gender ?? '-',
+                        'Ethnicity' => $user->publicInfo->ethnicity ?? '-',
+                        'Height' => $user->publicInfo->height ?? '-',
+                        'Hair' => $user->publicInfo->hair ?? '-',
+                        'Eye' => $user->publicInfo->eye ?? '-',
+                        'Shoes' => $user->publicInfo->shoes ?? '-',
+                        'Waist' => $user->publicInfo->waist ?? '-',
+                        'Hips' => $user->publicInfo->hips ?? '-',
+                        'Location' => $user->publicInfo->location ?? '-',
+                        'Nationality' => $user->publicInfo->nationality ?? '-',
+                    ];
+                    @endphp
 
-                    <br/>
-                    <!-- Languages -->
-                    <div class="mb-3">
-                        <p class="text-muted mb-1">Languages:</p>
-                        <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p>
+                    @foreach ($fields as $label => $value)
+                    <div class="col">
+                        <div class="d-flex justify-content-between pb-1">
+                        <span class="text-muted">{{ $label }}:</span>
+                        <strong>{{ $value }}</strong>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
 
-                    <!-- About me -->
-                    <div class="mb-3">
-                        <p class="text-muted mb-1">
-                            @if($isOwner)
-                                About me:
-                            @else
-                                About {{ $user->publicInfo?->display_name ?? $user->name }}:
-                            @endif
-                        </p>
-                        <p>
-                            @if(!empty($user->publicInfo->about_me))
-                                {{ $user->publicInfo->about_me }}
-                            @else
-                                @if($isOwner)
-                                    You have not added an About text yet
-                                @else
-                                    No about information available.
-                                @endif
-                            @endif
-                        </p>
-                    </div>
+                <br/>
+
+                <!-- Languages -->
+                <div class="mb-3"> 
+                    <p class="text-muted mb-1">Languages:</p>
+                    <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p> 
+                </div>
+
+                <!-- About me -->
+                <div class="mb-3">
+                    <p class="text-muted mb-1">
+                    @if($isOwner)
+                        About me:
+                    @else
+                        About {{ $user->publicInfo?->display_name ?? $user->name }}:
+                    @endif
+                    </p>
+                    <p>
+                    @if(!empty($user->publicInfo->about_me))
+                        {{ $user->publicInfo->about_me }}
+                    @else
+                        @if($isOwner)
+                        You have not added an About text yet
+                        @else
+                        No about information available.
+                        @endif
+                    @endif
+                    </p>
+                </div>
                 </div>
             </div>
         </div>

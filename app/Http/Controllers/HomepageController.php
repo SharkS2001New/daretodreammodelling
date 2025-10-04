@@ -22,7 +22,7 @@ class HomepageController extends Controller
             ->pluck('id');
 
         $photos = Photo::whereIn('id', $photoIds)
-            ->with(['user.publicInfo']) // ✅ Include user and their public info
+            ->with(['user.publicInfo']) 
             ->latest()
             ->take(8)
             ->get();
