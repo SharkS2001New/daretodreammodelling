@@ -269,27 +269,32 @@
         <div class="tab-pane fade" id="tiktok" role="tabpanel">
             <div class="container">
                 @if($user->linkedAccount && $user->linkedAccount->tiktok_connected)
-                    <div class="text-center py-4">
+                    <div class="text-center py-2">
                         <div class="alert alert-success">
                             <h5><i class="bi bi-tiktok"></i> TikTok Connected</h5>
-                            <p class="mb-2">Your TikTok account is connected. Click the tab to load videos.</p>
-                            @if($user->linkedAccount->tiktok_url)
-                                <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                    <i class="bi bi-box-arrow-up-right"></i> View TikTok Profile
-                                </a>
-                            @endif
+                            <p class="mb-2">Your TikTok account is connected.</p>                           
                         </div>
                     </div>
                     
                     <!-- TikTok Videos Container -->
-                    <div id="tiktok-videos-container">
-                        <div class="text-center py-5">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Waiting for tab click...</span>
-                            </div>
-                            <p class="mt-2 text-muted">Click the TikTok tab above to load videos</p>
-                        </div>
-                    </div>
+                    <div class="row" id="tiktok-videos-container"></div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", loadTikTokVideos);
+                    </script>
+
+                    <!-- Modal -->
+<div class="modal fade" id="tiktokVideoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="tiktok-video-player" class="w-100"></div>
+      </div>
+    </div>
+  </div>
+</div>
                 @else
                     <div class="text-center py-5">
                         <div class="alert alert-info">
@@ -656,10 +661,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function renderTikTokVideos(videos) {
+    const container = document.getElementById('tiktok-videos-container');
+    container.innerHTML = "";
+
+    if (!videos.length) {
+        container.innerHTML = `<p>No TikTok videos found.</p>`;
+        return;
+    }
+
+    videos.forEach(video => {
+        const col = document.createElement("div");
+        col.className = "col-md-3 mb-3";
+
+        col.innerHTML = `
+            <div class="card shadow-sm cursor-pointer" onclick="openTikTokVideo('${video.share_url}')">
+                <img src="${video.cover_image_url}" class="card-img-top" alt="TikTok video thumbnail">
+                <div class="card-body p-2">
+                    <small class="text-muted">${video.title || 'TikTok Video'}</small>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(col);
+    });
+}
+
+function openTikTokVideo(url) {
+    const modalBody = document.getElementById("tiktok-video-player");
+    modalBody.innerHTML = `
+        <blockquote class="tiktok-embed" cite="${url}" data-video-id="" style="max-width: 605px;min-width: 325px;">
+            <section></section>
+        </blockquote>
+    `;
+
+    // Load TikTok embed script
+    if (!document.getElementById("tiktok-embed-script")) {
+        const script = document.createElement("script");
+        script.id = "tiktok-embed-script";
+        script.src = "https://www.tiktok.com/embed.js";
+        document.body.appendChild(script);
+    } else {
+        window.tiktokEmbedLoad && window.tiktokEmbedLoad();
+    }
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById("tiktokVideoModal"));
+    modal.show();
+}
+
+
 function loadTikTokVideos() {
     const container = document.getElementById('tiktok-videos-container');
-    
-    // Show loading state
+
     container.innerHTML = `
         <div class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -670,154 +724,19 @@ function loadTikTokVideos() {
     `;
 
     fetch('{{ route("tiktok.videos") }}')
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    // Handle specific error types
-                    if (errorData.error === 'video_scope_missing') {
-                        throw new Error('VIDEO_SCOPE_MISSING: ' + errorData.message);
-                    } else if (errorData.error === 'token_refresh_failed') {
-                        throw new Error('TOKEN_REFRESH_FAILED: ' + errorData.message);
-                    } else {
-                        throw new Error(`API_ERROR_${response.status}: ${errorData.message || 'Unknown error'}`);
-                    }
-                });
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('TikTok API Response:', data);
-            
-            if (data.data && data.data.videos && data.data.videos.length > 0) {
-                renderTikTokVideos(data.data.videos);
-            } else if (data.error) {
-                if (data.error === 'video_scope_missing') {
-                    container.innerHTML = `
-                        <div class="alert alert-warning text-center">
-                            <h5>Video Access Not Granted</h5>
-                            <p>Your TikTok account is connected, but video access was not granted.</p>
-                            <p class="small text-muted mt-2">
-                                To display your TikTok videos, please reconnect and grant video permissions.
-                            </p>
-                            <div class="mt-3">
-                                <a href="{{ route('tiktok.reconnect') }}" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-arrow-repeat"></i> Reconnect TikTok
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <div class="alert alert-warning text-center">
-                            <h5>Unable to Load Videos</h5>
-                            <p>${data.message || data.error}</p>
-                            <p class="small text-muted mt-2">
-                                <a href="{{ route('tiktok.reconnect') }}" class="alert-link">Reconnect TikTok account</a>
-                            </p>
-                        </div>
-                    `;
-                }
-            } else {
-                container.innerHTML = `
-                    <div class="alert alert-info text-center">
-                        <h5>No TikTok Videos Found</h5>
-                        <p>No public videos found in your TikTok account.</p>
-                    </div>
-                `;
-            }
+            renderTikTokVideos(data.data.videos || []);
         })
-        .catch(error => {
-            console.error('Error loading TikTok videos:', error);
-            
-            let errorMessage = error.message;
-            let showReconnect = true;
-            
-            if (errorMessage.includes('VIDEO_SCOPE_MISSING')) {
-                errorMessage = 'TikTok video access was not granted. Please reconnect and grant video permissions.';
-            } else if (errorMessage.includes('TOKEN_REFRESH_FAILED')) {
-                errorMessage = 'TikTok session expired. Please reconnect your account.';
-            } else if (errorMessage.includes('403')) {
-                errorMessage = 'TikTok account not connected. Please connect your TikTok account.';
-                showReconnect = false;
-            }
-            
+        .catch(err => {
+            console.error(err);
             container.innerHTML = `
                 <div class="alert alert-danger text-center">
-                    <h5>Error Loading Videos</h5>
-                    <p>${errorMessage}</p>
-                    ${showReconnect ? `
-                        <p class="small text-muted mt-2">
-                            <a href="{{ route('tiktok.reconnect') }}" class="btn btn-warning btn-sm">
-                                <i class="bi bi-arrow-repeat"></i> Reconnect TikTok
-                            </a>
-                            or
-                            <a href="{{ route('tiktok.disconnect') }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to disconnect TikTok?')">
-                                <i class="bi bi-x-circle"></i> Disconnect
-                            </a>
-                        </p>
-                    ` : `
-                        <p class="small text-muted mt-2">
-                            <a href="{{ route('tiktok.connect') }}" class="btn btn-primary btn-sm">
-                                <i class="bi bi-tiktok"></i> Connect TikTok
-                            </a>
-                        </p>
-                    `}
+                    <h5>Failed to load TikTok videos</h5>
+                    <p>${err.message}</p>
                 </div>
             `;
         });
-}
-
-function renderTikTokVideos(videos) {
-    const container = document.getElementById('tiktok-videos-container');
-    
-    if (videos.length === 0) {
-        container.innerHTML = `
-            <div class="alert alert-info text-center">
-                <h5>No Videos Available</h5>
-                <p>No TikTok videos found in your account.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    let html = `
-        <div class="row">
-            <div class="col-12 mb-3">
-                <p class="text-muted">Found ${videos.length} TikTok videos</p>
-            </div>
-    `;
-    
-    videos.forEach(video => {
-        const coverImage = video.cover_image_url || 'https://via.placeholder.com/300x400/6c757d/ffffff?text=No+Preview';
-        const title = video.title || 'Untitled Video';
-        const shareUrl = video.share_url || '#';
-        
-        html += `
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img src="${coverImage}" 
-                        class="card-img-top" 
-                        alt="${title}"
-                        style="height: 300px; object-fit: cover;"
-                        onerror="this.src='https://via.placeholder.com/300x400/6c757d/ffffff?text=No+Preview'">
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title">${title}</h6>
-                        ${video.create_time ? `<small class="text-muted">Posted: ${new Date(video.create_time * 1000).toLocaleDateString()}</small>` : ''}
-                        <div class="mt-auto pt-2">
-                            <a href="${shareUrl}" 
-                            target="_blank" 
-                            class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-tiktok"></i> Watch on TikTok
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    container.innerHTML = html;
 }
 </script>
 @endsection

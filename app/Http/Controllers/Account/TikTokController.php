@@ -231,14 +231,14 @@ class TikTokController extends Controller
         $user = Auth::user();
         $linkedAccount = $user->linkedAccount;
 
-        // Ensure TikTok is connected in linked_accounts
+        // Ensure TikTok is connected
         if (!$linkedAccount || !$linkedAccount->tiktok_connected || !$linkedAccount->tiktok_access_token) {
             return response()->json([
                 'error' => 'TikTok account not connected.'
             ], 403);
         }
 
-        // Check if token needs refresh
+        // Check if token expired
         if ($linkedAccount->tiktok_token_expires_at && $linkedAccount->tiktok_token_expires_at->isPast()) {
             if (!$this->refreshTikTokToken($linkedAccount)) {
                 return response()->json([
@@ -248,49 +248,35 @@ class TikTokController extends Controller
         }
 
         try {
-            // Use the correct TikTok API endpoint for videos with proper parameters
-            $response = Http::withToken($linkedAccount->tiktok_access_token)
-                ->timeout(30)
-                ->withHeaders([
-                    'Content-Type' => 'application/json',
-                ])
-                ->post('https://open.tiktokapis.com/v2/video/list/', [
-                    'max_count' => 20,
-                    'fields' => [
-                        'id', 'title', 'cover_image_url', 'share_url', 'create_time', 
-                        'video_description', 'duration', 'height', 'width'
-                    ]
-                ]);
+            // Call TikTok /video/list endpoint
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $linkedAccount->tiktok_access_token,
+                'Content-Type'  => 'application/json',
+            ])->withQueryParameters([
+                'fields' => 'id,title,cover_image_url,share_url,create_time'
+            ])->post(
+                'https://open.tiktokapis.com/v2/video/list/',
+                [
+                    'max_count' => 20 // fetch up to 20 videos
+                ]
+            );
 
-            Log::info('TikTok videos API request', [
-                'status' => $response->status(),
-                'user_id' => $user->id
-            ]);
 
+            // Handle unauthorized
             if ($response->status() === 401) {
-                // Check if it's a scope error
-                $errorBody = $response->json();
-                if (isset($errorBody['error']['code']) && $errorBody['error']['code'] === 'scope_not_authorized') {
-                    Log::error('TikTok scope not authorized', [
-                        'user_id' => $user->id,
-                        'error' => $errorBody['error']
-                    ]);
-                    
-                    return response()->json([
-                        'error' => 'video_scope_missing',
-                        'message' => 'TikTok video access was not granted. Please reconnect your TikTok account and grant video permissions.'
-                    ], 401);
-                }
-                
-                // Try token refresh for other 401 errors
                 if ($this->refreshTikTokToken($linkedAccount)) {
-                    $response = Http::withToken($linkedAccount->tiktok_access_token)
-                        ->post('https://open.tiktokapis.com/v2/video/list/', [
-                            'max_count' => 20,
-                            'fields' => [
-                                'id', 'title', 'cover_image_url', 'share_url', 'create_time'
-                            ]
-                        ]);
+                    // Retry after refresh
+                    $response = Http::withHeaders([
+                        'Authorization' => 'Bearer ' . $linkedAccount->tiktok_access_token,
+                        'Content-Type'  => 'application/json',
+                    ])->withQueryParameters([
+                        'fields' => 'id,title,cover_image_url,share_url,create_time'
+                    ])->post(
+                        'https://open.tiktokapis.com/v2/video/list/',
+                        [
+                            'max_count' => 20
+                        ]
+                    );
                 } else {
                     return response()->json([
                         'error' => 'token_refresh_failed',
@@ -301,43 +287,25 @@ class TikTokController extends Controller
 
             if ($response->successful()) {
                 $data = $response->json();
-                
-                if (isset($data['data']['videos'])) {
-                    return response()->json([
-                        'data' => [
-                            'videos' => $data['data']['videos']
-                        ]
-                    ]);
-                }
-                
+
                 return response()->json([
                     'data' => [
-                        'videos' => []
+                        'videos' => $data['data']['videos'] ?? []
                     ]
                 ]);
-            } else {
-                Log::error('TikTok API error response', [
-                    'status' => $response->status(),
-                    'body' => $response->body()
-                ]);
-                
-                return response()->json([
-                    'error' => 'api_error',
-                    'message' => 'Failed to fetch TikTok videos from API.',
-                    'data' => ['videos' => []]
-                ], $response->status());
             }
-            
+
+            return response()->json([
+                'data' => [
+                    'videos' => []
+                ],
+                'error' => 'api_error'
+            ], $response->status());
+
         } catch (\Exception $e) {
-            Log::error('TikTok videos API exception', [
-                'error' => $e->getMessage(),
-                'user_id' => $user->id
-            ]);
-            
             return response()->json([
                 'error' => 'exception',
-                'message' => 'An error occurred while fetching TikTok videos.',
-                'data' => ['videos' => []]
+                'message' => 'An error occurred while fetching TikTok videos.'
             ], 500);
         }
     }
@@ -366,15 +334,12 @@ class TikTokController extends Controller
                     'tiktok_token_expires_at' => now()->addSeconds($tokenData['expires_in'] ?? 7200),
                 ]);
                 
-                Log::info('TikTok token refreshed successfully', ['user_id' => $linkedAccount->user_id]);
                 return true;
             }
             
-            Log::error('TikTok token refresh failed', ['response' => $response->body()]);
             return false;
             
         } catch (\Exception $e) {
-            Log::error('TikTok token refresh exception', ['error' => $e->getMessage()]);
             return false;
         }
     }
