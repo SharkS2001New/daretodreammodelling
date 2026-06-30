@@ -45,10 +45,15 @@ if [ "${RUN_SEEDERS_ON_START:-false}" = "true" ]; then
 fi
 
 if [ -d /var/www/html/storage-app-public-seed ]; then
-  if [ ! -d storage/app/public/uploads/models ] || [ -z "$(ls -A storage/app/public/uploads/models 2>/dev/null)" ]; then
-    echo "[bootstrap] Copying bundled public storage into mounted volume..."
-    cp -a /var/www/html/storage-app-public-seed/. storage/app/public/
-  fi
+  echo "[bootstrap] Syncing bundled public storage into mounted volume..."
+  find /var/www/html/storage-app-public-seed -type f | while read -r seed_file; do
+    rel="${seed_file#/var/www/html/storage-app-public-seed/}"
+    dest="storage/app/public/${rel}"
+    if [ ! -f "$dest" ]; then
+      mkdir -p "$(dirname "$dest")"
+      cp -a "$seed_file" "$dest"
+    fi
+  done
 fi
 
 if [ "${RUN_STORAGE_LINK_ON_START:-true}" != "false" ]; then

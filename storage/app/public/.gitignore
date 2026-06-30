@@ -13,3 +13,7 @@
 # Blog images
 !blogs/
 !blogs/**
+
+# Testimonial images
+!uploads/testimonials/
+!uploads/testimonials/**
