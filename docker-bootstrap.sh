@@ -1,6 +1,6 @@
 #!/bin/sh
 # Writable dirs, migrations, public storage link, and bundled upload sync.
-# Used by docker-entrypoint.sh on container start and by the Helm pre-upgrade Job.
+# Used by docker-entrypoint.sh on container start and by the Helm migrate Job.
 set -e
 
 mkdir -p storage/framework/cache/data
@@ -16,16 +16,32 @@ chmod -R ug+rwx storage bootstrap/cache 2>/dev/null || true
 
 if [ "${RUN_MIGRATIONS_ON_START:-true}" != "false" ]; then
   echo "[bootstrap] Running database migrations..."
-  php artisan migrate --force
+  attempts=0
+  max_attempts=6
+  migrated=false
+  while [ "$attempts" -lt "$max_attempts" ]; do
+    if php artisan migrate --force; then
+      migrated=true
+      break
+    fi
+    attempts=$((attempts + 1))
+    if [ "$attempts" -lt "$max_attempts" ]; then
+      echo "[bootstrap] Migration attempt ${attempts}/${max_attempts} failed, retrying in 5s..."
+      sleep 5
+    fi
+  done
+  if [ "$migrated" != "true" ]; then
+    echo "[bootstrap] WARNING: migrations failed after ${max_attempts} attempts — continuing startup."
+  fi
 else
   echo "[bootstrap] Skipping migrations (RUN_MIGRATIONS_ON_START=false)."
 fi
 
 if [ "${RUN_SEEDERS_ON_START:-false}" = "true" ]; then
   echo "[bootstrap] Running database seeders..."
-  php artisan db:seed --class=ModelSeeder --force
-  php artisan db:seed --class=BlogSeeder --force
-  php artisan db:seed --class=TestimonialSeeder --force
+  php artisan db:seed --class=ModelSeeder --force || echo "[bootstrap] WARNING: ModelSeeder failed."
+  php artisan db:seed --class=BlogSeeder --force || echo "[bootstrap] WARNING: BlogSeeder failed."
+  php artisan db:seed --class=TestimonialSeeder --force || echo "[bootstrap] WARNING: TestimonialSeeder failed."
 fi
 
 if [ -d /var/www/html/storage-app-public-seed ]; then
