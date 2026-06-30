@@ -72,7 +72,7 @@ jobs:
           SHORT_SHA_PART="${{ steps.meta.outputs.tags }}"
           SHORT_SHA_PART="$(echo "$SHORT_SHA_PART" | awk -F':' '{print $2}' | cut -c1-11)"
           # Update the tag in the values.yaml file
-          sed -i "s|tag:.*|tag: $SHORT_SHA_PART|" pitchpredk3ssetup/daretodreammodels/values.yaml
+          sed -i "s|tag:.*|tag: $SHORT_SHA_PART|" pitchpredk3ssetup/daretodreammodelswebsite/values.yaml
           echo "Updated tag in values.yaml to $SHORT_SHA_PART"
 
       - name: Commit and push changes to pitchpredk3ssetup repo
