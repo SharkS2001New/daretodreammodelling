@@ -72,18 +72,15 @@ RUN git config --global --add safe.directory /var/www/html && \
     chown -R www-data:www-data /var/www/html && \
     chmod -R 775 storage bootstrap/cache
 
-# Laravel setup: cache, optimize, and link storage
-RUN php artisan config:clear && \
-    php artisan config:cache && \
-    php artisan view:clear && \
-    php artisan view:cache && \
-    php artisan route:clear && \
-    php artisan route:cache && \
-    rm -rf public/storage && php artisan storage:link && \
-    chown -R www-data:www-data storage public/storage bootstrap/cache
+# Preserve bundled uploads for PVC bootstrap (K8s mount hides image-layer storage/app/public)
+RUN mkdir -p /var/www/html/storage-app-public-seed && \
+    cp -a storage/app/public/. /var/www/html/storage-app-public-seed/ 2>/dev/null || true
 
-# Expose port
+COPY docker-bootstrap.sh /usr/local/bin/docker-bootstrap.sh
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-bootstrap.sh /usr/local/bin/docker-entrypoint.sh
+
+# Runtime: docker-entrypoint.sh runs docker-bootstrap.sh (migrate + storage:link) before Apache.
 EXPOSE 8040
-
-# Start Apache
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
