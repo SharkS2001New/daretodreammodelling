@@ -65,6 +65,9 @@
         },
         "audit": {
             "block-insecure": false
+        },
+        "platform": {
+            "php": "8.2.31"
         }
     },
     "minimum-stability": "stable",
