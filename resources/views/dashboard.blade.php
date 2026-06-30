@@ -1,78 +1,106 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold h4 mb-0">{{ __('Dashboard') }}</h2> 
+<div class="container account-page pb-5">
+    @php
+        $user = auth()->user();
+        $publicInfo = $user->publicInfo;
+        $photoCount = $user->photos()->count();
 
-        @if(auth()->check() && auth()->user()->is_admin == 1)
+        $steps = [
+            ['done' => !empty($publicInfo?->about_me), 'label' => 'Write about you', 'url' => route('account.public.edit'), 'icon' => 'bi-pencil-square'],
+            ['done' => !empty($publicInfo?->profile_picture), 'label' => 'Upload profile photo', 'url' => route('account.public.edit'), 'icon' => 'bi-camera-fill'],
+            ['done' => $photoCount >= 3, 'label' => 'Upload 3 photos', 'url' => route('models.show', ['slug' => $user->slug, 'tab' => 'photos']), 'icon' => 'bi-images'],
+        ];
+
+        $completed = collect($steps)->where('done', true)->count();
+        $percent = (int) round(($completed / count($steps)) * 100);
+    @endphp
+
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <p class="account-page__eyebrow text-uppercase fw-semibold mb-2">Welcome back</p>
+            <h1 class="account-page__title mb-1">{{ __('Dashboard') }}</h1>
+            <p class="text-muted mb-0">Hi {{ $user->name }}, complete your profile to get discovered.</p>
+        </div>
+
+        @if($user->is_admin == 1)
             <a href="{{ url('/console') }}" class="btn btn-outline-primary btn-sm">
-                {{ __('View Admin Console') }} 
+                {{ __('Admin console') }}
             </a>
         @endif
     </div>
 
-    {{-- Show Email Verification Notice --}}
-    @if (! auth()->user()->hasVerifiedEmail())
-        <div class="alert alert-light d-flex align-items-center justify-content-between">
-            <div>
-                <i class="bi bi-exclamation-circle me-2"></i>
-                {{ __("We've sent you a link to confirm your email.") }}
-                <a href="{{ route('verification.send') }}" class="fw-bold">{{ __('Send again') }}</a>
-                <br>
-                {{ __('Is this your email?') }}
-                <strong>{{ auth()->user()->email }}</strong>
-                <a href="{{ route('profile.edit') }}" class="fw-bold">{{ __('Edit email') }}</a>
+    @if (! $user->hasVerifiedEmail())
+        <div class="account-alert account-alert--warning mb-4">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    {{ __('Please verify your email address.') }}
+                    <span class="text-muted d-block d-sm-inline ms-sm-2">{{ $user->email }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <form method="POST" action="{{ route('verification.send') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Resend email') }}</button>
+                    </form>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-secondary">{{ __('Edit email') }}</a>
+                </div>
             </div>
         </div>
     @endif
 
-    {{-- Profile Completion Section --}}
-    <div class="card shadow-sm border-0">
-        <div class="card-body" style="background-color:#ffffff; border-radius:10px;">
-            <h5 class="fw-bold mb-4">
-                Hi {{ auth()->user()->name }}, please complete these steps to set up your Profile.
-            </h5>
+    <div class="account-panel mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <h2 class="h5 fw-bold mb-0">Profile completion</h2>
+            <span class="account-progress-badge">{{ $percent }}%</span>
+        </div>
 
-            <div class="d-flex align-items-center mb-4">
-                {{-- Progress bar --}}
-                <div class="flex-grow-1 me-3">
-                    <div class="progress" style="height: 10px;">
-                        <div class="progress-bar" role="progressbar"
-                            style="width: 0%; background-color:#212121;"
-                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+        <div class="progress account-progress mb-4" role="progressbar" aria-valuenow="{{ $percent }}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" style="width: {{ $percent }}%"></div>
+        </div>
+
+        <div class="row g-3">
+            @foreach ($steps as $step)
+                <div class="col-md-4">
+                    <a href="{{ $step['url'] }}" class="account-step-card {{ $step['done'] ? 'is-complete' : '' }}">
+                        <div class="account-step-card__icon">
+                            <i class="bi {{ $step['done'] ? 'bi-check-circle-fill' : $step['icon'] }}"></i>
+                        </div>
+                        <span>{{ $step['label'] }}</span>
+                    </a>
                 </div>
+            @endforeach
+        </div>
+    </div>
 
-                {{-- Percentage --}}
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{{ route('account.public.edit') }}" class="account-nav-card account-nav-card--compact text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-eye-fill"></i></div>
                 <div>
-                    <p class="fw-bold mb-0">0%</p>
+                    <h3 class="account-nav-card__title h6">Edit public profile</h3>
+                    <p class="account-nav-card__text mb-0">Update measurements, bio, and photo.</p>
                 </div>
-            </div>
-
-            {{-- Checklist buttons in one row --}}
-            <div class="row text-center">
-                <div class="col-md-4 mb-2">
-                    <a href="/account/public" class="btn w-100 fw-bold text-white py-3"
-                    style="background-color:#26A69A; border-radius:10px;">
-                        ✍️ Write about you
-                    </a>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ route('models.show', ['slug' => $user->slug]) }}" class="account-nav-card account-nav-card--compact text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-person-badge-fill"></i></div>
+                <div>
+                    <h3 class="account-nav-card__title h6">View my profile</h3>
+                    <p class="account-nav-card__text mb-0">See how your page looks to visitors.</p>
                 </div>
-                <div class="col-md-4 mb-2">
-                    <a href="/account/public" class="btn w-100 fw-bold text-white py-3"
-                    style="background-color:#26A69A; border-radius:10px;">
-                        📸 Upload profile photo
-                    </a>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url('/account') }}" class="account-nav-card account-nav-card--compact text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-gear-fill"></i></div>
+                <div>
+                    <h3 class="account-nav-card__title h6">Account settings</h3>
+                    <p class="account-nav-card__text mb-0">Manage personal and linked accounts.</p>
                 </div>
-                <div class="col-md-4 mb-2">
-                    <a href="{{ route('models.show', ['slug' => Auth::user()->slug, 'tab' => 'photos']) }}" 
-                    class="btn w-100 fw-bold text-white py-3"
-                    style="background-color:#26A69A; border-radius:10px;">
-                    🖼️ Upload 3 photos
-                    </a>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>

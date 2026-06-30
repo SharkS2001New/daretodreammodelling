@@ -1,38 +1,38 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="container d-flex align-items-center justify-content-center">
-    <div class="col-md-6 col-lg-5">
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-4">
-                <!-- Title -->
-                <h4 class="text-center fw-bold mb-3">{{ __('Email Verification') }}</h4>
-                <p class="text-muted text-center mb-4">
-                    {{ __('Thanks for signing up! Please verify your email by clicking the link we just sent you. If you didn\'t receive it, we can send another.') }}
-                </p>
+<div class="auth-page">
+    <div class="container">
+        <div class="auth-page__inner">
+            <div class="auth-card">
+                <div class="auth-card__header">
+                    <div class="auth-card__icon">
+                        <i class="bi bi-envelope-check-fill"></i>
+                    </div>
+                    <h1 class="auth-card__title">{{ __('Verify your email') }}</h1>
+                    <p class="auth-card__subtitle">
+                        {{ __('Thanks for signing up! Please check your inbox for the verification link. If you did not receive it, we can send another.') }}
+                    </p>
+                </div>
 
-                <!-- Success Alert -->
                 @if (session('status') == 'verification-link-sent')
-                    <div class="alert alert-success rounded-pill text-center py-2">
+                    <div class="alert alert-success auth-alert">
                         {{ __('A new verification link has been sent to your email address.') }}
                     </div>
                 @endif
 
-                <!-- Actions -->
-                <div class="d-flex flex-column gap-3 mt-4">
-                    <!-- Resend Verification -->
+                <div class="d-grid gap-2">
                     <form method="POST" action="{{ route('verification.send') }}">
                         @csrf
-                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">
-                            {{ __('Resend Verification Email') }}
+                        <button type="submit" class="btn btn-primary auth-form__submit w-100">
+                            {{ __('Resend verification email') }}
                         </button>
                     </form>
 
-                    <!-- Logout -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-danger w-100 rounded-pill py-2 fw-semibold">
-                            {{ __('Log Out') }}
+                        <button type="submit" class="btn btn-outline-secondary auth-form__secondary w-100">
+                            {{ __('Log out') }}
                         </button>
                     </form>
                 </div>

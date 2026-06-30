@@ -31,6 +31,8 @@ use App\Http\Controllers\ModelsController;
 
 Route::get('/', [HomepageController::class, 'index']);
 Route::get('/about-us', [HomepageController::class, 'about'])->name('about-us');
+Route::redirect('/about-the-founder', '/about-us#meet-the-team');
+Route::get('/upcoming-activities', [HomepageController::class, 'upcomingActivities'])->name('upcoming-activities');
 Route::get('/contact-us', [HomepageController::class, 'contact'])->name('contact-us');
 Route::get('/faq', [HomepageController::class, 'faq'])->name('faq');
 Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials');

@@ -1,136 +1,108 @@
 @extends('layouts.gallery')
-<style>
-    #profileTabs .nav-item {
-        margin: 0 4px; /* reduce space between tabs */
-    }
 
-    #profileTabs .nav-link {
-        padding: 6px 10px; /* tighter padding inside each tab */
-        font-size: 14px;   /* optional: make text smaller */
-    }
-</style>
 @section('content')
 @php
     $isOwner = Auth::check() && Auth::id() === $user->id;
+    $displayName = $user->publicInfo?->display_name ?? $user->name;
+    $avatarUrl = $user->publicInfo?->profile_picture
+        ? asset('storage/' . $user->publicInfo->profile_picture)
+        : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&size=160';
 @endphp
 
-<div class="container">
-    <div class="profile-header text-left mb-4">
-        <div class="row align-items-center mb-4">
-            <!-- Left: Profile Info -->
-            <div class="col d-flex align-items-center mb-3">
-                <!-- Profile Picture -->
-                <div class="me-3">
-                    <img src="{{ asset('storage/' . ($user->publicInfo->profile_picture ?? 'default.jpg')) }}"
-                        alt="{{ $user->name }}"
-                        class="rounded-circle"
-                        width="120">
-                </div>
-
-                <!-- Profile Info -->
-                <div>
-                    <h2 class="mb-1">
-                        {{ $user->publicInfo?->display_name ?? $user->name }}
-                    </h2>
-                    <span class="badge bg-secondary">{{ $user->user_type }}</span>
-                    <p class="mb-0 mt-2">
-                        <i class="bx bx-map"></i>
-                        {{ $user->publicInfo?->location ?? 'Location not set' }}
-                    </p>
+<div class="container model-profile pb-5">
+    <div class="model-profile__header">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-3 gap-md-4">
+                    <img src="{{ $avatarUrl }}"
+                        alt="{{ $displayName }}"
+                        class="model-profile__avatar rounded-circle"
+                        width="120" height="120">
+                    <div>
+                        <h1 class="model-profile__name mb-1">{{ $displayName }}</h1>
+                        @if($user->user_type)
+                            <span class="badge model-profile__badge">{{ $user->user_type }}</span>
+                        @endif
+                        <p class="model-profile__location mb-0 mt-2">
+                            <i class="bi bi-geo-alt-fill me-1"></i>
+                            {{ $user->publicInfo?->location ?? 'Location not set' }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Right: Modelling Page Button (Only for owner) -->
             @if($isOwner)
-            <div class="col-auto text-end">
-                <a href="/dashboard" class="btn btn-outline-primary btn-sm">
-                    View My Modelling Dashboard
-                </a>
-            </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                        My dashboard
+                    </a>
+                </div>
             @endif
         </div>
 
-        <div class="stats d-flex justify-content-center flex-wrap gap-4 my-3 text-muted small">
-            <div>
-                @if($isOwner)Photo loves @else Likes @endif: 
-                <strong>{{ $stats['photo_likes'] }}</strong>
+        <div class="model-profile__stats">
+            <div class="model-stat">
+                <span class="model-stat__label">@if($isOwner) Photo loves @else Likes @endif</span>
+                <strong class="model-stat__value">{{ $stats['photo_likes'] }}</strong>
             </div>
-            <div>
-                Photo Views: <strong>{{ $stats['photo_views'] }}</strong>
+            <div class="model-stat">
+                <span class="model-stat__label">Photo views</span>
+                <strong class="model-stat__value">{{ $stats['photo_views'] }}</strong>
             </div>
-            <div>
-                @if($isOwner)Video loves @else Likes @endif: 
-                <strong>{{ $stats['video_likes'] }}</strong>
+            <div class="model-stat">
+                <span class="model-stat__label">@if($isOwner) Video loves @else Likes @endif</span>
+                <strong class="model-stat__value">{{ $stats['video_likes'] }}</strong>
             </div>
-            <div>
-                Video Views: <strong>{{ $stats['video_views'] }}</strong>
+            <div class="model-stat">
+                <span class="model-stat__label">Video views</span>
+                <strong class="model-stat__value">{{ $stats['video_views'] }}</strong>
             </div>
-            <div>
-                Followers: <strong>{{ $stats['followers'] }}</strong>
+            <div class="model-stat">
+                <span class="model-stat__label">Followers</span>
+                <strong class="model-stat__value">{{ $stats['followers'] }}</strong>
             </div>
-
-            <!-- Force break only on mobile -->
-            <div class="w-100 d-block d-md-none"></div>
-
-            {{-- @if($isOwner) --}}
-            <div>
-                Last login:
-                <strong>
-                    {{ $user->last_login ? ($user->last_login->copy()->addHours(3)->isToday() 
-                        ? 'Today ' . $user->last_login->copy()->addHours(3)->format('h:i A') 
-                        : $user->last_login->copy()->addHours(3)->format('M d, Y h:i A')) 
-                        : 'Never' }}
+            <div class="model-stat">
+                <span class="model-stat__label">Last login</span>
+                <strong class="model-stat__value model-stat__value--small">
+                    {{ $user->last_login ? ($user->last_login->copy()->addHours(3)->isToday()
+                        ? 'Today ' . $user->last_login->copy()->addHours(3)->format('h:i A')
+                        : $user->last_login->copy()->addHours(3)->format('M d, Y')) : 'Never' }}
                 </strong>
             </div>
-            {{-- @endif --}}
         </div>
 
-        <!-- Linked Accounts -->
-        <div class="d-flex justify-content-center gap-4 mt-3">
-            @if($user->linkedAccount && $user->linkedAccount->instagram_url)
-                <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" class="social-link text-decoration-none text-dark">
-                    <i class="bi bi-instagram fs-4"></i>
-                </a>
-            @endif
-
-            @if($user->linkedAccount && $user->linkedAccount->twitter_url)
-                <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" class="social-link text-decoration-none text-dark">
-                    <i class="bi bi-twitter-x fs-4"></i>
-                </a>
-            @endif
-
-            @if($user->linkedAccount && $user->linkedAccount->tiktok_url)
-                <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" class="social-link text-decoration-none text-dark">
-                    <i class="bi bi-tiktok fs-4"></i>
-                </a>
-            @endif
-
-            @if($user->linkedAccount && $user->linkedAccount->youtube_url)
-                <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" class="social-link text-decoration-none text-dark">
-                    <i class="bi bi-youtube fs-4"></i>
-                </a>
-            @endif
-
-            @if($user->linkedAccount && $user->linkedAccount->other_url)
-                <a href="{{ $user->linkedAccount->other_url }}" target="_blank" class="social-link text-decoration-none text-dark">
-                    <i class="bi bi-globe fs-4"></i>
-                </a>
-            @endif
-        </div>
+        @if($user->linkedAccount && ($user->linkedAccount->instagram_url || $user->linkedAccount->twitter_url || $user->linkedAccount->tiktok_url || $user->linkedAccount->youtube_url || $user->linkedAccount->other_url))
+            <div class="model-profile__social">
+                @if($user->linkedAccount->instagram_url)
+                    <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                @endif
+                @if($user->linkedAccount->twitter_url)
+                    <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                @endif
+                @if($user->linkedAccount->tiktok_url)
+                    <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                @endif
+                @if($user->linkedAccount->youtube_url)
+                    <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                @endif
+                @if($user->linkedAccount->other_url)
+                    <a href="{{ $user->linkedAccount->other_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Website"><i class="bi bi-globe"></i></a>
+                @endif
+            </div>
+        @endif
     </div>
 
-    <!-- Tabs -->
-    <ul class="nav nav-tabs justify-content-center flex-nowrap overflow-auto text-nowrap border-0" id="profileTabs" role="tablist" style="white-space: nowrap;">
-        <li class="nav-item">
+    <ul class="nav model-profile-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
             <a class="nav-link active" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Photos</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" role="presentation">
             <a class="nav-link" id="videos-tab" data-bs-toggle="tab" href="#videos" role="tab">Videos</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" role="presentation">
             <a class="nav-link" id="tiktok-tab" data-bs-toggle="tab" href="#tiktok" role="tab">TikTok</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" role="presentation">
             <a class="nav-link" id="about-tab" data-bs-toggle="tab" href="#about" role="tab">About</a>
         </li>
     </ul>
@@ -184,9 +156,10 @@
                 <!-- Photos -->
                 @forelse($user->photos as $photo)
                     <div class="col-md-4 col-lg-3 col-6 mb-3">
-                        <div class="position-relative">
-                            <img src="{{ asset('storage/' . $photo->file_path) }}" 
-                                class="img-fluid rounded shadow-sm">
+                        <div class="model-profile-photo">
+                            <img src="{{ asset('storage/' . $photo->file_path) }}"
+                                class="model-profile-photo__image"
+                                alt="Photo by {{ $displayName }}">
                             <!-- Delete button (only for owner) -->
                             @if($isOwner)
                             <form action="{{ route('model.photos.delete', $photo->id) }}" method="POST" 
@@ -313,7 +286,7 @@
         <!-- TikTok Tab -->
         <div class="tab-pane fade" id="tiktok" role="tabpanel">
             <div class="container">
-                @if($user->linkedAccount && $user->linkedAccount->tiktok_connected)
+                @if($user->linkedAccount?->hasTikTokConnection())
                     <div class="text-center py-2">
                         <div class="alert alert-success">
                             <h5><i class="bi bi-tiktok"></i> 
@@ -377,65 +350,54 @@
 
         <!-- About -->
         <div class="tab-pane fade" id="about" role="tabpanel">
-            <div class="container py-4 d-flex justify-content-center">
-                <div class="col-md-8">
-                <!-- Profile info in 2-column grid -->
-                <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
+            <div class="model-about-panel">
+                <div class="row row-cols-1 row-cols-sm-2 g-3 mb-4">
                     @php
                     $fields = [
-                        'Age' => $user->publicInfo->age ?? '-',
-                        'Gender' => $user->publicInfo->gender ?? '-',
-                        'Ethnicity' => $user->publicInfo->ethnicity ?? '-',
-                        'Height' => $user->publicInfo->height ?? '-',
-                        'Hair' => $user->publicInfo->hair ?? '-',
-                        'Eye' => $user->publicInfo->eye ?? '-',
-                        'Shoes' => $user->publicInfo->shoes ?? '-',
-                        'Waist' => $user->publicInfo->waist ?? '-',
-                        'Hips' => $user->publicInfo->hips ?? '-',
-                        'Location' => $user->publicInfo->location ?? '-',
-                        'Nationality' => $user->publicInfo->nationality ?? '-',
+                        'Age' => $user->publicInfo?->age ?? '-',
+                        'Gender' => $user->publicInfo?->gender ?? '-',
+                        'Ethnicity' => $user->publicInfo?->ethnicity ?? '-',
+                        'Height' => $user->publicInfo?->height ?? '-',
+                        'Hair' => $user->publicInfo?->hair ?? '-',
+                        'Eye' => $user->publicInfo?->eye ?? '-',
+                        'Shoes' => $user->publicInfo?->shoes ?? '-',
+                        'Waist' => $user->publicInfo?->waist ?? '-',
+                        'Hips' => $user->publicInfo?->hips ?? '-',
+                        'Location' => $user->publicInfo?->location ?? '-',
+                        'Nationality' => $user->publicInfo?->nationality ?? '-',
                     ];
                     @endphp
 
                     @foreach ($fields as $label => $value)
-                    <div class="col">
-                        <div class="d-flex justify-content-between pb-1">
-                        <span class="text-muted">{{ $label }}:</span>
-                        <strong>{{ $value }}</strong>
+                        <div class="col">
+                            <div class="model-about-field">
+                                <span class="model-about-field__label">{{ $label }}</span>
+                                <strong class="model-about-field__value">{{ $value }}</strong>
+                            </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
 
-                <br/>
-
-                <!-- Languages -->
-                <div class="mb-3"> 
-                    <p class="text-muted mb-1">Languages:</p>
-                    <p><strong>{{ $user->publicInfo->languages ?? '-' }}</strong></p> 
+                <div class="mb-4">
+                    <p class="model-about-field__label mb-1">Languages</p>
+                    <p class="mb-0"><strong>{{ $user->publicInfo?->languages ?? '-' }}</strong></p>
                 </div>
 
-                <!-- About me -->
-                <div class="mb-3">
-                    <p class="text-muted mb-1">
-                    @if($isOwner)
-                        About me:
-                    @else
-                        About {{ $user->publicInfo?->display_name ?? $user->name }}:
-                    @endif
+                <div>
+                    <p class="model-about-field__label mb-2">
+                        @if($isOwner) About me @else About {{ $displayName }} @endif
                     </p>
-                    <p>
-                    @if(!empty($user->publicInfo->about_me))
-                        {{ $user->publicInfo->about_me }}
-                    @else
-                        @if($isOwner)
-                        You have not added an About text yet
+                    <p class="model-about-bio mb-0">
+                        @if(!empty($user->publicInfo?->about_me))
+                            {{ $user->publicInfo->about_me }}
                         @else
-                        No about information available.
+                            @if($isOwner)
+                                You have not added an about section yet. <a href="{{ route('account.public.edit') }}">Update your profile</a>.
+                            @else
+                                No about information available.
+                            @endif
                         @endif
-                    @endif
                     </p>
-                </div>
                 </div>
             </div>
         </div>
@@ -726,31 +688,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // TikTok Tab Loading
 document.addEventListener('DOMContentLoaded', function() {
-    const tiktokTab = document.getElementById('tiktok-tab');
-    
-    tiktokTab.addEventListener('shown.bs.tab', function() {
-        loadTikTokVideos();
-    });
+    const container = document.getElementById('tiktok-videos-container');
+    if (!container) {
+        return;
+    }
 
-    // Load videos immediately if TikTok tab is active
+    const tiktokTab = document.getElementById('tiktok-tab');
+    if (tiktokTab) {
+        tiktokTab.addEventListener('shown.bs.tab', function() {
+            loadTikTokVideos();
+        });
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
-    const activeTab = urlParams.get('tab');
-    if (activeTab === 'tiktok') {
+    if (urlParams.get('tab') === 'tiktok') {
         setTimeout(loadTikTokVideos, 500);
     }
 });
 
 function loadTikTokVideos() {
     const container = document.getElementById('tiktok-videos-container');
+    if (!container) {
+        return;
+    }
 
-    fetch('{{ route("tiktok.videos") }}')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load TikTok videos');
-            }
-            return response.json();
-        })
+    fetch('{{ route("tiktok.videos") }}', {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    })
+        .then(response => response.json())
         .then(data => {
+            if (data.connected === false) {
+                showTikTokNotConnectedMessage(container);
+                return;
+            }
+
             if (data.data && data.data.videos && data.data.videos.length > 0) {
                 renderTikTokVideos(data.data.videos);
             } else {
@@ -761,6 +735,17 @@ function loadTikTokVideos() {
             console.error('TikTok error:', err);
             showNoVideosMessage(container);
         });
+}
+
+function showTikTokNotConnectedMessage(container) {
+    container.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="alert alert-info mb-0">
+                <h5 class="h6 fw-bold">TikTok not connected</h5>
+                <p class="mb-0">Connect your TikTok account to display videos here.</p>
+            </div>
+        </div>
+    `;
 }
 
 function renderTikTokVideos(videos) {

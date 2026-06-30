@@ -13,7 +13,7 @@ class TestimonialsController extends Controller
     public function index()
     {
         $page = request()->get('page', 1);
-        $cacheKey = "models_page_{$page}";
+        $cacheKey = "testimonials_page_{$page}";
 
         $testimonials = Cache::rememberForever($cacheKey, function () {
             return Testimonial::latest()->paginate(10);
@@ -73,10 +73,12 @@ class TestimonialsController extends Controller
 
         // Clear cache
         foreach (range(1, 5) as $page) {
+            Cache::forget("testimonials_page_{$page}");
             Cache::forget("models_page_{$page}");
         }
 
         Cache::forget('models_testimonials');
+        Cache::forget('homepage_testimonials');
 
         return redirect()->route('testimonials')->with('success', 'Testimonial added successfully!');
     }
@@ -134,10 +136,12 @@ class TestimonialsController extends Controller
 
         // 🔥 Clear caches so updated info is visible
         foreach (range(1, 5) as $page) {
+            Cache::forget("testimonials_page_{$page}");
             Cache::forget("models_page_{$page}");
         }
-        
+
         Cache::forget('models_testimonials');
+        Cache::forget('homepage_testimonials');
 
         return redirect()->route('testimonials')
             ->with('success', 'Testimonial updated successfully.');
@@ -165,10 +169,12 @@ class TestimonialsController extends Controller
 
         // Clear cached testimonial pages
         foreach (range(1, 5) as $page) {
+            Cache::forget("testimonials_page_{$page}");
             Cache::forget("models_page_{$page}");
         }
 
         Cache::forget('models_testimonials');
+        Cache::forget('homepage_testimonials');
 
         return redirect()
             ->route('testimonials.index') // use .index to match RESTful routes

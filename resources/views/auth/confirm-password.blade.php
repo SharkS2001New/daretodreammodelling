@@ -1,41 +1,35 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-sm">
-                <div class="card-header text-center">
-                    <h4>{{ __('Confirm Password') }}</h4>
+<div class="auth-page">
+    <div class="container">
+        <div class="auth-page__inner">
+            <div class="auth-card">
+                <div class="auth-card__header">
+                    <div class="auth-card__icon">
+                        <i class="bi bi-lock-fill"></i>
+                    </div>
+                    <h1 class="auth-card__title">{{ __('Confirm Password') }}</h1>
+                    <p class="auth-card__subtitle">{{ __('Please confirm your password before continuing.') }}</p>
                 </div>
-                <div class="card-body">
 
-                    <p class="text-muted mb-4 small">
-                        {{ __('Please confirm your password before continuing.') }}
-                    </p>
+                <form method="POST" action="{{ route('password.confirm') }}" class="auth-form">
+                    @csrf
 
-                    <form method="POST" action="{{ route('password.confirm') }}">
-                        @csrf
+                    <div class="auth-form__group">
+                        <label for="password" class="form-label">{{ __('Password') }}</label>
+                        <input id="password" type="password" name="password" required autocomplete="current-password"
+                            class="form-control auth-form__control @error('password') is-invalid @enderror"
+                            placeholder="Enter your password">
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">{{ __('Password') }}</label>
-                            <input id="password" type="password" 
-                                   class="form-control @error('password') is-invalid @enderror" 
-                                   name="password" required autocomplete="current-password">
-
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Confirm') }}
-                            </button>
-                        </div>
-                    </form>
-
-                </div>
+                    <button type="submit" class="btn btn-primary auth-form__submit w-100">
+                        {{ __('Confirm') }}
+                    </button>
+                </form>
             </div>
         </div>
     </div>

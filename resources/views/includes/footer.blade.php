@@ -1,54 +1,60 @@
-<footer class="bg-dark text-white pt-5 pb-4">
+<footer class="site-footer bg-dark text-white">
     <div class="container">
-        <div class="row">
-            <!-- Logo -->
-            <div class="col-md-5 mb-4">
-                <h4 class="fw-bold">Dare to Dream</h4>
-                <small class="text-light">Modelling Agency</small>
-                <br/><br/>
-                <p class="text-light">
-                  We empower young talent to launch modeling careers with passion, confidence, and inclusivity.
+        <div class="row g-4 site-footer__main">
+            <div class="col-lg-5 col-md-6">
+                <p class="site-footer__eyebrow text-uppercase fw-semibold mb-2">DD Models Agency</p>
+                <h4 class="site-footer__brand fw-bold mb-1">Dare to Dream</h4>
+                <p class="site-footer__tagline mb-3">Modelling Agency</p>
+                <p class="site-footer__text mb-0">
+                    We empower young talent to launch modelling careers with passion, confidence, and inclusivity.
                 </p>
             </div>
 
-            <!-- Company -->
-            <div class="col-md-2 col-6 mb-4">
-                <h6 class="fw-bold">Company</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/about-us" class="text-white text-decoration-none">About us</a></li>
-                    <li><a href="/contact-us" class="text-white text-decoration-none">Contact us</a></li>
-                    <li><a href="/testimonials" class="text-white text-decoration-none">Testimonials</a></li>
-                    <li><a href="/blog" class="text-white text-decoration-none">Blog</a></li>
+            <div class="col-6 col-md-3 col-lg-2">
+                <h6 class="site-footer__heading fw-bold">Company</h6>
+                <ul class="list-unstyled site-footer__links">
+                    <li><a href="{{ route('about-us') }}">About us</a></li>
+                    <li><a href="{{ route('upcoming-activities') }}">Activities</a></li>
+                    <li><a href="{{ route('contact-us') }}">Contact us</a></li>
+                    <li><a href="{{ route('testimonials') }}">Testimonials</a></li>
+                    <li><a href="{{ route('blog.index') }}">Blog</a></li>
                 </ul>
             </div>
 
-            <!-- Privacy -->
-            <div class="col-md-2 col-6  mb-4">
-                <h6 class="fw-bold">Privacy</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/privacy-policy" class="text-white text-decoration-none">Privacy policy</a></li>
-                    <li><a href="/terms-of-use" class="text-white text-decoration-none">Terms of use</a></li>
+            <div class="col-6 col-md-3 col-lg-2">
+                <h6 class="site-footer__heading fw-bold">Privacy</h6>
+                <ul class="list-unstyled site-footer__links">
+                    <li><a href="{{ url('/privacy-policy') }}">Privacy policy</a></li>
+                    <li><a href="{{ url('/terms-of-use') }}">Terms of use</a></li>
                 </ul>
             </div>
 
-            <!-- Help -->
-            <div class="col-md-3 mb-4">
-                <h6 class="fw-bold">Help</h6>
-                <ul class="list-unstyled">
-                    <li><a href="/how-it-works" class="text-white text-decoration-none">How it works</a></li>
-                    <li><a href="/modelling-advice" class="text-white text-decoration-none">Modeling advice</a></li>
-                    <li><a href="/faq" class="text-white text-decoration-none">FAQ's</a></li>
+            <div class="col-md-6 col-lg-3">
+                <h6 class="site-footer__heading fw-bold">Help</h6>
+                <ul class="list-unstyled site-footer__links">
+                    <li><a href="{{ url('/how-it-works') }}">How it works</a></li>
+                    <li><a href="{{ route('modelling-advice') }}">Modelling advice</a></li>
+                    <li><a href="{{ route('faq') }}">FAQ</a></li>
                 </ul>
             </div>
         </div>
 
-        <!-- Social Media -->
-        <div class="row mt-4">
-            <div class="col text-center">
-                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="text-white me-3" target="_blank"><i class="bi bi-facebook fs-4"></i></a>
-                <a href="https://www.instagram.com/d_d_models/?hl=en" class="text-white me-3" target="_blank"><i class="bi bi-instagram fs-4"></i></a>
-                <a href="https://www.tiktok.com/@ddmodels96" class="text-white me-3" target="_blank"><i class="bi bi-tiktok fs-4"></i></a>
+        <div class="site-footer__bottom">
+            <div class="site-footer__social">
+                <a href="https://www.facebook.com/profile.php?id=100028941746406" class="site-footer__social-link" target="_blank" rel="noopener" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/dd_models/" class="site-footer__social-link" target="_blank" rel="noopener" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@ddmodels96" class="site-footer__social-link" target="_blank" rel="noopener" aria-label="TikTok">
+                    <i class="bi bi-tiktok"></i>
+                </a>
             </div>
+
+            <p class="site-footer__copy mb-0">
+                &copy; {{ date('Y') }} Dare to Dream Modelling Agency. All rights reserved.
+            </p>
         </div>
     </div>
 </footer>

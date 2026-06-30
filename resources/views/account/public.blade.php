@@ -1,18 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
-    <div class="mb-4">
-        <h2 class="fw-semibold h4 text-dark">Public information</h2>
-    </div>
+<div class="container account-page pb-5">
+    @include('includes.account-breadcrumb', ['title' => __('Public information'), 'current' => __('Public profile')])
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success account-alert">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger account-alert">{{ session('error') }}</div>
     @endif
 
     @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
+        <div class="alert alert-danger account-alert">
+            <ul class="mb-0 ps-3">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -20,33 +22,33 @@
         </div>
     @endif
 
-    <!-- Profile Picture Upload Form -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Profile Picture</h5>
+    <div class="account-panel mb-4">
+        <div class="account-section__header mb-4">
+            <h2 class="account-section__title h5">Profile picture</h2>
+            <p class="account-section__subtitle mb-0">Upload a clear headshot for your public model profile.</p>
+        </div>
 
             <form id="profileForm" action="{{ route('account.public.updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div class="d-flex align-items-center gap-4">
-                <div>
+            <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+                <div class="account-avatar-preview">
                 <img id="preview" 
-                    src="{{ $publicInfo?->profile_picture ? asset('storage/'.$publicInfo->profile_picture) : 'https://via.placeholder.com/150?text=Upload+Photo' }}"
-                    width="150" height="150" class="rounded-circle border object-fit-cover">
+                    src="{{ $publicInfo?->profile_picture ? asset('storage/'.$publicInfo->profile_picture) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&size=150' }}"
+                    width="150" height="150" class="rounded-circle border object-fit-cover" alt="Profile preview">
                 </div>
 
-                <div class="flex-grow-1">
+                <div class="flex-grow-1 w-100">
                 <div class="mb-3">
-                    <input type="file" id="profileInput" name="profile_picture" accept="image/*" class="form-control" />
+                    <input type="file" id="profileInput" name="profile_picture" accept="image/*" class="form-control auth-form__control" />
                     <div class="form-text">Max file size: 2MB. Supported: JPG, PNG, JPEG</div>
                 </div>
 
-                <button type="submit" id="submitBtn" class="btn btn-primary btn-sm">Upload Profile Picture</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-sm">Upload profile picture</button>
                 </div>
             </div>
             </form>
-        </div>
-        </div>
+    </div>
 
         <!-- Cropper Modal (Bootstrap 5) -->
         <div class="modal fade" id="cropperModal" tabindex="-1" aria-hidden="true">
@@ -67,16 +69,17 @@
         </div>
         </div>
 
-    <!-- Info Form -->
     <form action="{{ route('account.public.update') }}" method="POST">
         @csrf
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title mb-4">Personal Information</h5>
+        <div class="account-panel">
+            <div class="account-section__header mb-4">
+                <h2 class="account-section__title h5">Personal details</h2>
+                <p class="account-section__subtitle mb-0">Information shown on your public model profile.</p>
+            </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Display name</label>
-                        <input type="text" name="display_name" value="{{ old('display_name', $publicInfo?->display_name ?? '') }}" class="form-control @error('display_name') is-invalid @enderror">
+                        <input type="text" name="display_name" value="{{ old('display_name', $publicInfo?->display_name ?? '') }}" class="form-control auth-form__control @error('display_name') is-invalid @enderror">
                         @error('display_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
@@ -252,7 +255,6 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
         </div>
     </form>
 </div>

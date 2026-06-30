@@ -16,14 +16,14 @@ class HomepageController extends Controller
             return Testimonial::latest()->paginate(10);
         });
 
-        // Get max 8 latest photos, one per user
+        // Get latest photo per user, ordered by total likes
         $photoIds = Photo::selectRaw('MAX(id) as id')
             ->groupBy('user_id')
             ->pluck('id');
 
         $photos = Photo::whereIn('id', $photoIds)
-            ->with(['user.publicInfo']) 
-            ->latest()
+            ->with(['user.publicInfo'])
+            ->orderByUserLikes()
             ->take(8)
             ->get();
 
@@ -36,6 +36,11 @@ class HomepageController extends Controller
     public function about()
     {
         return view('about-us');
+    }
+
+    public function upcomingActivities()
+    {
+        return view('upcoming-activities');
     }
 
     /**

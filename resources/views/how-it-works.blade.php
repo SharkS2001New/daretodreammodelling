@@ -25,7 +25,7 @@
 
     {{-- How it Works Steps --}}
     <div class="text-center mb-4">
-        <h2 class="fw-bold">How it Works</h2>
+        <h2 class="section-heading fw-bold">How it Works</h2>
     </div>
     <div class="row text-center g-4">
         <div class="col-md-4">

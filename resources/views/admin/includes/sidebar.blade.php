@@ -5,7 +5,7 @@
             <div class="profile-pic">
                 <img src="{{ $publicInfo && $publicInfo->profile_picture 
                                 ? asset('storage/'.$publicInfo->profile_picture) 
-                                : asset('images/default-profile.png') }}" 
+                                : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name).'&size=150' }}" 
                     alt="Profile Picture"
                     class="rounded-circle object-fit-cover border"
                     width="150"
@@ -21,21 +21,21 @@
 
     <!-- Menu -->
     <ul class="menu-list">
-        <li><a href="/dashboard"><i class="bx bx-home"></i> Dashboard</a></li>
-        <li><a href="/account"><i class="bx bx-user"></i> Account</a></li>
+        <li><a href="{{ route('dashboard') }}"><i class="bi bi-grid-fill"></i> Dashboard</a></li>
+        <li><a href="{{ url('/account') }}"><i class="bi bi-person-fill"></i> Account</a></li>
         <li>
             <a href="{{ route('models.show', ['slug' => Auth::user()->slug, 'tab' => 'photos']) }}">
-                <i class="bx bx-image"></i> My photos
+                <i class="bi bi-image-fill"></i> My photos
             </a>
         </li>
         <li>
             <a href="{{ route('models.show', ['slug' => Auth::user()->slug, 'tab' => 'videos']) }}">
-                <i class="bx bx-image"></i> My Videos
+                <i class="bi bi-camera-reels-fill"></i> My videos
             </a>
         </li>
-        <li><a href="#"><i class="bx bx-message"></i> Messages</a></li> 
-        <li><a href="#"><i class="bx bx-calendar"></i> Bookings</a></li>
-        <li><a href="#"><i class="bx bx-user-check"></i> Followers</a></li>
-        <li><a href="#"><i class="bx bx-star"></i> Reviews</a></li>
+        <li><a href="#"><i class="bi bi-chat-dots-fill"></i> Messages</a></li>
+        <li><a href="#"><i class="bi bi-calendar-event-fill"></i> Bookings</a></li>
+        <li><a href="#"><i class="bi bi-people-fill"></i> Followers</a></li>
+        <li><a href="#"><i class="bi bi-star-fill"></i> Reviews</a></li>
     </ul>
 </aside>

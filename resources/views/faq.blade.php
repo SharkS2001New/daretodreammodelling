@@ -2,17 +2,10 @@
 
 @section('content')
 <div class="container">
+    <x-page-heading title="Got Questions? We've Got Answers!" subtitle="We are the community that brings together new faces, professional models, photographers, agencies and other industry experts." class="mb-2" />
+
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <!-- Header Section -->
-            <div class="text-center mb-2">
-                <h1 class="display-4 fw-bold text-dark mb-3">Got Questions? We've Got Answers!</h1>
-                <p class="lead text-muted">
-                    We are the community that brings together new faces, professional models, photographers, 
-                    agencies and other industry experts.
-                </p>
-            </div>
-
             <!-- Contact Information -->
             <div class="card shadow-sm border-0 mb-2">
                 <div class="card-body">

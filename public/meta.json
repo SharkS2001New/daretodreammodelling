@@ -1,17 +1,62 @@
 {
     "home": {
-        "title": "Home - Champions Rise Football Academy",
-        "keywords": "home, football, academy",
-        "description": "Welcome to the official Champions Rise website."
+        "title": "Dare to Dream | Modelling Agency",
+        "keywords": "modelling agency, models, talent, fashion, Kenya",
+        "description": "Discover models, launch your modelling career, and connect with industry professionals at Dare to Dream Modelling Agency."
     },
     "about-us": {
-        "title": "About Us - Champions Rise",
-        "keywords": "about, mission, team",
-        "description": "Learn about our mission and team."
+        "title": "About Us",
+        "keywords": "about, modelling agency, team, mission, founder",
+        "description": "Learn about Dare to Dream Modelling Agency — our mission, values, founder, and team."
+    },
+    "upcoming-activities": {
+        "title": "Upcoming Activities",
+        "keywords": "events, auditions, workshops, fashion showcases, modelling activities",
+        "description": "Discover upcoming model auditions, workshops, fashion showcases, and community events at Dare to Dream Modelling Agency."
     },
     "contact-us": {
-        "title": "Contact Us - Champions Rise2",
-        "keywords": "contact, contact us",
-        "description": "Get in touch with our team, test."
+        "title": "Contact Us",
+        "keywords": "contact, enquiry, booking",
+        "description": "Contact Dare to Dream Modelling Agency for bookings, enquiries, and general support."
+    },
+    "models": {
+        "title": "Browse Models",
+        "keywords": "models, portfolio, talent search",
+        "description": "Browse and filter models at Dare to Dream Modelling Agency."
+    },
+    "testimonials": {
+        "title": "Testimonials",
+        "keywords": "testimonials, reviews, success stories",
+        "description": "Read testimonials and success stories from the Dare to Dream community."
+    },
+    "blog": {
+        "title": "Blog",
+        "keywords": "blog, modelling tips, fashion news",
+        "description": "Read the Dare to Dream blog for modelling advice, industry news, and agency updates."
+    },
+    "modelling-advice": {
+        "title": "Modelling Advice",
+        "keywords": "modelling advice, tips, career guidance",
+        "description": "Expert modelling advice from Dare to Dream Modelling Agency."
+    },
+    "how-it-works": {
+        "title": "How It Works",
+        "keywords": "how it works, join, register",
+        "description": "Learn how Dare to Dream Modelling Agency connects models with opportunities."
+    },
+    "faq": {
+        "title": "FAQ",
+        "keywords": "faq, help, questions",
+        "description": "Find answers to common questions about Dare to Dream Modelling Agency."
+    },
+    "privacy-policy": {
+        "title": "Privacy Policy",
+        "keywords": "privacy, data protection",
+        "description": "Read the Dare to Dream Modelling Agency privacy policy."
+    },
+    "terms-of-use": {
+        "title": "Terms of Use",
+        "keywords": "terms, conditions, legal",
+        "description": "Read the Dare to Dream Modelling Agency terms of use."
     }
 }

@@ -1,174 +1,170 @@
 @extends('layouts.frontend')
 
 @section('content')
-<section id="blog" class="blog section">
-  <div class="container" data-aos="fade-up">
-    
-    <!-- Featured Quote Section -->
-    <div class="row mb-5">
-      <div class="col-12">
-        <div class="featured-quote-card p-5 rounded-4 shadow-sm position-relative overflow-hidden">
-          <!-- Background pattern or image (optional) -->
-          <div class="quote-background"></div>
-          
-          <!-- Quote Content -->
-          <div class="position-relative z-1 text-center">
-            <div class="quote-icon mb-3">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-danger opacity-25">
-                <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"/>
-              </svg>
-            </div>
-            
-            <h2 class="quote-text fst-italic fw-normal display-6 mb-4">
-              "Success is not final, failure is not fatal: it is the courage to continue that counts."
-            </h2>
+<section id="blog" class="blog section pb-5">
+    <div class="container">
+        <x-page-heading
+            subtitle="Modelling advice, industry insights, and updates from the DD Models team."
+            class="mb-4"
+        />
 
-            <div class="quote-author">
-              <span class="fw-bold text-dark">Winston Churchill</span>
-              <span class="text-muted mx-2">/</span>
-              <span class="text-muted">October 29, 1941</span>
+        {{-- Featured quote --}}
+        <div class="featured-quote-card blog-quote-card p-4 p-md-5 rounded-4 shadow-sm mb-5">
+            <div class="text-center">
+                <div class="blog-quote-card__icon mb-3">
+                    <i class="bi bi-quote"></i>
+                </div>
+                <blockquote class="quote-text fst-italic fw-normal fs-4 mb-4 mb-md-0">
+                    "Success is not final, failure is not fatal: it is the courage to continue that counts."
+                </blockquote>
+                <footer class="quote-author mt-3">
+                    <span class="fw-bold">Winston Churchill</span>
+                    <span class="text-muted mx-2">/</span>
+                    <span class="text-muted">October 29, 1941</span>
+                </footer>
             </div>
-            
-          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      
-      <!-- Left Column: Blog Posts -->
-      <div class="col-lg-8 order-2 order-lg-2">
-        <div class="row mb-2">
-          <div class="col-md-3 col-12">
-            <h3 class="fw-bold mb-4">LATEST POSTS</h3>
-          </div>
-          <div class="col-md-9">
-            @auth
-                @if(auth()->user())
-                    <div class="w-100 d-flex justify-content-end mt-3">
-                        <a href="{{ route('blogs.create') }}" class="btn btn-success btn-sm">
-                            Add Blogs
+        <div class="row g-4">
+            {{-- Sidebar --}}
+            <div class="col-lg-4 order-1 order-lg-2">
+                <div class="blog-sidebar">
+                    <div class="blog-sidebar-card">
+                        <p class="blog-section__eyebrow text-uppercase fw-semibold mb-2">Browse</p>
+                        <h2 class="h5 fw-bold mb-3">Categories</h2>
+                        <div class="blog-category-list">
+                            <a href="{{ route('blog.index', ['category' => 'ALL']) }}"
+                                class="blog-category-pill {{ $selectedCategory === 'ALL' ? 'is-active' : '' }}">
+                                All
+                            </a>
+                            @foreach($categories as $category)
+                                <a href="{{ route('blog.index', ['category' => $category->name]) }}"
+                                    class="blog-category-pill {{ $selectedCategory === $category->name ? 'is-active' : '' }}">
+                                    {{ $category->blogs_category_title ?? ucfirst($category->name) }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Posts --}}
+            <div class="col-lg-8 order-2 order-lg-1">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                    <div>
+                        <p class="blog-section__eyebrow text-uppercase fw-semibold mb-1">Latest</p>
+                        <h2 class="h4 fw-bold mb-0">Posts</h2>
+                    </div>
+                    @auth
+                        <a href="{{ route('blogs.create') }}" class="btn btn-primary btn-sm rounded-pill">
+                            Add Blog
                         </a>
+                    @endauth
+                </div>
+
+                @forelse($blogs as $blog)
+                    <article class="blog-card mb-4">
+                        <div class="row g-0 align-items-stretch">
+                            <div class="col-md-5">
+                                <a href="{{ route('blogs.show', $blog->slug) }}" class="blog-card__image-link d-block h-100">
+                                    <div class="blog-card__image-wrap h-100">
+                                        @if($blog->image)
+                                            <img src="{{ asset($blog->image) }}"
+                                                alt="{{ $blog->title }}"
+                                                class="blog-card__image">
+                                        @else
+                                            <div class="blog-card__placeholder">
+                                                <i class="bi bi-journal-text"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-7">
+                                <div class="blog-card__body h-100">
+                                    @if($blog->category)
+                                        <span class="blog-card__category">
+                                            {{ $blog->category->blogs_category_title ?? ucfirst($blog->category->name) }}
+                                        </span>
+                                    @endif
+
+                                    <h3 class="blog-card__title">
+                                        <a href="{{ route('blogs.show', $blog->slug) }}">
+                                            {{ $blog->title }}
+                                        </a>
+                                    </h3>
+
+                                    <div class="blog-card__meta">
+                                        @if($blog->published_at)
+                                            <span><i class="bi bi-calendar3"></i> {{ $blog->published_at->format('M d, Y') }}</span>
+                                        @endif
+                                        @if($blog->read_time)
+                                            <span><i class="bi bi-clock"></i> {{ $blog->read_time }} min read</span>
+                                        @endif
+                                    </div>
+
+                                    <p class="blog-card__excerpt">
+                                        {{ Str::limit($blog->excerpt, 140) }}
+                                    </p>
+
+                                    @if($blog->model || $blog->photographer || $blog->magazine || $blog->brand)
+                                        <div class="blog-card__credits">
+                                            @if($blog->model)
+                                                <span>Model: <strong>{{ $blog->model }}</strong></span>
+                                            @endif
+                                            @if($blog->photographer)
+                                                <span>Photographer: <strong>{{ $blog->photographer }}</strong></span>
+                                            @endif
+                                            @if($blog->magazine)
+                                                <span>Magazine: <strong>{{ $blog->magazine }}</strong></span>
+                                            @endif
+                                            @if($blog->brand)
+                                                <span>Brand: <strong>{{ $blog->brand }}</strong></span>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-auto">
+                                        <a href="{{ route('blogs.show', $blog->slug) }}" class="blog-card__read-more">
+                                            Read more <i class="bi bi-arrow-right"></i>
+                                        </a>
+
+                                        @auth
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('blogs.destroy', $blog->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Are you sure you want to delete this blog item?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endauth
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <div class="blog-empty-state text-center py-5">
+                        <i class="bi bi-journal-x fs-1 text-muted mb-3 d-block"></i>
+                        <p class="text-muted mb-0">No blog posts found in this category yet.</p>
+                    </div>
+                @endforelse
+
+                @if($blogs->hasPages())
+                    <div class="mt-4">
+                        {{ $blogs->links() }}
                     </div>
                 @endif
-            @endauth
-          </div>
+            </div>
         </div>
-
-        @foreach($blogs as $blog)
-          <div class="row mb-4 pb-4 border-bottom">
-              
-              <!-- Blog Image -->
-              <div class="col-md-4 mb-3 mb-md-0">
-                  <a href="{{ route('blogs.show', $blog->slug) }}">
-                      <img src="{{ asset($blog->image) }}" 
-                          class="img-fluid rounded w-100" 
-                          alt="{{ $blog->title }}">
-                  </a>
-              </div>
-
-              <!-- Blog Content -->
-              <div class="col-md-8">
-                  <div class="text-uppercase text-danger small fw-bold mb-1">
-                      {{ strtoupper($blog->category->blogs_category_title ?? '') }}
-                  </div>
-
-                  <h5 class="fw-bold mb-1">
-                      <a href="{{ route('blogs.show', $blog->slug) }}" class="text-dark text-decoration-none">
-                          {{ $blog->title }}
-                      </a>
-                  </h5>
-
-                  <small class="text-muted d-block mb-2">
-                      {{ $blog->published_at ? $blog->published_at->format('F d, Y') : '' }}
-                  </small>
-
-                  <p class="mb-3">
-                      {{ Str::limit($blog->excerpt, 120) }}
-                  </p>
-
-                  <div class="row mb-2">
-                      <div class="col-md-4 col-6">
-                          @if(!empty($blog->model))
-                              <p class="mb-1 text-muted fw-bold">
-                                  Model: <span class="text-danger">{{ $blog->model }}</span>
-                              </p>
-                          @endif
-                      </div>
-
-                      <div class="col-md-4 col-6">
-                          @if(!empty($blog->photographer))
-                              <p class="mb-1 text-muted fw-bold">
-                                  Photographer: <span class="text-danger">{{ $blog->photographer }}</span>
-                              </p>
-                          @endif
-                      </div>
-
-                      <div class="col-md-4 col-12">
-                          @if(!empty($blog->magazine))
-                              <p class="mb-1 text-muted fw-bold">
-                                  Magazine: <span class="text-danger">{{ $blog->magazine }}</span>
-                              </p>
-                          @endif
-                      </div>
-                  </div>
-
-                  <div class="d-flex justify-content-between align-items-center">
-                      <a href="{{ route('blogs.show', $blog->slug) }}" class="fw-bold text-danger">
-                          Read More
-                      </a>
-
-                      @auth
-                          @if(auth()->user())
-                              <div class="d-flex gap-2">
-                                  <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-sm btn-outline-primary">
-                                      Edit
-                                  </a>
-                                  <form action="{{ route('blogs.destroy', $blog->id) }}" 
-                                        method="POST" 
-                                        onsubmit="return confirm('Are you sure you want to delete this blog item?');">
-                                      @csrf
-                                      @method('DELETE')
-                                      <button type="submit" class="btn btn-sm btn-outline-danger">
-                                          Delete
-                                      </button>
-                                  </form>
-                              </div>
-                          @endif
-                      @endauth
-                  </div>
-              </div>
-          </div>
-        @endforeach
-
-
-        <!-- Pagination -->
-        <div class="mt-4">
-          {{ $blogs->links() }}
-        </div>
-      </div>
-
-      <!-- Right Column: Sidebar -->
-      <div class="col-lg-4 order-1 order-lg-2">
-
-        <!-- Categories Filter -->
-        <div class="mb-4 p-3 border">
-          <h5 class="fw-bold mb-3">CATEGORIES</h5>
-          <form method="GET" action="{{ route('blog.index') }}">
-              <select name="category" onchange="this.form.submit()" class="form-select">
-                <option value="ALL" {{ $selectedCategory === 'ALL' ? 'selected' : '' }}>All</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->name }}" 
-                        {{ $selectedCategory === $category->name ? 'selected' : '' }}>
-                        {{ strtoupper($category->name) }}
-                    </option>
-                @endforeach
-              </select>
-          </form>
-        </div>
-      </div>
-
     </div>
-  </div>
 </section>
 @endsection

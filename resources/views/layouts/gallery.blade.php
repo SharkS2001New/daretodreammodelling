@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
    <head>
+        @include('includes.theme-init')
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Primary Meta Tags -->
-        <title>{{ $meta['title'] ?? config('app.name') }}</title>
+        <title>{{ $documentTitle ?? config('app.name') }}</title>
         <meta name="description" content="{{ $meta['description'] ?? '' }}">
         <meta name="keywords" content="{{ $meta['keywords'] ?? '' }}">
         <meta name="robots" content="index, follow">
@@ -15,14 +16,14 @@
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:title" content="{{ $meta['title'] ?? config('app.name') }}">
+        <meta property="og:title" content="{{ $documentTitle ?? config('app.name') }}">
         <meta property="og:description" content="{{ $meta['description'] ?? '' }}">
         <meta property="og:image" content="{{ asset('daretodreamlogo.png') }}">
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:url" content="{{ url()->current() }}">
-        <meta name="twitter:title" content="{{ $meta['title'] ?? config('app.name') }}">
+        <meta name="twitter:title" content="{{ $documentTitle ?? config('app.name') }}">
         <meta name="twitter:description" content="{{ $meta['description'] ?? '' }}">
         <meta name="twitter:image" content="{{ asset('daretodreamlogo.png') }}">
 
@@ -31,18 +32,18 @@
         <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
 
         <!-- PWA -->
-        <meta name="theme-color" content="#000000">
+        <meta name="theme-color" content="#ffffff">
         <link rel="apple-touch-icon" href="{{ asset('daretodreamlogo.png') }}">
         <link rel="icon" type="image/png" href="{{ asset('ddmodelslogo.ico') }}" />
 
-        <!-- PWA -->
-        <meta name="theme-color" content="#000000">
-        <link rel="apple-touch-icon" href="{{ asset('daretodreamlogo.png') }}">
-
         <!-- Styles -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
@@ -59,15 +60,13 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <body>
+        <div class="site-wrapper">
             @include('includes.header')
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                <main>               
-                    @yield('content')                
-                </main>
-            </div>
+            <main class="site-main">
+                @yield('content')
+            </main>
 
             @include('includes.footer')
 
@@ -83,6 +82,7 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+        <script src="{{ asset('js/theme.js') }}"></script>
 
         <!-- Vendor JS Files -->
         {{-- <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}

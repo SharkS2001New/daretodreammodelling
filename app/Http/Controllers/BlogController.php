@@ -179,7 +179,7 @@ class BlogController extends Controller
         $cacheKey = "blog_{$slug}";
 
         $blog = Cache::rememberForever($cacheKey, function () use ($slug) {
-            return Blog::where('slug', $slug)->firstOrFail();
+            return Blog::with(['category', 'user'])->where('slug', $slug)->firstOrFail();
         });
 
         return view('blogs.show', compact('blog'));

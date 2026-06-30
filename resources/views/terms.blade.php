@@ -3,7 +3,7 @@
 @section('content')
 <section id="terms-of-use" class="section">
   <div class="container" data-aos="fade-up">
-    <h2 class="fw-bold mb-4">Terms of Use</h2>
+    <x-page-heading class="mb-2" />
     <p class="text-muted mb-5">
       Last updated: {{ now()->format('F d, Y') }}
     </p>

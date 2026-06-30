@@ -180,21 +180,26 @@ class TikTokController extends Controller
         $linkedAccount = $user->linkedAccount;
 
         return response()->json([
-            'tiktok_connected' => $linkedAccount && $linkedAccount->tiktok_connected,
+            'connected' => $linkedAccount && $linkedAccount->hasTikTokConnection(),
             'tiktok_url'       => $linkedAccount->tiktok_url ?? null,
         ]);
     }
 
-    public function videos()
+    public function videos(Request $request)
     {
         $user = Auth::user();
         $linkedAccount = $user->linkedAccount;
 
-        // Ensure TikTok is connected
-        if (!$linkedAccount || !$linkedAccount->tiktok_connected || !$linkedAccount->tiktok_access_token) {
-            return response()->json([
-                'error' => 'TikTok account not connected.'
-            ], 403);
+        if (!$linkedAccount || !$linkedAccount->hasTikTokConnection()) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'connected' => false,
+                    'data' => ['videos' => []],
+                ]);
+            }
+
+            return redirect()->route('account.linked')
+                ->with('info', 'Connect your TikTok account to display videos.');
         }
 
         // Check if token expired
@@ -248,6 +253,7 @@ class TikTokController extends Controller
                 $data = $response->json();
 
                 return response()->json([
+                    'connected' => true,
                     'data' => [
                         'videos' => $data['data']['videos'] ?? []
                     ]
@@ -255,6 +261,7 @@ class TikTokController extends Controller
             }
 
             return response()->json([
+                'connected' => true,
                 'data' => [
                     'videos' => []
                 ],

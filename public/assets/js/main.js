@@ -141,11 +141,17 @@
 
     let initIsotope;
     imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
+      const gutter = parseInt(isotopeItem.getAttribute('data-gutter') ?? '0', 10);
+
       initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
         itemSelector: '.isotope-item',
         layoutMode: layout,
         filter: filter,
-        sortBy: sort
+        sortBy: sort,
+        percentPosition: true,
+        masonry: {
+          gutter: gutter
+        }
       });
     });
 

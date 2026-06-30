@@ -5,11 +5,26 @@
         <div class="row g-4">
             <!-- Left Card -->
             <div class="col-md-6">
-                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative">
-                    <img src="{{ asset('find_a_model.jpg') }}" class="card-img object-fit-cover" alt="Find work as a model">
-                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
+                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative hero-card">
+                    <div id="findModelCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="4500">
+                        <div class="carousel-inner h-100">
+                            <div class="carousel-item active h-100">
+                                <img src="{{ asset('hero-find-model-1-editorial-duo.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models editorial duo">
+                            </div>
+                            <div class="carousel-item h-100">
+                                <img src="{{ asset('hero-find-model-2-male-fashion.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models male fashion portrait">
+                            </div>
+                            <div class="carousel-item h-100">
+                                <img src="{{ asset('hero-find-model-3-trio-steps.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models trio on steps">
+                            </div>
+                            <div class="carousel-item h-100">
+                                <img src="{{ asset('hero-find-model-4-street-style.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models street style duo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient hero-card__overlay">
                         <h3 class="fw-bold">Find work as a model</h3>
-                        <p>Modeling jobs for newcomers and professional models.</p>
+                        <p class="mb-0">Modeling jobs for newcomers and professional models.</p>
                         {{-- <a href="{{ route('models.jobs') }}" class="btn btn-danger rounded-pill mt-2">
                             For models and talents
                         </a> --}}
@@ -34,7 +49,7 @@
     </div>
 
     <div class="container py-5">
-        <h2 class="text-center mb-4 fw-bold">Popular Models</h2>
+        <h2 class="section-heading text-center mb-4 fw-bold">Popular Models</h2>
 
         <!-- Category Tabs -->
         {{-- <div class="d-flex justify-content-center mb-4">
@@ -51,27 +66,7 @@
         <div class="row g-4">
             @foreach($photos as $model)
                 <div class="col-md-3 col-6">
-                    <a href="{{ route('models.show', ['slug' => $model->user->slug, 'tab' => 'photos']) }}">
-                        <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden">
-                            <!-- Image -->
-                            <div class="ratio ratio-1x1">
-                                <img src="{{ asset('storage/' . $model->file_path) }}" 
-                                    class="card-img-top object-fit-cover rounded" 
-                                    alt="{{ $model->user->publicInfo->display_name ?? $model->user->name }}">
-                            </div>
-
-                            <!-- Overlay Info -->
-                            <div class="card-img-overlay d-flex flex-column justify-content-end p-3"
-                                style="background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));">
-                                <span class="text-white fw-bold m-0" style="font-size:1.25rem">
-                                    {{ $model->user->publicInfo->display_name ?? $model->user->name }}
-                                </span>
-                                <small class="text-white fw-bold">
-                                    {{ $model->user->publicInfo->location ?? 'Location not set' }}
-                                </small>
-                            </div>
-                        </div>
-                    </a>
+                    <x-model-card :photo="$model" />
                 </div>
             @endforeach
         </div>
@@ -82,109 +77,109 @@
         </div>
     </div>
 
-    <section class="py-2 bg-white">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-5">Community</h2>
-            
+    <section class="home-community py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-heading fw-bold mb-2">Community</h2>
+                <p class="text-muted mb-0 mx-auto home-section-subtitle">Growing together with talent, professionals, and partners across the industry.</p>
+            </div>
+
             <div class="row g-4 justify-content-center">
-                
-                <div class="col-4 col-md-4">
-                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">2,356</h3>
-                        <p class="mb-0">Models in Agency</p>
-                    </div>
-                </div>
-                
-                <div class="col-4 col-md-4">
-                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">187</h3>
-                        <p class="mb-0">Industry Professionals</p>
-                    </div>
-                </div>
-                
-                <div class="col-4 col-md-4">
-                    <div class="p-4 bg-light rounded-3 shadow-sm h-100">
-                        <h3 class="fw-bold">12</h3>
-                        <p class="mb-0">Agencies</p>
+                <div class="col-sm-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card__icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <p class="stat-card__number">2,356</p>
+                        <p class="stat-card__label mb-0">Models in Agency</p>
                     </div>
                 </div>
 
+                <div class="col-sm-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card__icon">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+                        <p class="stat-card__number">187</p>
+                        <p class="stat-card__label mb-0">Industry Professionals</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card__icon">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <p class="stat-card__number">12</p>
+                        <p class="stat-card__label mb-0">Agencies</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="programs" class="py-3 bg-light bg-gradient text-white">
-        <div class="container text-center">
-            <h2 class="text-dark fw-bold mb-3">OUR PROGRAMS</h2>
+    <section id="programs" class="home-programs py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-heading fw-bold mb-2">Our Programs</h2>
+                <p class="text-muted mb-0 mx-auto home-section-subtitle">Training paths designed to develop confidence, skill, and career-ready talent.</p>
+            </div>
+
             <div class="row g-4">
-                
-                <!-- Self Branding -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Self Branding</h5>
-                        <p class="mb-0">
-                            Build and promote your unique image in the industry.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-stars"></i></div>
+                        <h5 class="program-card__title">Self Branding</h5>
+                        <p class="program-card__text mb-0">Build and promote your unique image in the industry.</p>
                     </div>
                 </div>
 
-                <!-- Pageantry -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Pageantry</h5>
-                        <p class="mb-0">
-                            Train for beauty contests with grooming and confidence.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-trophy-fill"></i></div>
+                        <h5 class="program-card__title">Pageantry</h5>
+                        <p class="program-card__text mb-0">Train for beauty contests with grooming and confidence.</p>
                     </div>
                 </div>
 
-                <!-- Runway Modeling -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Runway</h5>
-                        <p class="mb-0">
-                            Master the walk and stage presence for fashion shows.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-person-walking"></i></div>
+                        <h5 class="program-card__title">Runway</h5>
+                        <p class="program-card__text mb-0">Master the walk and stage presence for fashion shows.</p>
                     </div>
                 </div>
 
-                <!-- Commercial Modeling -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Commercial</h5>
-                        <p class="mb-0">
-                            Explore TV, print, and brand modeling opportunities.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-camera-reels-fill"></i></div>
+                        <h5 class="program-card__title">Commercial</h5>
+                        <p class="program-card__text mb-0">Explore TV, print, and brand modeling opportunities.</p>
                     </div>
                 </div>
 
-                <!-- Etiquette -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Etiquette</h5>
-                        <p class="mb-0">
-                            Learn social and professional etiquette for success.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-award-fill"></i></div>
+                        <h5 class="program-card__title">Etiquette</h5>
+                        <p class="program-card__text mb-0">Learn social and professional etiquette for success.</p>
                     </div>
                 </div>
 
-                <!-- Photography & Portfolio -->
-                <div class="col-md-4 col-6">
-                    <div class="p-4 bg-secondary rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold">Photography & Portfolio</h5>
-                        <p class="mb-0">
-                            Create a stunning portfolio with expert guidance.
-                        </p>
+                <div class="col-md-4 col-sm-6">
+                    <div class="program-card h-100">
+                        <div class="program-card__icon"><i class="bi bi-camera-fill"></i></div>
+                        <h5 class="program-card__title">Photography &amp; Portfolio</h5>
+                        <p class="program-card__text mb-0">Create a stunning portfolio with expert guidance.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
     <section class="py-5 bg-white">
         <div class="container text-center">
-            <h2 class="fw-bold mb-5">Your safety comes first</h2>
+            <h2 class="section-heading fw-bold mb-5 text-center">Your safety comes first</h2>
             
             <div class="row g-4 justify-content-center">
                 
@@ -219,88 +214,108 @@
         </div>
     </section>
 
-    <div class="testimonial-section py-5">
-        <h2 class="text-center fw-bold mb-5">Success Stories</h2>
-        
-        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+    <section class="testimonial-section py-5">
+        <div class="container">
+            <div class="text-center mb-4 mb-md-5">
+                <p class="models-section__eyebrow text-uppercase fw-semibold mb-2">Real journeys</p>
+                <h2 class="section-heading fw-bold mb-2">Success Stories</h2>
+                <p class="text-muted mb-0 mx-auto testimonial-section__subtitle">Hear from models who have grown with DD Models Agency.</p>
+            </div>
+        </div>
+
+        <div id="testimonialCarousel" class="carousel slide testimonial-carousel" data-bs-ride="carousel">
             <div class="container carousel-inner">
 
                 @foreach ($testimonials as $index => $testimonial)
                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                        <div class="row align-items-center justify-content-center">
-                            
-                            {{-- ✅ Left side: Image or Video --}}
+                        <div class="testimonial-slide row align-items-center justify-content-center g-4">
                             <div class="col-md-5 text-center">
                                 @if($testimonial->youtube_link)
-                                    <div class="ratio ratio-16x9 rounded-3 shadow-sm">
-                                        <iframe 
+                                    <div class="testimonial-carousel__media rounded-3 shadow-sm">
+                                        <iframe
                                             src="{{ $testimonial->getYoutubeEmbedUrl() }}"
-                                            frameborder="0" 
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen
-                                            class="w-100 h-100 rounded-3">
+                                            class="rounded-3">
                                         </iframe>
                                     </div>
                                 @elseif($testimonial->cover_image)
-                                    <img src="{{ asset('storage/' . $testimonial->cover_image) }}"
-                                        alt="Cover image for {{ $testimonial->name }}"
-                                        class="img-fluid rounded-3 shadow-sm">
+                                    <div class="testimonial-carousel__media rounded-3 shadow-sm">
+                                        <img src="{{ asset('storage/' . $testimonial->cover_image) }}"
+                                            alt="Cover image for {{ $testimonial->name }}"
+                                            class="testimonial-carousel__image rounded-3">
+                                    </div>
+                                @else
+                                    <div class="testimonial-carousel__media rounded-3 shadow-sm">
+                                        <div class="testimonial-carousel__placeholder rounded-3">
+                                            <i class="bi bi-quote fs-1"></i>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
 
-                            {{-- ✅ Right side: Testimonial Text --}}
                             <div class="col-md-6">
-                                <blockquote class="fs-5 fw-medium">
-                                    <i class="bi bi-quote text-danger fs-2 me-2"></i>
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($testimonial->testimony), 150, '...') }}
-                                </blockquote>
+                                <div class="testimonial-slide__content">
+                                    @if($testimonial->ratings)
+                                        <div class="testimonial-slide__stars mb-3">
+                                            @for ($i = 0; $i < $testimonial->ratings; $i++)
+                                                <i class="bi bi-star-fill"></i>
+                                            @endfor
+                                        </div>
+                                    @endif
 
+                                    <blockquote class="testimonial-slide__quote">
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($testimonial->testimony), 180, '...') }}
+                                    </blockquote>
 
-                                {{-- ✅ Profile Avatar --}}
-                                <div class="d-flex align-items-center mt-4">
-                                    <div class="flex-shrink-0">
-                                        @if($testimonial->profile_picture)
-                                            <img src="{{ asset('storage/' . $testimonial->profile_picture) }}"
-                                                alt="{{ $testimonial->name }}"
-                                                class="rounded-circle"
-                                                width="50" height="50">
-                                        @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}"
-                                                alt="{{ $testimonial->name }}"
-                                                class="rounded-circle"
-                                                width="50" height="50">
-                                        @endif
-                                    </div>
-                                    <div class="ms-3">
-                                        <strong>{{ $testimonial->name }}</strong><br>
-                                        @if($testimonial->job_title)
-                                            <small class="text-muted">{{ $testimonial->job_title }}</small>
-                                        @endif
+                                    <div class="d-flex align-items-center mt-4">
+                                        <div class="flex-shrink-0">
+                                            @if($testimonial->profile_picture)
+                                                <img src="{{ asset('storage/' . $testimonial->profile_picture) }}"
+                                                    alt="{{ $testimonial->name }}"
+                                                    class="rounded-circle testimonial-slide__avatar"
+                                                    width="52" height="52">
+                                            @else
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}"
+                                                    alt="{{ $testimonial->name }}"
+                                                    class="rounded-circle testimonial-slide__avatar"
+                                                    width="52" height="52">
+                                            @endif
+                                        </div>
+                                        <div class="ms-3">
+                                            <strong class="testimonial-slide__name">{{ $testimonial->name }}</strong>
+                                            @if($testimonial->job_title)
+                                                <br><small class="text-muted">{{ $testimonial->job_title }}</small>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            {{-- ✅ Carousel controls --}}
             <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-                <i class="bi bi-chevron-double-left text-dark"></i>
+                <i class="bi bi-chevron-left"></i>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-                <i class="bi bi-chevron-double-right text-dark"></i>
+                <i class="bi bi-chevron-right"></i>
             </button>
         </div>
-    </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ route('testimonials') }}" class="btn btn-outline-secondary rounded-pill px-4">View all stories</a>
+        </div>
+    </section>
 
     <!-- Clients Section -->
     <section id="clients" class="clients section py-4">
         <div class="container text-center">
 
             <!-- Section Title -->
-            <h3 class="mb-4 fw-bold">Brands that trust us</h3>
+            <h3 class="section-heading mb-4 fw-bold">Brands that trust us</h3>
 
             <!-- Logos Marquee -->
             <div class="d-flex overflow-hidden">
@@ -325,4 +340,3 @@
         </div>
     </section>
 @endsection
-

@@ -33,18 +33,32 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             $path = public_path('meta.json');
-            $meta = [];
-        
+            $uri = trim(request()->path(), '/');
+            $uri = $uri === '' ? 'home' : $uri;
+
+            $defaults = config('page-meta.pages.' . $uri, []);
+            $overrides = [];
+
             if (file_exists($path)) {
-                $json = json_decode(file_get_contents($path), true);
-        
-                $uri = trim(request()->path(), '/');
-                $uri = $uri === '' ? 'home' : $uri;
-        
-                $meta = $json[$uri] ?? [];
+                $json = json_decode(file_get_contents($path), true) ?? [];
+                $overrides = $json[$uri] ?? [];
             }
-        
-            $view->with('meta', $meta);
-        });  
+
+            $meta = array_merge($defaults, array_filter($overrides, fn ($value) => $value !== null && $value !== ''));
+
+            $suffix = config('page-meta.title_suffix', 'Dare to Dream Modelling');
+            $documentTitle = $meta['title'] ?? $suffix;
+
+            if ($uri !== 'home' && ! str_contains(strtolower($documentTitle), 'dare to dream')) {
+                $documentTitle = $documentTitle . ' | ' . $suffix;
+            }
+
+            $view->with([
+                'meta' => $meta,
+                'documentTitle' => $documentTitle,
+                'pageHeading' => $meta['heading'] ?? null,
+                'pageSubtitle' => $meta['subtitle'] ?? null,
+            ]);
+        });
     }
 }

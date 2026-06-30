@@ -15,7 +15,7 @@ class LinkedAccountsController extends Controller
         $linkedAccount = $user->linkedAccount ?? new LinkedAccount();
 
         // For demo purposes - replace with actual TikTok API
-        $tiktokVideos = $linkedAccount->tiktok_connected ? $this->getDemoTikTokVideos() : [];
+        $tiktokVideos = $linkedAccount->hasTikTokConnection() ? $this->getDemoTikTokVideos() : [];
 
         return view('account.linked', compact('user', 'linkedAccount', 'tiktokVideos'));
     }

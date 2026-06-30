@@ -29,9 +29,14 @@ class LinkedAccount extends Model
     }
 
     // Helper method to check if TikTok is connected
-    public function getTiktokConnectedAttribute()
+    public function hasTikTokConnection(): bool
     {
         return !empty($this->tiktok_access_token);
+    }
+
+    public function getTiktokConnectedAttribute($value): bool
+    {
+        return !empty($this->tiktok_access_token) || (bool) $value;
     }
 
     // Check if token is expired

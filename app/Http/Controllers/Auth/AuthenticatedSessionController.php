@@ -34,7 +34,13 @@ class AuthenticatedSessionController extends Controller
             'last_login' => now(),
         ]);
 
-        // 🔹 Redirect based on role
+        // Avoid redirecting to JSON API endpoints after login
+        $intended = session()->get('url.intended');
+        if ($intended && preg_match('#/account/tiktok/(videos|status)#', $intended)) {
+            session()->forget('url.intended');
+        }
+
+        // Redirect based on role
         if (auth()->user()->is_admin) {
             return redirect()->intended(route('console'));
         }

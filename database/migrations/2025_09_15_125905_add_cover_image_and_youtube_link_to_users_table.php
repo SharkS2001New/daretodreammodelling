@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('testimonials', function (Blueprint $table) {
-            $table->string('cover_image')->nullable()->after('profile_picture');
-            $table->string('youtube_link')->nullable()->after('cover_image');
+            if (! Schema::hasColumn('testimonials', 'cover_image')) {
+                $table->string('cover_image')->nullable()->after('profile_picture');
+            }
+            if (! Schema::hasColumn('testimonials', 'youtube_link')) {
+                $table->string('youtube_link')->nullable()->after('cover_image');
+            }
         });
     }
 

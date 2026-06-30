@@ -71,11 +71,11 @@ class ModelsController extends Controller
                 'likes',
                 'views',
                 'user.photos' => function ($q) {
-                    $q->latest()->take(20); // change limit as needed for the carousel
+                    $q->latest()->take(20);
                 }
             ])
             ->whereIn('id', $latestPhotoIds)
-            ->latest()
+            ->orderByUserLikes()
             ->paginate(20);
 
         return view('models.index', compact('photos'));

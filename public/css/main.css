@@ -1,7 +1,68 @@
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-main {
+    flex: 1;
+    width: 100%;
+}
+
 /* ===== NAVBAR STYLES ===== */
-.navbar-nav .nav-link {
-    font-weight: 500;
-    margin: 0 8px;
+.site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    width: 100%;
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 2.5vw, 2.5rem);
+    padding-right: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.site-navbar {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+}
+
+.site-navbar__logo {
+    height: 50px;
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.site-navbar__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.site-navbar__toggler-icon {
+    width: 22px;
+    height: 16px;
+}
+
+.site-navbar__toggler-icon .navbar-toggler-line {
+    height: 2px;
+    border-radius: 1px;
+}
+
+.site-nav .nav-link {
+    white-space: nowrap;
+}
+
+.site-nav-actions {
+    margin-left: auto;
+}
+
+.site-nav-actions__name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .navbar-brand {
@@ -12,29 +73,25 @@
 .navbar-brand small {
     font-size: 0.7rem;
     display: block;
-    color: #666;
+    color: var(--text-muted);
     margin-top: -3px;
 }
 
-/* Button Styles */
-.btn-login {
-    background-color: #f5f5f5;
-    border-radius: 25px;
-    font-weight: 600;
-    padding: 6px 18px;
+@media (min-width: 992px) {
+    .site-header__inner {
+        flex-wrap: nowrap;
+    }
+
+    .site-nav {
+        gap: 0.35rem;
+    }
+
+    .site-nav-actions {
+        margin-left: 0.75rem;
+    }
 }
 
-.btn-signup {
-    background-color: #e91e63; /* pink/red */
-    color: white !important;
-    border-radius: 25px;
-    font-weight: 600;
-    padding: 6px 18px;
-}
-
-.btn-signup:hover {
-    background-color: #c2185b;
-}
+/* Header auth buttons — styled in theme.css (.btn-login, .btn-signup) */
 
 /* ===== SIDEBAR STYLES ===== */
 /* Desktop Sidebar */
@@ -281,21 +338,22 @@ body.sidebar-open {
 .accordion-button {
     font-weight: 600;
     padding: 1rem 1.25rem;
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: var(--accordion-btn-bg, #f8f9fa);
+    color: var(--accordion-btn-color, #212529);
+    border: 1px solid var(--border-color, #e9ecef);
     border-radius: 8px !important;
     margin-bottom: 0.5rem;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: #e91e63;
-    color: white;
-    border-color: #e91e63;
+    background-color: var(--accordion-active-bg, #e91e63);
+    color: var(--accordion-active-color, #fff);
+    border-color: var(--accordion-active-bg, #e91e63);
 }
 
 .accordion-button:focus {
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
-    border-color: #e91e63;
+    border-color: var(--brand, #e91e63);
 }
 
 .accordion-button::after {
@@ -308,8 +366,9 @@ body.sidebar-open {
 
 .accordion-body {
     padding: 1.25rem;
-    background-color: #fafafa;
-    border: 1px solid #e9ecef;
+    background-color: var(--accordion-body-bg, #fafafa);
+    color: var(--body-color, #212529);
+    border: 1px solid var(--border-color, #e9ecef);
     border-top: none;
     border-radius: 0 0 8px 8px;
 }
@@ -672,27 +731,44 @@ body.sidebar-open {
   position: relative;
 }
 
-.filter-dropdown .form-control {
+.filter-dropdown .form-control,
+.filter-dropdown .age-filter-toggle {
   border: none;
   border-radius: 25px;
   padding: 8px 16px;
-  background: #f2f2f2;
+  background: var(--surface, #f2f2f2);
+  color: var(--body-color, #1f2937);
   font-size: 14px;
   cursor: pointer;
+  text-align: left;
+}
+
+.filter-dropdown .age-filter-toggle.is-active {
+  background: var(--nav-link-active-bg, rgba(233, 30, 99, 0.12));
+  color: var(--brand, #e91e63);
+  font-weight: 600;
 }
 
 /* Age popup */
 .filter-popup {
   display: none;
   position: absolute;
-  top: 120%;
+  top: calc(100% + 8px);
   left: 0;
-  background: #fff;
+  background: var(--surface-elevated, #fff);
+  color: var(--body-color, #1f2937);
   padding: 15px;
   border-radius: 10px;
-  width: 280px;
+  width: min(280px, calc(100vw - 2rem));
   box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
   z-index: 100;
+}
+
+.filter-popup .form-control {
+  background: var(--surface, #f8f9fa);
+  color: var(--body-color, #1f2937);
+  border-color: var(--border-color, #dee2e6);
 }
 
 .filter-dropdown.open .filter-popup {
@@ -744,4 +820,3 @@ body.sidebar-open {
   background-color: #333;
   transform: scale(1.1);
 }
-
