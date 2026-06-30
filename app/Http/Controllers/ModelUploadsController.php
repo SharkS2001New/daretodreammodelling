@@ -20,8 +20,23 @@ class ModelUploadsController extends Controller
             'photos.views',
             'videos.likes',
             'videos.views',
-            'followers'
+            'followers',
+            'reviewsReceived' => fn ($q) => $q->where('approved', true)->with('reviewer.publicInfo'),
         ])->where('slug', $slug)->firstOrFail();
+
+        $isFollowing = Auth::check()
+            && Auth::id() !== $user->id
+            && $user->followers()->where('user_id', Auth::id())->exists();
+
+        $userReview = Auth::check() && Auth::id() !== $user->id
+            ? \App\Models\Review::where('reviewer_id', Auth::id())->where('model_id', $user->id)->first()
+            : null;
+
+        $reviews = $user->reviewsReceived;
+        $reviewStats = [
+            'count' => $reviews->count(),
+            'average' => $reviews->count() ? round($reviews->avg('rating'), 1) : null,
+        ];
 
         $stats = [
             'followers' => $user->followers->count(),
@@ -31,7 +46,7 @@ class ModelUploadsController extends Controller
             'video_views' => $user->videos->sum(fn($v) => $v->views->count()),
         ];
         
-        return view('models.show', compact('user', 'stats'));
+        return view('models.show', compact('user', 'stats', 'isFollowing', 'reviews', 'reviewStats', 'userReview'));
     }
 
     private function fetchTikTokVideos($user)

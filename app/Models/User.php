@@ -88,4 +88,48 @@ class User extends Authenticatable
     public function following() {
         return $this->hasMany(Follower::class, 'user_id');
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'recipient_id');
+    }
+
+    public function bookingsAsModel()
+    {
+        return $this->hasMany(Booking::class, 'model_id');
+    }
+
+    public function bookingsAsClient()
+    {
+        return $this->hasMany(Booking::class, 'client_id');
+    }
+
+    public function reviewsReceived()
+    {
+        return $this->hasMany(Review::class, 'model_id');
+    }
+
+    public function reviewsGiven()
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
+    }
+
+    public function displayName(): string
+    {
+        return $this->publicInfo?->display_name ?? $this->name;
+    }
+
+    public function avatarUrl(int $size = 150): string
+    {
+        if ($this->publicInfo?->profile_picture) {
+            return asset('storage/' . $this->publicInfo->profile_picture);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&size=' . $size;
+    }
 }

@@ -10,6 +10,10 @@ use App\Http\Controllers\BlogsCategoryController;
 use App\Http\Controllers\Account\PublicInfoController;
 use App\Http\Controllers\Account\LinkedAccountsController;
 use App\Http\Controllers\Account\TikTokController;
+use App\Http\Controllers\Account\MessagesController;
+use App\Http\Controllers\Account\FollowersController;
+use App\Http\Controllers\Account\BookingsController;
+use App\Http\Controllers\Account\ReviewsController;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ModelUploadsController;
 use App\Http\Controllers\PhotoViewController;
@@ -76,6 +80,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/account/linked', [LinkedAccountsController::class, 'index'])->name('account.linked');
     Route::post('/account/linked', [LinkedAccountsController::class, 'update'])->name('account.linked.update');
+
+    Route::get('/account/messages', [MessagesController::class, 'index'])->name('account.messages.index');
+    Route::get('/account/messages/{user}', [MessagesController::class, 'show'])->name('account.messages.show');
+    Route::post('/account/messages/{user}', [MessagesController::class, 'store'])->name('account.messages.store');
+
+    Route::get('/account/followers', [FollowersController::class, 'index'])->name('account.followers.index');
+
+    Route::get('/account/bookings', [BookingsController::class, 'index'])->name('account.bookings.index');
+    Route::get('/account/bookings/create/{model?}', [BookingsController::class, 'create'])->name('account.bookings.create');
+    Route::post('/account/bookings', [BookingsController::class, 'store'])->name('account.bookings.store');
+    Route::patch('/account/bookings/{booking}', [BookingsController::class, 'update'])->name('account.bookings.update');
+
+    Route::get('/account/reviews', [ReviewsController::class, 'index'])->name('account.reviews.index');
+    Route::post('/models/{model}/reviews', [ReviewsController::class, 'store'])->name('models.reviews.store');
 
     Route::get('/account/tiktok/redirect', [TikTokController::class, 'redirect'])->name('tiktok.connect');
     Route::get('/account/tiktok/callback', [TikTokController::class, 'callback'])->name('tiktok.callback');

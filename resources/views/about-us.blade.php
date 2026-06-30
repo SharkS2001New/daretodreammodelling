@@ -5,112 +5,122 @@
     {{-- Hero --}}
     <div class="row align-items-center g-4 mb-5">
         <div class="col-lg-6">
-            <x-page-heading :centered="false" class="mb-3" />
+            <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">Dare To Dream</p>
+            <x-page-heading :centered="false" title="About Us" subtitle="" class="mb-3" />
+            <p class="text-muted mb-3">
+                DD Models Agency is a dynamic talent development and model management platform dedicated to discovering,
+                nurturing, and connecting aspiring and professional models with meaningful opportunities. We believe in
+                empowering talent through mentorship, training, exposure, and professional guidance while creating
+                valuable partnerships with brands, businesses, and industry stakeholders.
+            </p>
             <p class="text-muted mb-0">
-                We are a Nairobi-based talent management agency helping aspiring models develop, shine, and succeed —
-                while connecting brands with professional, diverse talent.
+                Founded by <strong>Vickline Gatwiri</strong>, DD Models is built on the belief that every dream is valid
+                and every talent deserves a platform to shine.
             </p>
         </div>
         <div class="col-lg-6">
             <div class="about-hero-frame">
                 <img src="{{ asset('about-hero.png') }}"
-                    alt="Dare to Dream models team"
+                    alt="DD Models Agency team"
                     class="about-hero-image">
             </div>
         </div>
     </div>
 
-    {{-- Our Profile --}}
-    <section class="about-profile-panel mb-5">
-        <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">Who we are</p>
-        <h2 class="section-heading fw-bold mb-3">Our Profile</h2>
-        <p class="text-muted mb-3">
-            DD Models Agency is a talent management agency dedicated to creating opportunities for aspiring models
-            and building meaningful connections between talent and brands.
-        </p>
-        <p class="about-tagline mb-0 fw-medium">
-            DD Models Agency – Dare To Dream. Develop. Shine. Succeed. ✨
-        </p>
-    </section>
-
-    {{-- For Models, Clients & Activities --}}
+    {{-- Vision & Mission --}}
     <section class="mb-5">
-        <div class="text-center mb-4">
-            <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">What we offer</p>
-            <h2 class="section-heading fw-bold mb-2">Built for models and brands</h2>
-            <p class="text-muted mb-0 mx-auto about-section-subtitle">Whether you want to grow your career or find the right talent, we are here to help.</p>
-        </div>
-
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="about-offer-card h-100 text-center">
-                    <div class="about-offer-card__icon"><i class="bi bi-person-plus-fill"></i></div>
-                    <h3 class="about-offer-card__title">For Models</h3>
-                    <p class="about-offer-card__text">Whether you are starting out or ready for international exposure, Dare to Dream provides mentorship, portfolio building, training, and opportunities to shine on runways and campaigns worldwide.</p>
-                    <a href="{{ route('register') }}" class="btn btn-primary rounded-pill">Join Us</a>
+            <div class="col-md-6">
+                <div class="about-profile-panel h-100">
+                    <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">Our direction</p>
+                    <h2 class="section-heading fw-bold mb-3">Vision</h2>
+                    <p class="text-muted mb-0">
+                        To become a leading modeling and talent development agency recognized for excellence,
+                        professionalism, diversity, and innovation in the fashion and creative industries.
+                    </p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="about-offer-card h-100 text-center">
-                    <div class="about-offer-card__icon"><i class="bi bi-building"></i></div>
-                    <h3 class="about-offer-card__title">For Clients</h3>
-                    <p class="about-offer-card__text">Looking for fresh faces or professional talent for your brand? We connect you with diverse models who embody originality and professionalism for campaigns, events, and productions.</p>
-                    <a href="{{ route('contact-us') }}" class="btn btn-outline-secondary rounded-pill">Work With Us</a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="about-offer-card h-100 text-center">
-                    <div class="about-offer-card__icon"><i class="bi bi-calendar-event"></i></div>
-                    <h3 class="about-offer-card__title">Upcoming Activities</h3>
-                    <p class="about-offer-card__text">From model auditions and workshops to fashion showcases and brand activations — see what is coming up at DD Models Agency.</p>
-                    <a href="{{ route('upcoming-activities') }}" class="btn btn-outline-secondary rounded-pill">View Activities</a>
+            <div class="col-md-6">
+                <div class="about-profile-panel h-100">
+                    <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">Our purpose</p>
+                    <h2 class="section-heading fw-bold mb-3">Mission</h2>
+                    <p class="text-muted mb-0">
+                        To empower aspiring and professional models through mentorship, training, exposure, and strategic
+                        partnerships while delivering exceptional talent solutions to brands and clients.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Our Values --}}
+    {{-- Our Services --}}
     <section class="mb-5">
         <div class="mb-4">
-            <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">What we stand for</p>
-            <h2 class="section-heading fw-bold mb-2">Our Values</h2>
-            <p class="text-muted mb-0">The principles that guide every partnership, casting, and training session.</p>
+            <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">What we do</p>
+            <h2 class="section-heading fw-bold mb-2">Our Services</h2>
         </div>
 
         <div class="row g-3">
-            <div class="col-md-6 col-lg-4">
-                <div class="about-value-card h-100">
-                    <div class="about-value-card__icon"><i class="bi bi-people-fill"></i></div>
-                    <h3 class="h6 fw-bold mb-2">Inclusivity</h3>
-                    <p class="text-muted small mb-0">All genders, sizes, and backgrounds have a place here.</p>
+            @foreach ([
+                'Model Scouting & Recruitment',
+                'Talent Development & Mentorship',
+                'Fashion Shows & Runway Coordination',
+                'Brand Activations & Promotions',
+                'Event Staffing',
+                'Photography Collaborations',
+                'Casting & Talent Placement',
+                'Portfolio Development & Grooming Workshops',
+                'Influencer & Brand Ambassador Management',
+            ] as $service)
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-value-card h-100">
+                        <div class="about-value-card__icon"><i class="bi bi-check2-circle"></i></div>
+                        <p class="fw-semibold mb-0">{{ $service }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    {{-- What we bring --}}
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="about-profile-panel h-100">
+                    <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">For models</p>
+                    <h2 class="section-heading fw-bold mb-3">What DD Models Brings to Models</h2>
+                    <ul class="list-unstyled mb-0 about-benefit-list">
+                        @foreach ([
+                            'Professional mentorship and industry guidance',
+                            'Exposure to casting calls, fashion shows, photoshoots, and campaigns',
+                            'Portfolio and personal brand development',
+                            'Networking opportunities with photographers, designers, brands, and agencies',
+                            'Confidence-building and career growth support',
+                            'Access to a professional and supportive modeling community',
+                        ] as $item)
+                            <li><i class="bi bi-stars"></i> {{ $item }}</li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('register') }}" class="btn btn-primary rounded-pill mt-4">Join Us</a>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="about-value-card h-100">
-                    <div class="about-value-card__icon"><i class="bi bi-heart-fill"></i></div>
-                    <h3 class="h6 fw-bold mb-2">Authenticity</h3>
-                    <p class="text-muted small mb-0">We embrace uniqueness as the true definition of beauty.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="about-value-card h-100">
-                    <div class="about-value-card__icon"><i class="bi bi-briefcase-fill"></i></div>
-                    <h3 class="h6 fw-bold mb-2">Professionalism</h3>
-                    <p class="text-muted small mb-0">Ethical practices, transparency, and fairness in every contract.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-                <div class="about-value-card h-100">
-                    <div class="about-value-card__icon"><i class="bi bi-graph-up-arrow"></i></div>
-                    <h3 class="h6 fw-bold mb-2">Growth</h3>
-                    <p class="text-muted small mb-0">Continuous training and development for rising talent.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-                <div class="about-value-card h-100">
-                    <div class="about-value-card__icon"><i class="bi bi-shield-check"></i></div>
-                    <h3 class="h6 fw-bold mb-2">Integrity</h3>
-                    <p class="text-muted small mb-0">Respect and honesty in all our partnerships and collaborations.</p>
+            <div class="col-lg-6">
+                <div class="about-profile-panel h-100">
+                    <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">For clients</p>
+                    <h2 class="section-heading fw-bold mb-3">What DD Models Brings to Clients</h2>
+                    <ul class="list-unstyled mb-0 about-benefit-list">
+                        @foreach ([
+                            'Access to trained, professional, and reliable talent',
+                            'Efficient talent sourcing and coordination',
+                            'Professional representation for events and campaigns',
+                            'Brand ambassadors who align with brand values',
+                            'Diverse talent for different market needs',
+                            'Quality service and professional execution',
+                        ] as $item)
+                            <li><i class="bi bi-stars"></i> {{ $item }}</li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('contact-us') }}" class="btn btn-outline-secondary rounded-pill mt-4">Work With Us</a>
                 </div>
             </div>
         </div>
@@ -171,12 +181,12 @@
         </div>
     </section>
 
-    {{-- Why Choose Us --}}
+    {{-- What Makes DD Models Different --}}
     <section class="about-cta-panel">
         <div class="row align-items-center g-4">
             <div class="col-lg-8">
                 <p class="about-section__eyebrow text-uppercase fw-semibold mb-2">Why DD Models</p>
-                <h2 class="section-heading fw-bold mb-3">Why Choose Us?</h2>
+                <h2 class="section-heading fw-bold mb-3">What Makes DD Models Different</h2>
                 <p class="text-muted mb-0">
                     DD Models goes beyond traditional model representation by focusing on talent development, mentorship,
                     professionalism, and long-term growth. We build strong relationships between talent and brands, ensuring

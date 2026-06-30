@@ -38,6 +38,46 @@
                 </div>
             </a>
         </div>
+
+        <div class="col-md-6">
+            <a href="{{ route('account.messages.index') }}" class="account-nav-card text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-chat-dots-fill"></i></div>
+                <div>
+                    <h2 class="account-nav-card__title">Messages</h2>
+                    <p class="account-nav-card__text mb-0">View and reply to conversations with clients and models.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{ route('account.bookings.index') }}" class="account-nav-card text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-calendar-event-fill"></i></div>
+                <div>
+                    <h2 class="account-nav-card__title">Bookings</h2>
+                    <p class="account-nav-card__text mb-0">Manage booking requests you've received or submitted.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{ route('account.followers.index') }}" class="account-nav-card text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-people-fill"></i></div>
+                <div>
+                    <h2 class="account-nav-card__title">Followers</h2>
+                    <p class="account-nav-card__text mb-0">See who follows you and who you're following.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{ route('account.reviews.index') }}" class="account-nav-card text-decoration-none">
+                <div class="account-nav-card__icon"><i class="bi bi-star-fill"></i></div>
+                <div>
+                    <h2 class="account-nav-card__title">Reviews</h2>
+                    <p class="account-nav-card__text mb-0">Read feedback about you and reviews you've written.</p>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 @endsection

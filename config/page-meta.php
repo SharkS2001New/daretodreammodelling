@@ -14,10 +14,10 @@ return [
         ],
         'about-us' => [
             'title' => 'About Us',
-            'heading' => 'About Dare to Dream',
-            'subtitle' => 'We dare to challenge boundaries, empower youth, and create opportunities in the world of fashion and entertainment.',
-            'description' => 'Learn about Dare to Dream Modelling Agency — our mission, values, founder, and team.',
-            'keywords' => 'about, modelling agency, team, mission, founder',
+            'heading' => 'About Us',
+            'subtitle' => 'Dare To Dream — talent development, mentorship, and model management for aspiring and professional models.',
+            'description' => 'Learn about DD Models Agency — our vision, mission, services, and the team behind Dare to Dream Modelling.',
+            'keywords' => 'about, modelling agency, team, mission, founder, DD Models',
         ],
         'upcoming-activities' => [
             'title' => 'Upcoming Activities',

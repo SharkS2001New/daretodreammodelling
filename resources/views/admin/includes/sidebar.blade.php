@@ -33,9 +33,9 @@
                 <i class="bi bi-camera-reels-fill"></i> My videos
             </a>
         </li>
-        <li><a href="#"><i class="bi bi-chat-dots-fill"></i> Messages</a></li>
-        <li><a href="#"><i class="bi bi-calendar-event-fill"></i> Bookings</a></li>
-        <li><a href="#"><i class="bi bi-people-fill"></i> Followers</a></li>
-        <li><a href="#"><i class="bi bi-star-fill"></i> Reviews</a></li>
+        <li><a href="{{ route('account.messages.index') }}"><i class="bi bi-chat-dots-fill"></i> Messages</a></li>
+        <li><a href="{{ route('account.bookings.index') }}"><i class="bi bi-calendar-event-fill"></i> Bookings</a></li>
+        <li><a href="{{ route('account.followers.index') }}"><i class="bi bi-people-fill"></i> Followers</a></li>
+        <li><a href="{{ route('account.reviews.index') }}"><i class="bi bi-star-fill"></i> Reviews</a></li>
     </ul>
 </aside>

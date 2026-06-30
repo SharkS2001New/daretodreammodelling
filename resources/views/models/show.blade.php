@@ -37,6 +37,28 @@
                         My dashboard
                     </a>
                 </div>
+            @else
+                <div class="col-lg-4">
+                    <div class="model-profile__actions d-flex flex-wrap gap-2 justify-content-lg-end">
+                        @auth
+                            <button type="button" id="follow-btn"
+                                class="btn btn-sm rounded-pill {{ ($isFollowing ?? false) ? 'btn-outline-secondary' : 'btn-primary' }}"
+                                data-model-id="{{ $user->id }}"
+                                data-following="{{ ($isFollowing ?? false) ? '1' : '0' }}">
+                                <i class="bi bi-person-{{ ($isFollowing ?? false) ? 'check-' : '' }}plus"></i>
+                                {{ ($isFollowing ?? false) ? 'Following' : 'Follow' }}
+                            </button>
+                            <a href="{{ route('account.messages.show', $user) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                <i class="bi bi-chat-dots"></i> Message
+                            </a>
+                            <a href="{{ route('account.bookings.create', $user) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                <i class="bi bi-calendar-plus"></i> Book
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-sm rounded-pill">Log in to connect</a>
+                        @endauth
+                    </div>
+                </div>
             @endif
         </div>
 
@@ -59,7 +81,7 @@
             </div>
             <div class="model-stat">
                 <span class="model-stat__label">Followers</span>
-                <strong class="model-stat__value">{{ $stats['followers'] }}</strong>
+                <strong class="model-stat__value" id="followers-count">{{ $stats['followers'] }}</strong>
             </div>
             <div class="model-stat">
                 <span class="model-stat__label">Last login</span>
@@ -104,6 +126,11 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="about-tab" data-bs-toggle="tab" href="#about" role="tab">About</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab">
+                Reviews@if(($reviewStats['count'] ?? 0) > 0) ({{ $reviewStats['count'] }})@endif
+            </a>
         </li>
     </ul>
 
@@ -399,6 +426,86 @@
                         @endif
                     </p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel">
+            <div class="model-about-panel">
+                @if(($reviewStats['average'] ?? null))
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <div class="account-rating-display">
+                            <span class="account-rating-display__value">{{ $reviewStats['average'] }}</span>
+                            <div class="account-stars justify-content-center">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="bi bi-star{{ $i <= round($reviewStats['average']) ? '-fill' : '' }}"></i>
+                                @endfor
+                            </div>
+                            <p class="text-muted small mb-0">{{ $reviewStats['count'] }} {{ Str::plural('review', $reviewStats['count']) }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                @forelse($reviews ?? [] as $review)
+                    <div class="account-review-card mb-3 pb-3 border-bottom">
+                        <div class="d-flex gap-3">
+                            <img src="{{ $review->reviewer->avatarUrl(64) }}" alt="" class="rounded-circle" width="44" height="44">
+                            <div>
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                                    <strong>{{ $review->reviewer->displayName() }}</strong>
+                                    <span class="text-muted small">{{ $review->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="account-stars account-stars--sm mb-2">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}"></i>
+                                    @endfor
+                                </div>
+                                @if($review->comment)
+                                    <p class="small mb-0">{{ $review->comment }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-muted text-center py-3 mb-0">No reviews yet.</p>
+                @endforelse
+
+                @auth
+                    @if(!$isOwner)
+                        <div class="mt-4 pt-3 border-top">
+                            <h3 class="h6 fw-bold mb-3">{{ $userReview ? 'Update your review' : 'Leave a review' }}</h3>
+                            @if(session('success'))
+                                <div class="alert alert-success">{{ session('success') }}</div>
+                            @endif
+                            @if(session('error'))
+                                <div class="alert alert-danger">{{ session('error') }}</div>
+                            @endif
+                            <form action="{{ route('models.reviews.store', $user) }}" method="POST">
+                                @csrf
+                                <div class="auth-form__group">
+                                    <label class="form-label">Rating</label>
+                                    <select name="rating" required class="form-select auth-form__control">
+                                        @for($i = 5; $i >= 1; $i--)
+                                            <option value="{{ $i }}" @selected(old('rating', $userReview?->rating) == $i)>
+                                                {{ $i }} {{ Str::plural('star', $i) }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="auth-form__group">
+                                    <label class="form-label">Comment <span class="text-muted fw-normal">(optional)</span></label>
+                                    <textarea name="comment" rows="3" class="form-control auth-form__control"
+                                        placeholder="Share your experience working with {{ $displayName }}...">{{ old('comment', $userReview?->comment) }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">{{ $userReview ? 'Update review' : 'Submit review' }}</button>
+                            </form>
+                        </div>
+                    @endif
+                @else
+                    <p class="text-center mt-4 mb-0">
+                        <a href="{{ route('login') }}">Log in</a> to leave a review.
+                    </p>
+                @endauth
             </div>
         </div>
     </div>
@@ -848,6 +955,54 @@ function loadTikTokEmbedScript() {
     script.src = 'https://www.tiktok.com/embed.js';
     document.body.appendChild(script);
 }
+
+// Follow button
+document.addEventListener('DOMContentLoaded', function() {
+    const followBtn = document.getElementById('follow-btn');
+    if (!followBtn) return;
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    const modelId = followBtn.dataset.modelId;
+
+    followBtn.addEventListener('click', function() {
+        const isFollowing = followBtn.dataset.following === '1';
+        const url = `/models/${modelId}/follow`;
+        const method = isFollowing ? 'DELETE' : 'POST';
+
+        fetch(url, {
+            method,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+            .then(res => {
+                if (res.status === 401) {
+                    window.location.href = '{{ route('login') }}';
+                    return null;
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+
+                const nowFollowing = !isFollowing;
+                followBtn.dataset.following = nowFollowing ? '1' : '0';
+                followBtn.classList.toggle('btn-primary', !nowFollowing);
+                followBtn.classList.toggle('btn-outline-secondary', nowFollowing);
+                followBtn.innerHTML = nowFollowing
+                    ? '<i class="bi bi-person-check"></i> Following'
+                    : '<i class="bi bi-person-plus"></i> Follow';
+
+                const countEl = document.getElementById('followers-count');
+                if (countEl && data.followers_count !== undefined) {
+                    countEl.textContent = data.followers_count;
+                }
+            })
+            .catch(err => console.error('Follow error:', err));
+    });
+});
 
 // Close modal when clicking outside
 document.addEventListener('DOMContentLoaded', function() {
