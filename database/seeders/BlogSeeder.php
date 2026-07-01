@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Blog;
 use App\Models\BlogsCategory;
 use App\Models\User;
+use App\Support\SeedImage;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -36,7 +37,7 @@ class BlogSeeder extends Seeder
                 'slug' => 'why-dare-to-dream-is-the-right-agency-for-aspiring-models',
                 'excerpt' => 'Discover how DD Models Agency supports new talent with mentorship, training, and real industry opportunities across Kenya.',
                 'image_source' => 'public/hero-find-model-3-trio-steps.png',
-                'image_name' => 'dare-to-dream-agency-aspiring-models.png',
+                'image_name' => 'dare-to-dream-agency-aspiring-models.webp',
                 'model' => 'DD Models Talent',
                 'photographer' => 'DD Models Creative Team',
                 'brand' => 'Dare to Dream Modelling Agency',
@@ -57,7 +58,7 @@ HTML,
                 'slug' => 'five-things-every-new-model-should-know-first-shoot',
                 'excerpt' => 'Practical modelling advice from the DD Models team to help you show up prepared, confident, and professional on set.',
                 'image_source' => 'public/hero-find-model-1-editorial-duo.png',
-                'image_name' => 'new-model-first-shoot-tips.png',
+                'image_name' => 'new-model-first-shoot-tips.webp',
                 'model' => 'DD Models Roster',
                 'photographer' => 'DD Models Studio',
                 'brand' => 'Dare to Dream Modelling Agency',
@@ -85,8 +86,8 @@ HTML,
 
             if (File::exists($source)) {
                 $destination = $storageDir . DIRECTORY_SEPARATOR . $post['image_name'];
-                File::copy($source, $destination);
-                $imagePath = '/storage/blogs/' . $post['image_name'];
+                $storedPath = SeedImage::storeOptimized($source, $destination);
+                $imagePath = $storedPath ? '/storage/' . $storedPath : null;
             }
 
             $wordCount = str_word_count(strip_tags($post['content']));

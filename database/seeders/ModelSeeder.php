@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Photo;
 use App\Models\User;
 use App\Models\UserPublicInfo;
+use App\Support\SeedImage;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -154,12 +155,14 @@ class ModelSeeder extends Seeder
                     continue;
                 }
 
-                $extension = pathinfo($source, PATHINFO_EXTENSION) ?: 'jpg';
-                $filename = Str::slug($modelData['name']) . '-' . ($index + 1) . '.' . $extension;
+                $filename = Str::slug($modelData['name']) . '-' . ($index + 1) . '.webp';
                 $destination = $storageDir . DIRECTORY_SEPARATOR . $filename;
-                File::copy($source, $destination);
+                $relativePath = SeedImage::storeOptimized($source, $destination);
 
-                $relativePath = 'uploads/models/' . $filename;
+                if (! $relativePath) {
+                    continue;
+                }
+
                 $photoPaths[] = $relativePath;
 
                 if ($index === 0) {
