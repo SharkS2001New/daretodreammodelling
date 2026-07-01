@@ -54,9 +54,10 @@
                             <a href="{{ route('account.bookings.create', $user) }}" class="btn btn-outline-primary btn-sm rounded-pill">
                                 <i class="bi bi-calendar-plus"></i> Book
                             </a>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-primary btn-sm rounded-pill">Log in to connect</a>
                         @endauth
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-sm rounded-pill">Log in to connect</a>
+                        @endguest
                     </div>
                 </div>
             @endif
@@ -129,7 +130,10 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab">
-                Reviews@if(($reviewStats['count'] ?? 0) > 0) ({{ $reviewStats['count'] }})@endif
+                Reviews
+                @if(($reviewStats['count'] ?? 0) > 0)
+                    ({{ $reviewStats['count'] }})
+                @endif
             </a>
         </li>
     </ul>
@@ -501,11 +505,12 @@
                             </form>
                         </div>
                     @endif
-                @else
+                @endauth
+                @guest
                     <p class="text-center mt-4 mb-0">
                         <a href="{{ route('login') }}">Log in</a> to leave a review.
                     </p>
-                @endauth
+                @endguest
             </div>
         </div>
     </div>
