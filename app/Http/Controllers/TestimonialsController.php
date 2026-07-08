@@ -177,7 +177,7 @@ class TestimonialsController extends Controller
         Cache::forget('homepage_testimonials');
 
         return redirect()
-            ->route('testimonials.index') // use .index to match RESTful routes
+            ->route('testimonials')
             ->with('success', 'Testimonial deleted successfully!');
     }
 

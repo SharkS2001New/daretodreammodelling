@@ -63,7 +63,7 @@
                                 </a>
                             </div> --}}
                             <div class="col-md-6">
-                                <a href="{{ route('testimonials.index') }}" class="btn btn-outline-primary w-100">
+                                <a href="{{ route('testimonials') }}" class="btn btn-outline-primary w-100">
                                    Testimonials
                                 </a>
                             </div>
