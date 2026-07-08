@@ -65,18 +65,18 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Display name</label>
-                        <input type="text" name="display_name" value="{{ old('display_name', $publicInfo?->display_name ?? '') }}" class="form-control auth-form__control">
+                        <input type="text" name="display_name" value="{{ old('display_name', $managedPublicInfo?->display_name ?? '') }}" class="form-control auth-form__control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Age</label>
-                        <input type="number" name="age" value="{{ old('age', $publicInfo?->age ?? '') }}" class="form-control">
+                        <input type="number" name="age" value="{{ old('age', $managedPublicInfo?->age ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Gender</label>
                         <select name="gender" class="form-control">
                             <option value="">Select</option>
                             @foreach(['Male', 'Female', 'Other'] as $gender)
-                                <option value="{{ $gender }}" @selected(old('gender', $publicInfo?->gender ?? '') === $gender)>{{ $gender }}</option>
+                                <option value="{{ $gender }}" @selected(old('gender', $managedPublicInfo?->gender ?? '') === $gender)>{{ $gender }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -85,49 +85,49 @@
                         <select name="ethnicity" class="form-control">
                             <option value="">Select Ethnicity</option>
                             @foreach(['Black/African','White/Caucasian','Hispanic/Latino','Asian','Middle Eastern','Mixed','Other'] as $ethnicity)
-                                <option value="{{ $ethnicity }}" @selected(old('ethnicity', $publicInfo?->ethnicity ?? '') === $ethnicity)>{{ $ethnicity }}</option>
+                                <option value="{{ $ethnicity }}" @selected(old('ethnicity', $managedPublicInfo?->ethnicity ?? '') === $ethnicity)>{{ $ethnicity }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Hair</label>
-                        <input type="text" name="hair" value="{{ old('hair', $publicInfo?->hair ?? '') }}" class="form-control">
+                        <input type="text" name="hair" value="{{ old('hair', $managedPublicInfo?->hair ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Eye color</label>
-                        <input type="text" name="eye" value="{{ old('eye', $publicInfo?->eye ?? '') }}" class="form-control">
+                        <input type="text" name="eye" value="{{ old('eye', $managedPublicInfo?->eye ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Height</label>
-                        <input type="text" name="height" value="{{ old('height', $publicInfo?->height ?? '') }}" class="form-control">
+                        <input type="text" name="height" value="{{ old('height', $managedPublicInfo?->height ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Shoe size</label>
-                        <input type="text" name="shoes" value="{{ old('shoes', $publicInfo?->shoes ?? '') }}" class="form-control">
+                        <input type="text" name="shoes" value="{{ old('shoes', $managedPublicInfo?->shoes ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Waist</label>
-                        <input type="text" name="waist" value="{{ old('waist', $publicInfo?->waist ?? '') }}" class="form-control">
+                        <input type="text" name="waist" value="{{ old('waist', $managedPublicInfo?->waist ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Hips</label>
-                        <input type="text" name="hips" value="{{ old('hips', $publicInfo?->hips ?? '') }}" class="form-control">
+                        <input type="text" name="hips" value="{{ old('hips', $managedPublicInfo?->hips ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" name="location" value="{{ old('location', $publicInfo?->location ?? '') }}" class="form-control">
+                        <input type="text" name="location" value="{{ old('location', $managedPublicInfo?->location ?? '') }}" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Nationality</label>
-                        <input type="text" name="nationality" value="{{ old('nationality', $publicInfo?->nationality ?? '') }}" class="form-control">
+                        <input type="text" name="nationality" value="{{ old('nationality', $managedPublicInfo?->nationality ?? '') }}" class="form-control">
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label">Languages <span class="text-muted fw-normal">(comma-separated)</span></label>
-                        <input type="text" name="languages" value="{{ old('languages', is_array(old('languages')) ? implode(',', old('languages')) : ($publicInfo?->languages ?? '')) }}" class="form-control" placeholder="English, French">
+                        <input type="text" name="languages" value="{{ old('languages', is_array(old('languages')) ? implode(',', old('languages')) : ($managedPublicInfo?->languages ?? '')) }}" class="form-control" placeholder="English, French">
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label">About</label>
-                        <textarea name="about_me" rows="4" class="form-control">{{ old('about_me', $publicInfo?->about_me ?? '') }}</textarea>
+                        <textarea name="about_me" rows="4" class="form-control">{{ old('about_me', $managedPublicInfo?->about_me ?? '') }}</textarea>
                     </div>
                 </div>
 
@@ -160,19 +160,19 @@
 
                 <div class="auth-form__group">
                     <label class="form-label">Instagram URL</label>
-                    <input type="url" name="instagram_url" value="{{ old('instagram_url', $linkedAccount->instagram_url ?? '') }}" class="form-control auth-form__control">
+                    <input type="url" name="instagram_url" value="{{ old('instagram_url', $managedLinkedAccount->instagram_url ?? '') }}" class="form-control auth-form__control">
                 </div>
                 <div class="auth-form__group">
                     <label class="form-label">Twitter URL</label>
-                    <input type="url" name="twitter_url" value="{{ old('twitter_url', $linkedAccount->twitter_url ?? '') }}" class="form-control auth-form__control">
+                    <input type="url" name="twitter_url" value="{{ old('twitter_url', $managedLinkedAccount->twitter_url ?? '') }}" class="form-control auth-form__control">
                 </div>
                 <div class="auth-form__group">
                     <label class="form-label">YouTube URL</label>
-                    <input type="url" name="youtube_url" value="{{ old('youtube_url', $linkedAccount->youtube_url ?? '') }}" class="form-control auth-form__control">
+                    <input type="url" name="youtube_url" value="{{ old('youtube_url', $managedLinkedAccount->youtube_url ?? '') }}" class="form-control auth-form__control">
                 </div>
                 <div class="auth-form__group">
                     <label class="form-label">Website</label>
-                    <input type="url" name="other_url" value="{{ old('other_url', $linkedAccount->other_url ?? '') }}" class="form-control auth-form__control">
+                    <input type="url" name="other_url" value="{{ old('other_url', $managedLinkedAccount->other_url ?? '') }}" class="form-control auth-form__control">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save social links</button>

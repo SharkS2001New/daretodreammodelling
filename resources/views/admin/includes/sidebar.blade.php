@@ -3,8 +3,8 @@
     <div class="profile">
         <div class="profile-container">
             <div class="profile-pic">
-                <img src="{{ $publicInfo && $publicInfo->profile_picture 
-                                ? asset('storage/'.$publicInfo->profile_picture) 
+                <img src="{{ $authPublicInfo && $authPublicInfo->profile_picture 
+                                ? asset('storage/'.$authPublicInfo->profile_picture) 
                                 : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name).'&size=150' }}" 
                     alt="Profile Picture"
                     class="rounded-circle object-fit-cover border"

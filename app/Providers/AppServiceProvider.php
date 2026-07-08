@@ -24,11 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {       
         View::composer('*', function ($view) {
-            $publicInfo = null;
+            $authPublicInfo = null;
             if (Auth::check()) {
-                $publicInfo = UserPublicInfo::where('user_id', Auth::id())->first();
+                $authPublicInfo = UserPublicInfo::where('user_id', Auth::id())->first();
             }
-            $view->with('publicInfo', $publicInfo);
+            $view->with('authPublicInfo', $authPublicInfo);
         });
 
         View::composer('*', function ($view) {

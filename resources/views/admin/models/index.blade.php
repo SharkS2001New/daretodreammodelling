@@ -25,6 +25,32 @@
         @endif
     </div>
 
+    <div class="container mb-3" style="max-width: 1100px;">
+        <form method="GET" action="{{ route('console.models.index') }}" class="row g-2 align-items-center">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="search"
+                        name="search"
+                        value="{{ $search ?? '' }}"
+                        class="form-control"
+                        placeholder="Search by name, email, display name, or location">
+                </div>
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+                @if(!empty($search))
+                    <a href="{{ route('console.models.index') }}" class="btn btn-outline-secondary">Clear</a>
+                @endif
+            </div>
+        </form>
+        @if(!empty($search))
+            <p class="text-muted small mb-0 mt-2">
+                Showing {{ $models->count() }} result{{ $models->count() === 1 ? '' : 's' }} for “{{ $search }}”
+            </p>
+        @endif
+    </div>
+
     <div class="container" style="max-width: 1100px;">
         <div class="card shadow-sm">
             <div class="card-body p-0">
@@ -64,8 +90,13 @@
                             @empty
                                 <tr>
                                     <td colspan="4" class="text-center text-muted py-4">
-                                        No models found.
-                                        <a href="{{ route('console.models.create') }}">Register the first model</a>.
+                                        @if(!empty($search))
+                                            No models match “{{ $search }}”.
+                                            <a href="{{ route('console.models.index') }}">Clear search</a>
+                                        @else
+                                            No models found.
+                                            <a href="{{ route('console.models.create') }}">Register the first model</a>.
+                                        @endif
                                     </td>
                                 </tr>
                             @endforelse

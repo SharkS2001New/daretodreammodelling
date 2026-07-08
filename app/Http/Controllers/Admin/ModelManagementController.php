@@ -14,14 +14,27 @@ use Illuminate\Validation\Rules;
 
 class ModelManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim($request->string('search')->toString());
+
         $models = User::with('publicInfo')
             ->where('is_admin', false)
+            ->when($search !== '', function ($query) use ($search) {
+                $like = '%' . $search . '%';
+                $query->where(function ($q) use ($like) {
+                    $q->where('name', 'like', $like)
+                        ->orWhere('email', 'like', $like)
+                        ->orWhereHas('publicInfo', function ($publicInfo) use ($like) {
+                            $publicInfo->where('display_name', 'like', $like)
+                                ->orWhere('location', 'like', $like);
+                        });
+                });
+            })
             ->orderBy('name')
             ->get();
 
-        return view('admin.models.index', compact('models'));
+        return view('admin.models.index', compact('models', 'search'));
     }
 
     public function create()
@@ -72,8 +85,8 @@ class ModelManagementController extends Controller
 
         return view('admin.models.settings', [
             'managedUser' => $user,
-            'publicInfo' => $user->publicInfo,
-            'linkedAccount' => $user->linkedAccount ?? new LinkedAccount(),
+            'managedPublicInfo' => $user->publicInfo,
+            'managedLinkedAccount' => $user->linkedAccount ?? new LinkedAccount(),
         ]);
     }
 
