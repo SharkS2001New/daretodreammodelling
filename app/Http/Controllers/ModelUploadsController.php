@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Photo;
 use App\Models\Video;
 use App\Models\User;
+use App\Support\ModelAccess;
 
 class ModelUploadsController extends Controller
 {
@@ -45,8 +46,10 @@ class ModelUploadsController extends Controller
             'video_likes' => $user->videos->sum(fn($v) => $v->likes->count()),
             'video_views' => $user->videos->sum(fn($v) => $v->views->count()),
         ];
+
+        $canManage = ModelAccess::canManage($user);
         
-        return view('models.show', compact('user', 'stats', 'isFollowing', 'reviews', 'reviewStats', 'userReview'));
+        return view('models.show', compact('user', 'stats', 'isFollowing', 'reviews', 'reviewStats', 'userReview', 'canManage'));
     }
 
     private function fetchTikTokVideos($user)
@@ -153,7 +156,8 @@ class ModelUploadsController extends Controller
         ]);
 
         try {
-            $user = Auth::user();
+            $user = ModelAccess::resolveTargetUser($request);
+            ModelAccess::authorizeManage($user);
             
             // Store the photo
             $path = $request->file('photo')->store('model-photos', 'public');
@@ -183,7 +187,8 @@ class ModelUploadsController extends Controller
     public function deletePhoto($id)
     {
         try {
-            $photo = Photo::where('user_id', Auth::id())->findOrFail($id);
+            $photo = Photo::findOrFail($id);
+            ModelAccess::authorizeManage($photo->user);
             
             // Delete file from storage
             Storage::disk('public')->delete($photo->file_path);
@@ -207,7 +212,8 @@ class ModelUploadsController extends Controller
             'video' => 'required|file|mimes:mp4,m4v|max:20480', // max 20MB
         ]);
 
-        $user = Auth::user();
+        $user = ModelAccess::resolveTargetUser($request);
+        ModelAccess::authorizeManage($user);
 
         if ($request->hasFile('video')) {
             $path = $request->file('video')->store('uploads/videos', 'public');
@@ -236,9 +242,8 @@ class ModelUploadsController extends Controller
      */
     public function deleteVideo($id)
     {
-        $video = Video::where('id', $id)
-                      ->where('user_id', Auth::id())
-                      ->firstOrFail();
+        $video = Video::findOrFail($id);
+        ModelAccess::authorizeManage($video->user);
 
         // Delete file from storage
         if ($video->file_path && \Storage::disk('public')->exists($video->file_path)) {
@@ -256,7 +261,10 @@ class ModelUploadsController extends Controller
             'youtube_url' => 'required|url',
         ]);
 
-        auth()->user()->videos()->create([
+        $user = ModelAccess::resolveTargetUser($request);
+        ModelAccess::authorizeManage($user);
+
+        $user->videos()->create([
             'youtube_url' => $request->youtube_url,
         ]);
 

@@ -3,6 +3,8 @@
 @section('content')
 @php
     $isOwner = Auth::check() && Auth::id() === $user->id;
+    $canManage = $canManage ?? ($isOwner || (Auth::check() && Auth::user()->isAdmin()));
+    $managingAsAdmin = $canManage && ! $isOwner;
     $displayName = $user->publicInfo?->display_name ?? $user->name;
     $avatarUrl = $user->publicInfo?->profile_picture
         ? asset('storage/' . $user->publicInfo->profile_picture)
@@ -36,6 +38,17 @@
                     <a href="{{ route('dashboard') }}" class="btn btn-outline-primary btn-sm rounded-pill">
                         My dashboard
                     </a>
+                </div>
+            @elseif($managingAsAdmin)
+                <div class="col-lg-4">
+                    <div class="model-profile__actions d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <a href="{{ route('console.models.settings', $user) }}" class="btn btn-primary btn-sm rounded-pill">
+                            <i class="bi bi-gear"></i> Edit settings
+                        </a>
+                        <a href="{{ route('console.models.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+                            All models
+                        </a>
+                    </div>
                 </div>
             @else
                 <div class="col-lg-4">
@@ -115,6 +128,13 @@
         @endif
     </div>
 
+    @if($managingAsAdmin)
+        <div class="alert alert-info d-flex align-items-center gap-2 mt-3 mb-0">
+            <i class="bi bi-shield-check"></i>
+            <span>You are managing this profile as an admin. Uploads and edits apply to {{ $displayName }}.</span>
+        </div>
+    @endif
+
     <ul class="nav model-profile-tabs" id="profileTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Photos</a>
@@ -144,7 +164,7 @@
         <div class="tab-pane fade show active" id="photos" role="tabpanel">
             <div class="row">
                 <!-- Upload Card (only for owner) -->
-                @if($isOwner)
+                @if($canManage)
                 <div class="col-md-4 col-lg-3 mb-3">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
@@ -192,7 +212,7 @@
                                 class="model-profile-photo__image"
                                 alt="Photo by {{ $displayName }}">
                             <!-- Delete button (only for owner) -->
-                            @if($isOwner)
+                            @if($canManage)
                             <form action="{{ route('model.photos.delete', $photo->id) }}" method="POST" 
                                 class="position-absolute top-0 end-0 m-1">
                                 @csrf
@@ -208,7 +228,7 @@
                 @empty
                     <div class="col-md-8 col-12">
                         <p class="text-muted text-center">
-                            @if($isOwner)
+                            @if($canManage)
                                 <br/>
                                <b>No photos uploaded yet. Upload your first photo to get started!</b>
                             @else
@@ -225,7 +245,7 @@
         <div class="tab-pane fade" id="videos" role="tabpanel">
             <div class="row">
                 <!-- Upload Card (only for owner) -->
-                @if($isOwner)
+                @if($canManage)
                 <div class="col-md-6 col-lg-4 mb-3">
                     <div class="card mb-4">
                         <div class="card-body text-center p-4">
@@ -285,7 +305,7 @@
                             @endif
 
                             <!-- Delete Button (only for owner) -->
-                            @if($isOwner)
+                            @if($canManage)
                             <form action="{{ route('model.videos.delete', $video->id) }}" method="POST" 
                                 class="position-absolute top-0 end-0 m-1">
                                 @csrf
@@ -301,7 +321,7 @@
                 @empty
                     <div class="col-md-8 col-12">
                         <p class="text-muted text-center">
-                            @if($isOwner)
+                            @if($canManage)
                                 <br/>
                                 <b>No videos uploaded yet. Upload your first video or add a YouTube link!</b>
                             @else
@@ -424,6 +444,8 @@
                         @else
                             @if($isOwner)
                                 You have not added an about section yet. <a href="{{ route('account.public.edit') }}">Update your profile</a>.
+                            @elseif($managingAsAdmin)
+                                No about information yet. <a href="{{ route('console.models.settings', $user) }}">Edit settings</a>.
                             @else
                                 No about information available.
                             @endif
@@ -516,8 +538,8 @@
     </div>
 </div>
 
-<!-- Modal popups (only show YouTube modal for owners) -->
-@if($isOwner)
+<!-- Modal popups (only show YouTube modal for managers) -->
+@if($canManage)
 <!-- YouTube/Vimeo URL Modal -->
 <div class="modal fade" id="youtubeModal" tabindex="-1" aria-labelledby="youtubeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -528,6 +550,9 @@
             </div>
             <form action="{{ route('model.videos.storeLink') }}" method="POST">
                 @csrf
+                @if($managingAsAdmin)
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                @endif
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="youtube_url" class="form-label">Video URL</label>
@@ -668,6 +693,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('photo', file);
         formData.append('_token', '{{ csrf_token() }}');
+        @if($managingAsAdmin)
+        formData.append('user_id', '{{ $user->id }}');
+        @endif
 
         // Send AJAX request
         const xhr = new XMLHttpRequest();
@@ -769,6 +797,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function uploadVideo(file) {
         const formData = new FormData();
         formData.append("video", file);
+        @if($managingAsAdmin)
+        formData.append("user_id", "{{ $user->id }}");
+        @endif
 
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "{{ route('model.videos.upload') }}", true);

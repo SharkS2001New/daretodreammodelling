@@ -14,7 +14,7 @@
             <div class="fw-bold flex-grow-1">
                 {{ __("You're logged in !!!") }} &nbsp;:-&nbsp; 
                 <a href="/" class="text-primary">View Website</a> &nbsp;:-&nbsp;
-                <a href="/clear-cache" class="text-danger">Clear Cache</a>
+                <a href="{{ route('clear-cache') }}" class="text-danger">Clear Cache</a>
             </div>
 
             <!-- Right (Modelling Page Button) -->
@@ -38,7 +38,17 @@
                         <h4 class="mb-4">Manage Website Pages</h4>
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <a href="{{ url('/seo-metas') }}" class="btn btn-outline-danger w-100">
+                                <a href="{{ route('console.models.create') }}" class="btn btn-primary w-100">
+                                    Register Model
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('console.models.index') }}" class="btn btn-outline-primary w-100">
+                                    Manage Models
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('seo-metas.index') }}" class="btn btn-outline-danger w-100">
                                     Manage Website Seo Metas
                                 </a>
                             </div>
@@ -53,17 +63,17 @@
                                 </a>
                             </div> --}}
                             <div class="col-md-6">
-                                <a href="{{ url('/testimonials') }}" class="btn btn-outline-primary w-100">
+                                <a href="{{ route('testimonials.index') }}" class="btn btn-outline-primary w-100">
                                    Testimonials
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ url('/blog/create') }}" class="btn btn-outline-primary w-100">
+                                <a href="{{ route('blogs.create') }}" class="btn btn-outline-primary w-100">
                                    Add Blog
                                 </a>
                             </div>    
                             <div class="col-md-6">
-                                <a href="{{ url('/blogs-categories') }}" class="btn btn-outline-primary w-100">
+                                <a href="{{ route('blogs-categories.index') }}" class="btn btn-outline-primary w-100">
                                   Blog Categories
                                 </a>
                             </div>  

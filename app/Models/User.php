@@ -23,6 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'last_login',
+        'is_admin',
+        'user_type',
+        'must_change_password',
     ];
 
     /**
@@ -44,18 +47,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'last_login' => 'datetime',
-
+        'is_admin' => 'boolean',
+        'must_change_password' => 'boolean',
     ];
 
     protected static function booted()
     {
         static::creating(function ($user) {
-            $user->slug = Str::slug($user->name);
+            $user->slug = static::uniqueSlug($user->name);
         });
 
         static::updating(function ($user) {
-            $user->slug = Str::slug($user->name);
+            if ($user->isDirty('name')) {
+                $user->slug = static::uniqueSlug($user->name, $user->id);
+            }
         });
+    }
+
+    public static function uniqueSlug(string $name, ?int $exceptId = null): string
+    {
+        $base = Str::slug($name) ?: 'model';
+        $slug = $base;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($exceptId, fn ($query) => $query->where('id', '!=', $exceptId))
+                ->exists()
+        ) {
+            $slug = $base . '-' . $counter++;
+        }
+
+        return $slug;
     }
 
     public function blogs()
@@ -131,5 +154,10 @@ class User extends Authenticatable
         }
 
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&size=' . $size;
+    }
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
     }
 }

@@ -41,6 +41,10 @@ class AuthenticatedSessionController extends Controller
         }
 
         // Redirect based on role
+        if (auth()->user()->must_change_password) {
+            return redirect()->route('password.first-login');
+        }
+
         if (auth()->user()->is_admin) {
             return redirect()->intended(route('console'));
         }

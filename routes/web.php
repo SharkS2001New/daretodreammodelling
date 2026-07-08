@@ -22,6 +22,8 @@ use App\Http\Controllers\VideoLikeController;
 use App\Http\Controllers\VideoViewController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\ModelsController;
+use App\Http\Controllers\Admin\ModelManagementController;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,9 +64,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/console', function () {
-        return view('console');
-    })->name('console');
+    Route::middleware('admin')->group(function () {
+        Route::get('/console', function () {
+            return view('console');
+        })->name('console');
+
+        Route::get('/console/models', [ModelManagementController::class, 'index'])->name('console.models.index');
+        Route::get('/console/models/create', [ModelManagementController::class, 'create'])->name('console.models.create');
+        Route::post('/console/models', [ModelManagementController::class, 'store'])->name('console.models.store');
+        Route::get('/console/models/{user}/settings', [ModelManagementController::class, 'settings'])->name('console.models.settings');
+        Route::post('/console/models/{user}/public', [ModelManagementController::class, 'updatePublic'])->name('console.models.public.update');
+        Route::post('/console/models/{user}/profile-picture', [ModelManagementController::class, 'updateProfilePicture'])->name('console.models.profile-picture.update');
+        Route::post('/console/models/{user}/linked', [ModelManagementController::class, 'updateLinked'])->name('console.models.linked.update');
+
+        Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
+        Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');
+        Route::post('/testimonials', [TestimonialsController::class, 'store'])->name('testimonials.store');
+        Route::put('/testimonials/{id}', [TestimonialsController::class, 'update'])->name('testimonials.update');
+        Route::delete('/testimonials/{id}', [TestimonialsController::class, 'destroy'])->name('testimonials.destroy');
+        Route::post('/testimonials/upload-image', [TestimonialsController::class, 'uploadImage'])->name('testimonials.upload');
+
+        Route::get('/blog/create', [BlogController::class, 'create'])->name('blogs.create');
+        Route::post('/blog', [BlogController::class, 'store'])->name('blogs.store');
+        Route::get('/blog/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
+        Route::put('/blog/{id}', [BlogController::class, 'update'])->name('blogs.update');
+        Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+        Route::post('/blogs/upload-image', [BlogController::class, 'uploadImage'])->name('blogs.uploadImage');
+
+        Route::resource('blogs-categories', BlogsCategoryController::class);
+
+        Route::get('/seo-metas', [MetaController::class, 'index'])->name('seo-metas.index');
+        Route::get('seo-metas/create', [MetaController::class, 'create'])->name('seo-metas.create');
+        Route::post('seo-metas/store', [MetaController::class, 'store'])->name('seo-metas.store');
+        Route::get('/seo-metas/{page}/edit', [MetaController::class, 'edit'])->name('seo-metas.edit');
+        Route::post('/seo-metas/{page}', [MetaController::class, 'update'])->name('seo-metas.update');
+        Route::delete('/seo-metas/{page}', [MetaController::class, 'destroy'])->name('seo-metas.destroy');
+
+        Route::get('/clear-cache', function () {
+            Artisan::call('optimize:clear');
+
+            return redirect('/console')->with('success', 'Cache cleared successfully!');
+        })->name('clear-cache');
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -112,38 +153,9 @@ Route::middleware('auth')->group(function () {
     // Followers
     Route::post('/models/{model}/follow', [FollowerController::class, 'store'])->name('models.follow');
     Route::delete('/models/{model}/follow', [FollowerController::class, 'destroy'])->name('models.unfollow');
-
-    Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
-    Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');
-    Route::post('/testimonials', [TestimonialsController::class, 'store'])->name('testimonials.store'); 
-    Route::put('/testimonials/{id}', [TestimonialsController::class, 'update'])->name('testimonials.update');
-    Route::delete('/testimonials/{id}', [TestimonialsController::class, 'destroy'])->name('testimonials.destroy');
-    Route::post('/testimonials/upload-image', [TestimonialsController::class, 'uploadImage'])->name('testimonials.upload');  
-
-    Route::get('/blog/create', [BlogController::class, 'create'])->name('blogs.create'); // create form
-    Route::post('/blog', [BlogController::class, 'store'])->name('blogs.store'); // save new blog
-    Route::get('/blog/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
-    Route::put('/blog/{id}', [BlogController::class, 'update'])->name('blogs.update');
-    Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // delete blog
-    Route::post('/blogs/upload-image', [BlogController::class, 'uploadImage'])->name('blogs.uploadImage');
-
-    Route::resource('blogs-categories', BlogsCategoryController::class);
-
-    Route::get('/seo-metas', [MetaController::class, 'index'])->name('seo-metas.index');
-    Route::get('seo-metas/create', [MetaController::class, 'create'])->name('seo-metas.create');
-    Route::post('seo-metas/store', [MetaController::class, 'store'])->name('seo-metas.store');
-    Route::get('/seo-metas/{page}/edit', [MetaController::class, 'edit'])->name('seo-metas.edit');
-    Route::post('/seo-metas/{page}', [MetaController::class, 'update'])->name('seo-metas.update');
-    Route::delete('/seo-metas/{page}', [MetaController::class, 'destroy'])->name('seo-metas.destroy');
 });
 
 Route::get('/model/{slug}', [ModelUploadsController::class, 'index'])->name('models.show');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blogs.show'); // show single blog 
-
-//Clear Cache in laravel app
-Route::get('/clear-cache', function () {
-    Artisan::call('optimize:clear');
-    return redirect('/console')->with('success', 'Cache cleared successfully!');
-});
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blogs.show'); // show single blog
 
 require __DIR__.'/auth.php';
