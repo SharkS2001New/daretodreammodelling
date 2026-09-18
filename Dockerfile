@@ -67,8 +67,11 @@ COPY . .
 # Build frontend assets
 RUN npm run build
 
-# Set Git safe directory and fix permissions
+# Set Git safe directory, create the public storage symlink (the committed one
+# is excluded via .dockerignore because a Windows checkout turns it into a plain
+# file), and fix permissions
 RUN git config --global --add safe.directory /var/www/html && \
+    rm -rf public/storage && ln -s /var/www/html/storage/app/public public/storage && \
     chown -R www-data:www-data /var/www/html && \
     chmod -R 775 storage bootstrap/cache
 

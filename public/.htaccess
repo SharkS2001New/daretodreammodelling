@@ -10,6 +10,8 @@
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # ✅ Strip port numbers from host (e.g. :8040)
+    # (skipped for localhost so `docker compose up` works on http://localhost:8040)
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:|$) [NC]
     RewriteCond %{HTTP_HOST} ^([^:]+):[0-9]+$ [NC]
     RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
 

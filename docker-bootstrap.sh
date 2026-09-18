@@ -58,6 +58,10 @@ fi
 
 if [ "${RUN_STORAGE_LINK_ON_START:-true}" != "false" ]; then
   echo "[bootstrap] Linking public storage..."
+  # A Windows checkout turns the committed symlink into a plain file; storage:link won't replace that.
+  if [ -e public/storage ] && [ ! -L public/storage ]; then
+    rm -rf public/storage
+  fi
   php artisan storage:link --force
 else
   echo "[bootstrap] Skipping storage:link (RUN_STORAGE_LINK_ON_START=false)."

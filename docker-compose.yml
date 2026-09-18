@@ -1,0 +1,55 @@
+# Local development stack: the app image (see Dockerfile) + its own MySQL.
+# Values under `environment` override the committed .env so a local run never
+# touches the production database.
+#
+#   docker compose up --build      # first run (builds the image, ~5-10 min)
+#   docker compose up              # subsequent runs
+#   docker compose down            # stop (keeps DB/uploads volumes)
+#   docker compose down -v         # stop and wipe DB/uploads
+#
+# App: http://localhost:8040
+
+services:
+  app:
+    build: .
+    ports:
+      - "8040:8040"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8040
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: daretodreammodelling
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+      # docker-bootstrap.sh: migrate + seed demo data on every start (seeders are idempotent)
+      RUN_MIGRATIONS_ON_START: "true"
+      RUN_SEEDERS_ON_START: "true"
+    volumes:
+      - uploads:/var/www/html/storage/app/public
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: daretodreammodelling
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"   # optional: connect with a DB client from Windows via localhost:3307
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  dbdata:
+  uploads:
