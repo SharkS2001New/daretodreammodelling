@@ -17,6 +17,10 @@ class FollowerController extends Controller
             return response()->json(['error' => 'You cannot follow yourself.'], 422);
         }
 
+        if (! $model->isActive()) {
+            return response()->json(['error' => 'This model is no longer available.'], 404);
+        }
+
         $model->followers()->firstOrCreate([
             'user_id' => $request->user()->id,
         ]);

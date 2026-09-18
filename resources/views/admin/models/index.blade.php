@@ -26,7 +26,21 @@
     </div>
 
     <div class="container mb-3" style="max-width: 1100px;">
+        <ul class="nav nav-pills gap-1 mb-3">
+            @foreach(['all' => 'All', 'active' => 'Active', 'inactive' => 'Inactive'] as $key => $label)
+                <li class="nav-item">
+                    <a href="{{ route('console.models.index', array_filter(['status' => $key === 'all' ? null : $key, 'search' => $search ?: null])) }}"
+                       class="nav-link py-1 px-3 {{ $status === $key ? 'active' : '' }}">
+                        {{ $label }} <span class="badge {{ $status === $key ? 'bg-light text-dark' : 'bg-secondary' }} ms-1">{{ $counts[$key] }}</span>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+
         <form method="GET" action="{{ route('console.models.index') }}" class="row g-2 align-items-center">
+            @if($status !== 'all')
+                <input type="hidden" name="status" value="{{ $status }}">
+            @endif
             <div class="col-md-8">
                 <div class="input-group">
                     <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
@@ -40,7 +54,7 @@
             <div class="col-md-4 d-flex gap-2">
                 <button type="submit" class="btn btn-outline-primary">Search</button>
                 @if(!empty($search))
-                    <a href="{{ route('console.models.index') }}" class="btn btn-outline-secondary">Clear</a>
+                    <a href="{{ route('console.models.index', array_filter(['status' => $status === 'all' ? null : $status])) }}" class="btn btn-outline-secondary">Clear</a>
                 @endif
             </div>
         </form>
@@ -61,12 +75,13 @@
                                 <th>Model</th>
                                 <th>Email</th>
                                 <th>Location</th>
+                                <th>Status</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($models as $model)
-                                <tr>
+                                <tr class="{{ $model->isActive() ? '' : 'table-secondary text-muted' }}">
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
                                             <img src="{{ $model->avatarUrl(48) }}" alt="" width="40" height="40" class="rounded-circle object-fit-cover">
@@ -80,16 +95,43 @@
                                     </td>
                                     <td>{{ $model->email }}</td>
                                     <td>{{ $model->publicInfo?->location ?? '—' }}</td>
+                                    <td>
+                                        @if($model->isActive())
+                                            <span class="badge bg-success">Active</span>
+                                        @else
+                                            <span class="badge bg-secondary">Inactive</span>
+                                            @if($model->deactivated_at)
+                                                <div class="small text-muted">since {{ $model->deactivated_at->format('d M Y') }}</div>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="text-end">
                                         <div class="d-flex flex-wrap gap-1 justify-content-end">
                                             <a href="{{ route('models.show', $model->slug) }}" class="btn btn-sm btn-outline-primary">View profile</a>
                                             <a href="{{ route('console.models.settings', $model) }}" class="btn btn-sm btn-primary">Settings</a>
+                                            @if($model->isActive())
+                                                <form action="{{ route('console.models.deactivate', $model) }}" method="POST"
+                                                      onsubmit="return confirm('Deactivate {{ addslashes($model->displayName()) }}? They will be hidden from the website and unable to log in until reactivated.');">
+                                                    @csrf @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-outline-warning">Deactivate</button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('console.models.activate', $model) }}" method="POST">
+                                                    @csrf @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">Activate</button>
+                                                </form>
+                                            @endif
+                                            <form action="{{ route('console.models.destroy', $model) }}" method="POST"
+                                                  onsubmit="return confirm('PERMANENTLY delete {{ addslashes($model->displayName()) }}?\n\nThis removes their account, photos, videos, followers, bookings, messages and reviews. This cannot be undone.');">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted py-4">
+                                    <td colspan="5" class="text-center text-muted py-4">
                                         @if(!empty($search))
                                             No models match “{{ $search }}”.
                                             <a href="{{ route('console.models.index') }}">Clear search</a>

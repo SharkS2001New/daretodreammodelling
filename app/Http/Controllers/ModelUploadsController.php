@@ -25,6 +25,11 @@ class ModelUploadsController extends Controller
             'reviewsReceived' => fn ($q) => $q->where('approved', true)->with('reviewer.publicInfo'),
         ])->where('slug', $slug)->firstOrFail();
 
+        // Deactivated models are hidden from the public; admins can still preview them
+        if (! $user->isActive() && ! ModelAccess::isAdmin()) {
+            abort(404);
+        }
+
         $isFollowing = Auth::check()
             && Auth::id() !== $user->id
             && $user->followers()->where('user_id', Auth::id())->exists();

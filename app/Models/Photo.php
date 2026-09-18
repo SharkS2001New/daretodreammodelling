@@ -28,6 +28,12 @@ class Photo extends Model
         return $this->hasMany(PhotoView::class);
     }
 
+    // Only photos belonging to models that are still active (public listings)
+    public function scopeOfActiveModels($query)
+    {
+        return $query->whereHas('user', fn ($q) => $q->active());
+    }
+
     public function scopeLatestPerUser($query, ?array $userIds = null)
     {
         $latestIds = static::query()

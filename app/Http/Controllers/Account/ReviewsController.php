@@ -40,6 +40,8 @@ class ReviewsController extends Controller
             return back()->with('error', 'You cannot review yourself.');
         }
 
+        abort_unless($model->isActive(), 404);
+
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string|max:2000',

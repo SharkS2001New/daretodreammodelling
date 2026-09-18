@@ -34,13 +34,17 @@ class BookingsController extends Controller
                 ->with('error', 'You cannot book yourself.');
         }
 
+        if ($model && ! $model->isActive()) {
+            abort(404);
+        }
+
         return view('account.bookings.create', compact('model'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'model_id' => 'required|exists:users,id',
+            'model_id' => 'required|exists:users,id,is_active,1',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
             'event_date' => 'required|date|after:now',

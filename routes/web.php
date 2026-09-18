@@ -76,6 +76,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/console/models/{user}/public', [ModelManagementController::class, 'updatePublic'])->name('console.models.public.update');
         Route::post('/console/models/{user}/profile-picture', [ModelManagementController::class, 'updateProfilePicture'])->name('console.models.profile-picture.update');
         Route::post('/console/models/{user}/linked', [ModelManagementController::class, 'updateLinked'])->name('console.models.linked.update');
+        Route::patch('/console/models/{user}/deactivate', [ModelManagementController::class, 'deactivate'])->name('console.models.deactivate');
+        Route::patch('/console/models/{user}/activate', [ModelManagementController::class, 'activate'])->name('console.models.activate');
+        Route::delete('/console/models/{user}', [ModelManagementController::class, 'destroy'])->name('console.models.destroy');
 
         Route::get('/testimonials/create', [TestimonialsController::class, 'create'])->name('testimonials.create');
         Route::get('/testimonials/{id}/edit', [TestimonialsController::class, 'edit'])->name('testimonials.edit');

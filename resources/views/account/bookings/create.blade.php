@@ -30,7 +30,7 @@
                         @else
                             <select name="model_id" required class="form-select auth-form__control @error('model_id') is-invalid @enderror">
                                 <option value="">Select a model...</option>
-                                @foreach(\App\Models\User::where('id', '!=', auth()->id())->with('publicInfo')->orderBy('name')->get() as $u)
+                                @foreach(\App\Models\User::active()->where('id', '!=', auth()->id())->with('publicInfo')->orderBy('name')->get() as $u)
                                     <option value="{{ $u->id }}" @selected(old('model_id') == $u->id)>{{ $u->displayName() }}</option>
                                 @endforeach
                             </select>

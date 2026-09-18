@@ -18,6 +18,7 @@ class HomepageController extends Controller
 
         // Get latest photo per user, ordered by total likes
         $photoIds = Photo::selectRaw('MAX(id) as id')
+            ->ofActiveModels()
             ->groupBy('user_id')
             ->pluck('id');
 

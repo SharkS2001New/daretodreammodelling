@@ -26,6 +26,8 @@ class User extends Authenticatable
         'is_admin',
         'user_type',
         'must_change_password',
+        'is_active',
+        'deactivated_at',
     ];
 
     /**
@@ -49,6 +51,8 @@ class User extends Authenticatable
         'last_login' => 'datetime',
         'is_admin' => 'boolean',
         'must_change_password' => 'boolean',
+        'is_active' => 'boolean',
+        'deactivated_at' => 'datetime',
     ];
 
     protected static function booted()
@@ -159,5 +163,19 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return (bool) $this->is_admin;
+    }
+
+    /**
+     * Deactivated models are hidden from the public site and cannot log in.
+     * A missing column counts as active so the app keeps working mid-deploy.
+     */
+    public function isActive(): bool
+    {
+        return (bool) ($this->is_active ?? true);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }

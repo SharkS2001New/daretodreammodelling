@@ -23,6 +23,21 @@
             <div class="alert alert-success account-alert">{{ session('success') }}</div>
         @endif
 
+        @unless($managedUser->isActive())
+            <div class="alert alert-warning account-alert d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <span>
+                    <i class="bi bi-eye-slash"></i>
+                    <strong>This model is deactivated</strong>
+                    @if($managedUser->deactivated_at) since {{ $managedUser->deactivated_at->format('d M Y') }}@endif
+                    — hidden from the website and unable to log in.
+                </span>
+                <form action="{{ route('console.models.activate', $managedUser) }}" method="POST">
+                    @csrf @method('PATCH')
+                    <button type="submit" class="btn btn-sm btn-success">Reactivate</button>
+                </form>
+            </div>
+        @endunless
+
         @if($errors->any())
             <div class="alert alert-danger account-alert">
                 <ul class="mb-0 ps-3">
@@ -178,6 +193,52 @@
                 <button type="submit" class="btn btn-primary">Save social links</button>
             </div>
         </form>
+
+        <div class="account-panel mb-4 border border-danger-subtle">
+            <div class="account-section__header mb-4">
+                <h2 class="account-section__title h5 text-danger">Danger zone</h2>
+                <p class="account-section__subtitle mb-0">Remove {{ $managedUser->displayName() }} from the website.</p>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-3 border-bottom">
+                <div>
+                    <strong>{{ $managedUser->isActive() ? 'Deactivate account' : 'Reactivate account' }}</strong>
+                    <p class="text-muted small mb-0">
+                        @if($managedUser->isActive())
+                            Hides the profile and photos from the website and blocks login. Nothing is deleted, so this can be undone at any time.
+                        @else
+                            Makes the profile visible on the website again and restores login.
+                        @endif
+                    </p>
+                </div>
+                @if($managedUser->isActive())
+                    <form action="{{ route('console.models.deactivate', $managedUser) }}" method="POST"
+                          onsubmit="return confirm('Deactivate {{ addslashes($managedUser->displayName()) }}? They will be hidden from the website and unable to log in until reactivated.');">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="btn btn-outline-warning text-nowrap">Deactivate</button>
+                    </form>
+                @else
+                    <form action="{{ route('console.models.activate', $managedUser) }}" method="POST">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="btn btn-outline-success text-nowrap">Reactivate</button>
+                    </form>
+                @endif
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <strong>Delete account permanently</strong>
+                    <p class="text-muted small mb-0">
+                        Removes the account together with all photos, videos, followers, bookings, messages and reviews. This cannot be undone.
+                    </p>
+                </div>
+                <form action="{{ route('console.models.destroy', $managedUser) }}" method="POST"
+                      onsubmit="return confirm('PERMANENTLY delete {{ addslashes($managedUser->displayName()) }}?\n\nThis removes their account, photos, videos, followers, bookings, messages and reviews. This cannot be undone.');">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger text-nowrap">Delete model</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

@@ -29,7 +29,7 @@ class ModelsController extends Controller
         foreach ($filters as $v) { if (!empty($v)) { $hasAnySimpleFilter = true; break; } }
 
         if ($hasAnySimpleFilter || $hasAgeFilter) {
-            $userQuery = User::query();
+            $userQuery = User::query()->active();
 
             // simple filters applied to publicInfo relationship
             foreach ($filters as $field => $value) {
@@ -57,7 +57,7 @@ class ModelsController extends Controller
         }
 
         // Get latest photo id per user (optionally restricted to filtered users)
-        $latestPhotoIdsQuery = Photo::selectRaw('MAX(id) as id')->groupBy('user_id');
+        $latestPhotoIdsQuery = Photo::selectRaw('MAX(id) as id')->ofActiveModels()->groupBy('user_id');
 
         if ($userIds !== null) {
             $latestPhotoIdsQuery->whereIn('user_id', $userIds);
@@ -83,7 +83,7 @@ class ModelsController extends Controller
 
     public function details($id)
     {
-        $photo = Photo::with(['user.publicInfo'])->findOrFail($id);
+        $photo = Photo::with(['user.publicInfo'])->ofActiveModels()->findOrFail($id);
 
         return response()->json([
             'name'    => $photo->user->publicInfo->display_name ?? $photo->user->name,
@@ -93,7 +93,8 @@ class ModelsController extends Controller
             'gender'  => $photo->user->publicInfo->gender ?? null,
             'photo'   => $photo->file_path,
             'rating'  => 0, // you can compute from likes/views later
-            'suggested' => Photo::inRandomOrder()
+            'suggested' => Photo::ofActiveModels()
+                ->inRandomOrder()
                 ->take(4)
                 ->with('user.publicInfo')
                 ->get()
