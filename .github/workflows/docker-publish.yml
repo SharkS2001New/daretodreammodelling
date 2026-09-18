@@ -11,6 +11,7 @@ on:
       - "master"
   schedule:
     - cron: '44 2 * * *'
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
