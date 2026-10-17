@@ -107,23 +107,19 @@
             </div>
         </div>
 
-        @if($user->linkedAccount && ($user->linkedAccount->instagram_url || $user->linkedAccount->twitter_url || $user->linkedAccount->tiktok_url || $user->linkedAccount->youtube_url || $user->linkedAccount->other_url))
+        @php
+            $socialLinks = $user->linkedAccount ? $user->linkedAccount->publicLinks() : [];
+        @endphp
+
+        @if(count($socialLinks))
             <div class="model-profile__social">
-                @if($user->linkedAccount->instagram_url)
-                    <a href="{{ $user->linkedAccount->instagram_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                @endif
-                @if($user->linkedAccount->twitter_url)
-                    <a href="{{ $user->linkedAccount->twitter_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
-                @endif
-                @if($user->linkedAccount->tiktok_url)
-                    <a href="{{ $user->linkedAccount->tiktok_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-                @endif
-                @if($user->linkedAccount->youtube_url)
-                    <a href="{{ $user->linkedAccount->youtube_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                @endif
-                @if($user->linkedAccount->other_url)
-                    <a href="{{ $user->linkedAccount->other_url }}" target="_blank" rel="noopener" class="model-social-link" aria-label="Website"><i class="bi bi-globe"></i></a>
-                @endif
+                @foreach($socialLinks as $link)
+                    <a href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer"
+                       class="model-social-link model-social-link--{{ \Illuminate\Support\Str::lower($link['label']) }}"
+                       aria-label="{{ $link['label'] }}" title="{{ $link['label'] }}">
+                        <i class="bi {{ $link['icon'] }}"></i>
+                    </a>
+                @endforeach
             </div>
         @endif
     </div>

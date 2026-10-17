@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class LinkedAccount extends Model
 {
     protected $fillable = [
-        'tiktok_url',
+        'facebook_url',
         'instagram_url',
+        'tiktok_url',
         'twitter_url',
         'youtube_url',
         'other_url',
@@ -26,6 +27,32 @@ class LinkedAccount extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The public social profiles that have been filled in, ready to render.
+     * Keys match the form field names.
+     */
+    public function publicLinks(): array
+    {
+        $links = [
+            'facebook_url'  => ['icon' => 'bi-facebook',  'label' => 'Facebook'],
+            'instagram_url' => ['icon' => 'bi-instagram', 'label' => 'Instagram'],
+            'tiktok_url'    => ['icon' => 'bi-tiktok',    'label' => 'TikTok'],
+            'twitter_url'   => ['icon' => 'bi-twitter-x', 'label' => 'Twitter'],
+            'youtube_url'   => ['icon' => 'bi-youtube',   'label' => 'YouTube'],
+            'other_url'     => ['icon' => 'bi-globe',     'label' => 'Website'],
+        ];
+
+        $filled = [];
+
+        foreach ($links as $field => $meta) {
+            if (! empty($this->{$field})) {
+                $filled[] = $meta + ['url' => $this->{$field}];
+            }
+        }
+
+        return $filled;
     }
 
     // Helper method to check if TikTok is connected

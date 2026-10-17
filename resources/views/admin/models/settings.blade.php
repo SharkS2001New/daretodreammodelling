@@ -170,24 +170,38 @@
             <div class="account-panel">
                 <div class="account-section__header mb-4">
                     <h2 class="account-section__title h5">Social links</h2>
-                    <p class="account-section__subtitle mb-0">Instagram, Twitter, YouTube, and website links. TikTok must be connected by the model from their own account.</p>
+                    <p class="account-section__subtitle mb-0">These appear as icons on {{ $managedUser->displayName() }}'s public profile. Leave a field empty to hide that icon.</p>
                 </div>
 
+                @error('facebook_url') <div class="alert alert-danger py-2 px-3">{{ $message }}</div> @enderror
+                @error('instagram_url') <div class="alert alert-danger py-2 px-3">{{ $message }}</div> @enderror
+                @error('tiktok_url') <div class="alert alert-danger py-2 px-3">{{ $message }}</div> @enderror
+                @error('twitter_url') <div class="alert alert-danger py-2 px-3">{{ $message }}</div> @enderror
+
                 <div class="auth-form__group">
-                    <label class="form-label">Instagram URL</label>
-                    <input type="url" name="instagram_url" value="{{ old('instagram_url', $managedLinkedAccount->instagram_url ?? '') }}" class="form-control auth-form__control">
+                    <label class="form-label"><i class="bi bi-facebook text-primary"></i> Facebook URL</label>
+                    <input type="url" name="facebook_url" value="{{ old('facebook_url', $managedLinkedAccount->facebook_url ?? '') }}" placeholder="https://www.facebook.com/username" class="form-control auth-form__control @error('facebook_url') is-invalid @enderror">
                 </div>
                 <div class="auth-form__group">
-                    <label class="form-label">Twitter URL</label>
-                    <input type="url" name="twitter_url" value="{{ old('twitter_url', $managedLinkedAccount->twitter_url ?? '') }}" class="form-control auth-form__control">
+                    <label class="form-label"><i class="bi bi-instagram" style="color:#e5229f"></i> Instagram URL</label>
+                    <input type="url" name="instagram_url" value="{{ old('instagram_url', $managedLinkedAccount->instagram_url ?? '') }}" placeholder="https://www.instagram.com/username" class="form-control auth-form__control @error('instagram_url') is-invalid @enderror">
                 </div>
                 <div class="auth-form__group">
-                    <label class="form-label">YouTube URL</label>
-                    <input type="url" name="youtube_url" value="{{ old('youtube_url', $managedLinkedAccount->youtube_url ?? '') }}" class="form-control auth-form__control">
+                    <label class="form-label"><i class="bi bi-tiktok"></i> TikTok URL</label>
+                    <input type="url" name="tiktok_url" value="{{ old('tiktok_url', $managedLinkedAccount->tiktok_url ?? '') }}" placeholder="https://www.tiktok.com/@username" class="form-control auth-form__control @error('tiktok_url') is-invalid @enderror">
+                    <div class="form-text">Just the profile link. Pulling in their TikTok videos is separate and the model connects that from their own account.</div>
                 </div>
                 <div class="auth-form__group">
-                    <label class="form-label">Website</label>
-                    <input type="url" name="other_url" value="{{ old('other_url', $managedLinkedAccount->other_url ?? '') }}" class="form-control auth-form__control">
+                    <label class="form-label"><i class="bi bi-twitter-x"></i> Twitter / X URL</label>
+                    <input type="url" name="twitter_url" value="{{ old('twitter_url', $managedLinkedAccount->twitter_url ?? '') }}" placeholder="https://x.com/username" class="form-control auth-form__control @error('twitter_url') is-invalid @enderror">
+                </div>
+                <div class="auth-form__group">
+                    <label class="form-label"><i class="bi bi-youtube text-danger"></i> YouTube URL</label>
+                    <input type="url" name="youtube_url" value="{{ old('youtube_url', $managedLinkedAccount->youtube_url ?? '') }}" placeholder="https://www.youtube.com/@channel" class="form-control auth-form__control @error('youtube_url') is-invalid @enderror">
+                </div>
+                <div class="auth-form__group">
+                    <label class="form-label"><i class="bi bi-globe"></i> Website</label>
+                    <input type="url" name="other_url" value="{{ old('other_url', $managedLinkedAccount->other_url ?? '') }}" placeholder="https://example.com" class="form-control auth-form__control @error('other_url') is-invalid @enderror">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save social links</button>

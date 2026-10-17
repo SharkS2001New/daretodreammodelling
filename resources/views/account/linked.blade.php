@@ -50,14 +50,23 @@
             <div class="account-panel">
                 <div class="account-section__header mb-4">
                     <h2 class="account-section__title h5">Social links</h2>
-                    <p class="account-section__subtitle mb-0">Add URLs to your other social profiles and websites.</p>
+                    <p class="account-section__subtitle mb-0">These show as icons on your public profile. Leave a field empty to hide that icon.</p>
                 </div>
 
                 <form action="{{ route('account.linked.update') }}" method="POST" class="account-form">
                     @csrf
 
                     <div class="auth-form__group">
-                        <label class="form-label">Instagram URL</label>
+                        <label class="form-label"><i class="bi bi-facebook text-primary"></i> Facebook URL</label>
+                        <input type="url" name="facebook_url"
+                            value="{{ old('facebook_url', $linkedAccount->facebook_url ?? '') }}"
+                            placeholder="https://www.facebook.com/yourusername"
+                            class="form-control auth-form__control @error('facebook_url') is-invalid @enderror">
+                        @error('facebook_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-form__group">
+                        <label class="form-label"><i class="bi bi-instagram" style="color:#e5229f"></i> Instagram URL</label>
                         <input type="url" name="instagram_url"
                             value="{{ old('instagram_url', $linkedAccount->instagram_url ?? '') }}"
                             placeholder="https://www.instagram.com/yourusername"
@@ -66,7 +75,17 @@
                     </div>
 
                     <div class="auth-form__group">
-                        <label class="form-label">Twitter URL</label>
+                        <label class="form-label"><i class="bi bi-tiktok"></i> TikTok URL</label>
+                        <input type="url" name="tiktok_url"
+                            value="{{ old('tiktok_url', $linkedAccount->tiktok_url ?? '') }}"
+                            placeholder="https://www.tiktok.com/@yourusername"
+                            class="form-control auth-form__control @error('tiktok_url') is-invalid @enderror">
+                        @error('tiktok_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <div class="form-text">Your profile link. This is separate from connecting TikTok above to show your videos.</div>
+                    </div>
+
+                    <div class="auth-form__group">
+                        <label class="form-label"><i class="bi bi-twitter-x"></i> Twitter / X URL</label>
                         <input type="url" name="twitter_url"
                             value="{{ old('twitter_url', $linkedAccount->twitter_url ?? '') }}"
                             placeholder="https://www.twitter.com/yourusername"
@@ -75,7 +94,7 @@
                     </div>
 
                     <div class="auth-form__group">
-                        <label class="form-label">YouTube URL</label>
+                        <label class="form-label"><i class="bi bi-youtube text-danger"></i> YouTube URL</label>
                         <input type="url" name="youtube_url"
                             value="{{ old('youtube_url', $linkedAccount->youtube_url ?? '') }}"
                             placeholder="https://www.youtube.com/yourchannel"
@@ -84,7 +103,7 @@
                     </div>
 
                     <div class="auth-form__group">
-                        <label class="form-label">Website</label>
+                        <label class="form-label"><i class="bi bi-globe"></i> Website</label>
                         <input type="url" name="other_url"
                             value="{{ old('other_url', $linkedAccount->other_url ?? '') }}"
                             placeholder="https://example.com"

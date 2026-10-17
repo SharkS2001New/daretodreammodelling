@@ -2087,6 +2087,42 @@ footer.bg-dark,
     transform: translateY(-2px);
 }
 
+/* Each network keeps its own colour on hover */
+.model-social-link--facebook:hover {
+    color: #1877f2;
+    border-color: rgba(24, 119, 242, 0.4);
+}
+
+.model-social-link--instagram:hover {
+    color: #e1306c;
+    border-color: rgba(225, 48, 108, 0.4);
+}
+
+.model-social-link--tiktok:hover {
+    color: #010101;
+    border-color: rgba(1, 1, 1, 0.35);
+}
+
+[data-theme="dark"] .model-social-link--tiktok:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.model-social-link--twitter:hover {
+    color: #0f1419;
+    border-color: rgba(15, 20, 25, 0.35);
+}
+
+[data-theme="dark"] .model-social-link--twitter:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.model-social-link--youtube:hover {
+    color: #ff0000;
+    border-color: rgba(255, 0, 0, 0.4);
+}
+
 .model-profile-tabs {
     justify-content: center;
     flex-wrap: nowrap;

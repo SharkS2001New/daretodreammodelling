@@ -177,7 +177,9 @@ class ModelManagementController extends Controller
         ModelAccess::authorizeManage($user);
 
         $validated = $request->validate([
+            'facebook_url' => 'nullable|url|max:255',
             'instagram_url' => 'nullable|url|max:255',
+            'tiktok_url' => 'nullable|url|max:255',
             'twitter_url' => 'nullable|url|max:255',
             'youtube_url' => 'nullable|url|max:255',
             'other_url' => 'nullable|url|max:255',
