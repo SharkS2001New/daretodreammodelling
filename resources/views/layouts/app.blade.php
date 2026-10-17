@@ -12,8 +12,8 @@
         <link rel="icon" type="image/png" href="{{ asset('ddmodelslogo.ico') }}" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="{{ asset('css/main.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
+        <link href="@assetv('css/main.css')" rel="stylesheet">
+        <link href="@assetv('css/theme.css')" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
         @stack('styles')
@@ -50,9 +50,9 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/theme.js') }}"></script>
-        <script src="{{ asset('js/menu.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
+        <script src="@assetv('js/theme.js')"></script>
+        <script src="@assetv('js/menu.js')"></script>
+        <script src="@assetv('js/main.js')"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 

@@ -1,86 +1,101 @@
 @extends('layouts.frontend')
 
-@section('content')  
-    <div class="container py-2">
-        <div class="row g-4">
-            <!-- Left Card -->
-            <div class="col-md-6">
-                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative hero-card">
-                    <div id="findModelCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="4500">
-                        <div class="carousel-inner h-100">
-                            <div class="carousel-item active h-100">
-                                <img src="{{ asset('hero-find-model-1-editorial-duo.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models editorial duo">
-                            </div>
-                            <div class="carousel-item h-100">
-                                <img src="{{ asset('hero-find-model-2-male-fashion.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models male fashion portrait">
-                            </div>
-                            <div class="carousel-item h-100">
-                                <img src="{{ asset('hero-find-model-3-trio-steps.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models trio on steps">
-                            </div>
-                            <div class="carousel-item h-100">
-                                <img src="{{ asset('hero-find-model-4-street-style.png') }}" class="card-img object-fit-cover h-100 w-100" alt="DD Models street style duo">
+@section('content')
+    <!-- Hero -->
+    <section class="home-hero">
+        <span class="home-hero__glow home-hero__glow--one" aria-hidden="true"></span>
+        <span class="home-hero__glow home-hero__glow--two" aria-hidden="true"></span>
+
+        <div class="container position-relative">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-6">
+                    <p class="home-hero__eyebrow">Modelling &middot; Talent &middot; Events &middot; Photography</p>
+                    <h1 class="home-hero__title">Dare to dream,<br><span>then get booked.</span></h1>
+                    <p class="home-hero__lead">
+                        Modelling jobs, training and representation for newcomers and
+                        professional models across Kenya.
+                    </p>
+
+                    <div class="home-hero__actions">
+                        <a href="{{ route('register') }}" class="btn btn-primary rounded-pill px-4 py-2">
+                            Join as a model
+                        </a>
+                        <a href="{{ route('models.index') }}" class="btn btn-hero-ghost rounded-pill px-4 py-2">
+                            Browse our models
+                        </a>
+                    </div>
+
+                    <ul class="home-hero__points">
+                        <li><i class="bi bi-patch-check-fill"></i> Verified profiles</li>
+                        <li><i class="bi bi-mortarboard-fill"></i> Professional training</li>
+                        <li><i class="bi bi-camera-fill"></i> Portfolio building</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="home-hero__media">
+                        <div id="findModelCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="4500">
+                            <div class="carousel-inner h-100">
+                                <div class="carousel-item active h-100">
+                                    <img src="{{ asset('hero-find-model-1-editorial-duo.png') }}" class="object-fit-cover h-100 w-100" alt="DD Models editorial duo">
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <img src="{{ asset('hero-find-model-2-male-fashion.png') }}" class="object-fit-cover h-100 w-100" alt="DD Models male fashion portrait">
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <img src="{{ asset('hero-find-model-3-trio-steps.png') }}" class="object-fit-cover h-100 w-100" alt="DD Models trio on steps">
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <img src="{{ asset('hero-find-model-4-street-style.png') }}" class="object-fit-cover h-100 w-100" alt="DD Models street style duo">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient hero-card__overlay">
-                        <h3 class="fw-bold">Find work as a model</h3>
-                        <p class="mb-0">Modeling jobs for newcomers and professional models.</p>
-                        {{-- <a href="{{ route('models.jobs') }}" class="btn btn-danger rounded-pill mt-2">
-                            For models and talents
-                        </a> --}}
-                    </div>
-                </div>
-            </div>
 
-            <!-- Right Card -->
-            <div class="col-md-6">
-                <div class="card border-0 text-white rounded-4 overflow-hidden position-relative h-100">
-                    <img src="{{ asset('model_careers1.jpg') }}" class="card-img h-100 object-fit-cover" alt="Find models and talents">
-                    <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient">
-                        <h3 class="fw-bold">Find models and talents</h3>
-                        <p>Source models, talents and influencers for all types of projects.</p>
-                        {{-- <a href="{{ route('professionals.index') }}" class="btn btn-danger rounded-pill mt-2">
-                            For professionals
-                        </a> --}}
+                        <div class="home-hero__badge">
+                            <span class="home-hero__badge-icon"><i class="bi bi-stars"></i></span>
+                            <span>
+                                <strong>Find work as a model</strong>
+                                <small>For newcomers &amp; professionals</small>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container py-5">
-        <h2 class="section-heading text-center mb-4 fw-bold">Popular Models</h2>
+    <!-- Popular Models -->
+    <section class="home-models py-5">
+        <div class="container">
+            <div class="text-center mb-4 mb-md-5">
+                <p class="section-eyebrow">Our talent</p>
+                <h2 class="section-heading fw-bold mb-2">Popular Models</h2>
+                <p class="text-muted mb-0 mx-auto home-section-subtitle">
+                    A growing roster of trained, verified faces ready for your next project.
+                </p>
+            </div>
 
-        <!-- Category Tabs -->
-        {{-- <div class="d-flex justify-content-center mb-4">
-            <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#">Unique</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Fashion</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Real people</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Plus sized</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Talents</a></li>
-            </ul>
-        </div> --}}
+            <!-- Models Grid -->
+            <div class="row g-4">
+                @foreach($photos as $model)
+                    <div class="col-md-3 col-6">
+                        <x-model-card :photo="$model" />
+                    </div>
+                @endforeach
+            </div>
 
-        <!-- Models Grid -->
-        <div class="row g-4">
-            @foreach($photos as $model)
-                <div class="col-md-3 col-6">
-                    <x-model-card :photo="$model" />
-                </div>
-            @endforeach
+            <!-- Button -->
+            <div class="text-center mt-5">
+                <a href="{{ route('models.index') }}" class="btn btn-primary rounded-pill px-4 py-2">Find Models</a>
+            </div>
         </div>
-
-        <!-- Button -->
-        <div class="text-center mt-4">
-            <a href="{{ route('models.index') }}" class="btn btn-dark rounded-pill">Find Models</a>
-        </div>
-    </div>
+    </section>
 
     <section class="home-community py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-heading fw-bold mb-2">Community</h2>
+                <p class="section-eyebrow">Community</p>
+                <h2 class="section-heading fw-bold mb-2">Growing together</h2>
                 <p class="text-muted mb-0 mx-auto home-section-subtitle">Growing together with talent, professionals, and partners across the industry.</p>
             </div>
 
@@ -121,6 +136,7 @@
     <section id="programs" class="home-programs py-5">
         <div class="container">
             <div class="text-center mb-5">
+                <p class="section-eyebrow">What we teach</p>
                 <h2 class="section-heading fw-bold mb-2">Our Programs</h2>
                 <p class="text-muted mb-0 mx-auto home-section-subtitle">Training paths designed to develop confidence, skill, and career-ready talent.</p>
             </div>
@@ -177,34 +193,35 @@
         </div>
     </section>
 
-    <section class="py-5 bg-white">
-        <div class="container text-center">
+    <section class="home-safety py-5">
+        <div class="container text-center position-relative">
+            <p class="section-eyebrow section-eyebrow--on-dark">Trust</p>
             <h2 class="section-heading fw-bold mb-5 text-center">Your safety comes first</h2>
-            
+
             <div class="row g-4 justify-content-center">
-                
+
                 <div class="col-6 col-md-4">
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
-                            <i class="bi bi-shield-check fs-3"></i>
+                    <div class="safety-item">
+                        <div class="safety-item__icon">
+                            <i class="bi bi-shield-check"></i>
                         </div>
                         <p class="mb-0">Every profile is carefully <br> checked and approved</p>
                     </div>
                 </div>
-                
+
                 <div class="col-6 col-md-4">
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
-                            <i class="bi bi-lock fs-3"></i>
+                    <div class="safety-item">
+                        <div class="safety-item__icon">
+                            <i class="bi bi-lock"></i>
                         </div>
                         <p class="mb-0">Secure messaging to protect <br> your private information</p>
                     </div>
                 </div>
-                
+
                 <div class="col-6 col-md-4">
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:70px; height:70px;">
-                            <i class="bi bi-star fs-3"></i>
+                    <div class="safety-item">
+                        <div class="safety-item__icon">
+                            <i class="bi bi-star"></i>
                         </div>
                         <p class="mb-0">Trusted connections built <br> on real feedback</p>
                     </div>
@@ -217,7 +234,7 @@
     <section class="testimonial-section py-5">
         <div class="container">
             <div class="text-center mb-4 mb-md-5">
-                <p class="models-section__eyebrow text-uppercase fw-semibold mb-2">Real journeys</p>
+                <p class="section-eyebrow">Real journeys</p>
                 <h2 class="section-heading fw-bold mb-2">Success Stories</h2>
                 <p class="text-muted mb-0 mx-auto testimonial-section__subtitle">Hear from models who have grown with DD Models Agency.</p>
             </div>
@@ -306,21 +323,22 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="{{ route('testimonials') }}" class="btn btn-outline-secondary rounded-pill px-4">View all stories</a>
+            <a href="{{ route('testimonials') }}" class="btn btn-outline-brand rounded-pill px-4">View all stories</a>
         </div>
     </section>
 
     <!-- Clients Section -->
-    <section id="clients" class="clients section py-4">
+    <section id="clients" class="clients section py-5">
         <div class="container text-center">
 
             <!-- Section Title -->
+            <p class="section-eyebrow">Partners</p>
             <h3 class="section-heading mb-4 fw-bold">Brands that trust us</h3>
 
             <!-- Logos Marquee -->
             <div class="d-flex overflow-hidden">
             <div class="clients-marquee d-flex align-items-center">
-                
+
                 <img src="{{ asset('brands/darling.jpeg') }}" class="mx-4 img-fluid" alt="Client 1">
                 <img src="{{ asset('brands/lush-hair.jpeg') }}" class="mx-4 img-fluid" alt="Client 2">
                 <img src="{{ asset('brands/nemu.jpeg') }}" class="mx-4 img-fluid" alt="Client 3">
@@ -336,6 +354,27 @@
                 <img src="{{ asset('brands/touch-of-kenya.jpeg') }}" class="mx-4 img-fluid" alt="Client 5">
                 <img src="{{ asset('brands/martell.jpeg') }}" class="mx-4 img-fluid" alt="Client 6">
             </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing call to action -->
+    <section class="home-cta">
+        <div class="container">
+            <div class="home-cta__panel">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8 text-center text-lg-start">
+                        <h2 class="home-cta__title mb-2">Ready to start your modelling journey?</h2>
+                        <p class="home-cta__text mb-0">
+                            Create your profile today and get discovered by the brands we work with.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-center text-lg-end">
+                        <a href="{{ route('register') }}" class="btn btn-light rounded-pill px-4 py-2 fw-semibold home-cta__btn">
+                            Join Dare to Dream
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

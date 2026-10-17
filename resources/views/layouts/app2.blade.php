@@ -17,8 +17,8 @@
         <!-- Styles -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="{{ asset('css/demo.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+        <link href="@assetv('css/demo.css')" rel="stylesheet">
+        <link href="@assetv('css/main.css')" rel="stylesheet">
         <link href="{{ asset('fonts/iconify-icons.css') }}" rel="stylesheet">
         <!-- Select2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -64,8 +64,8 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
 
-        <script src="{{ asset('js/menu.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
+        <script src="@assetv('js/menu.js')"></script>
+        <script src="@assetv('js/main.js')"></script>
 
         <script>
             // Mobile sidebar functionality

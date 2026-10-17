@@ -194,7 +194,7 @@
 }
 
 .menu-list a:hover {
-    background: #f5f5f5;
+    background: var(--surface, #fbe9f5);
 }
 
 /* ===== MOBILE SIDEBAR STYLES ===== */
@@ -346,14 +346,14 @@ body.sidebar-open {
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: var(--accordion-active-bg, #e91e63);
+    background-color: var(--accordion-active-bg, #e5229f);
     color: var(--accordion-active-color, #fff);
-    border-color: var(--accordion-active-bg, #e91e63);
+    border-color: var(--accordion-active-bg, #e5229f);
 }
 
 .accordion-button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
-    border-color: var(--brand, #e91e63);
+    box-shadow: 0 0 0 0.2rem rgba(229, 34, 159, 0.25);
+    border-color: var(--brand, #e5229f);
 }
 
 .accordion-button::after {
@@ -406,8 +406,8 @@ body.sidebar-open {
 }
 
 .featured-quote-card {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border: 1px solid rgba(233, 30, 99, 0.1);
+  background: linear-gradient(135deg, #fff5fb 0%, #fbe4f3 100%);
+  border: 1px solid rgba(229, 34, 159, 0.14);
   position: relative;
 }
 
@@ -543,7 +543,7 @@ body.sidebar-open {
 }
 
 .dropzone-area {
-    background-color: #f8f9fa;
+    background-color: var(--surface, #fbe9f5);
     border-color: #dee2e6 !important;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -551,8 +551,8 @@ body.sidebar-open {
 
 .dropzone-area:hover,
 .dropzone-area.dragover {
-    background-color: #e9ecef;
-    border-color: #e91e63 !important;
+    background-color: var(--brand-soft, #fbe4f3);
+    border-color: #e5229f !important;
 }
 
 .dropzone-icon {
@@ -562,7 +562,7 @@ body.sidebar-open {
 
 .dropzone-area:hover .dropzone-icon,
 .dropzone-area.dragover .dropzone-icon {
-    color: #e91e63;
+    color: #e5229f;
 }
 
 .dropzone-text {
@@ -744,8 +744,8 @@ body.sidebar-open {
 }
 
 .filter-dropdown .age-filter-toggle.is-active {
-  background: var(--nav-link-active-bg, rgba(233, 30, 99, 0.12));
-  color: var(--brand, #e91e63);
+  background: var(--nav-link-active-bg, rgba(229, 34, 159, 0.12));
+  color: var(--brand, #e5229f);
   font-weight: 600;
 }
 

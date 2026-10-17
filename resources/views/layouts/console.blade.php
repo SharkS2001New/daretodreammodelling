@@ -16,8 +16,8 @@
         <!-- Styles -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="{{ asset('css/demo.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+        <link href="@assetv('css/demo.css')" rel="stylesheet">
+        <link href="@assetv('css/main.css')" rel="stylesheet">
         <link href="{{ asset('fonts/iconify-icons.css') }}" rel="stylesheet">
 
         <!-- Scripts -->
@@ -50,8 +50,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-        <script src="{{ asset('js/menu.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
+        <script src="@assetv('js/menu.js')"></script>
+        <script src="@assetv('js/main.js')"></script>
         <!-- Script -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {

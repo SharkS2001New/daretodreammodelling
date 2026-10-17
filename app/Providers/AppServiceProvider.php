@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\UserPublicInfo;
@@ -19,10 +20,34 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Append the file's last-modified time to a public asset URL so browsers
+     * pick up changes instead of replaying a cached copy. Falls back to the
+     * plain URL when the file is missing (e.g. a CDN path).
+     */
+    public static function versionedAsset(string $path): string
+    {
+        $url = asset($path);
+        $file = public_path($path);
+
+        if (! is_file($file)) {
+            return $url;
+        }
+
+        return $url . (str_contains($url, '?') ? '&' : '?') . 'v=' . filemtime($file);
+    }
+
+    /**
      * Bootstrap any application services.
      */
     public function boot(): void
-    {       
+    {
+        // @assetv('css/theme.css') -> /css/theme.css?v=<file mtime>
+        // Browsers cache these files aggressively (Apache sends no Cache-Control),
+        // so the stamp makes a deploy serve the new file instead of a stale copy.
+        Blade::directive('assetv', function ($expression) {
+            return "<?php echo \App\Providers\AppServiceProvider::versionedAsset({$expression}); ?>";
+        });
+
         View::composer('*', function ($view) {
             $authPublicInfo = null;
             if (Auth::check()) {
